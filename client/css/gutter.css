@@ -1,0 +1,29 @@
+/* 20px gutter */
+.gutter-20.row {
+	margin-right:-25px;
+	margin-left:-25px;
+}
+.gutter-20 > [class^="col-"], .gutter-20 > [class^=" col-"] {
+	padding-right:10px;
+	padding-left:10px;
+}
+
+/* 10px gutter */
+.gutter-10.row {
+	margin-right:-20px;
+	margin-left:-20px;
+}
+.gutter-10 > [class^="col-"], .gutter-10 > [class^=" col-"] {
+	padding-right:5px;
+	padding-left:5px;
+}
+
+/* 0px gutter */
+.gutter-0.row {
+	margin-right:-15px;
+	margin-left:-15px;
+}
+.gutter-0 > [class^="col-"], .gutter-0 > [class^=" col-"]{
+	padding-right:0;
+	padding-left:0;
+}

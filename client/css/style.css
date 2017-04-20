@@ -1,0 +1,275 @@
+/* Creates a gradient fade on a position:relative parent */
+.fader {
+	position:absolute;
+	top:0;
+	bottom:0;
+	left:0;
+	right:0;
+
+	background:rgba(0,0,0,0.5);
+	background:linear-gradient(0deg, rgba(0,0,0,0), rgba(0,0,0,0.5));
+}
+
+#ui-container {
+	padding-bottom:20px;
+}
+ /* V1 ONLY */ 
+.greenhouse-selector {
+	margin:10px -15px;
+}
+.greenhouse-selector .dropdown button {
+	font-size:24px;
+	font-weight:bold;
+	padding:0;
+	border:0;
+}
+.greenhouse-selector .dropdown button:hover,
+.greenhouse-selector .dropdown button:focus,
+.greenhouse-selector .dropdown.open button,
+.greenhouse-selector .dropdown.open button:hover,
+.greenhouse-selector .dropdown.open button:focus {
+	background:white;
+}
+/* V1 ONLY END */
+
+.zone-selector {
+	margin:10px -15px;
+}
+.zone-selector .dropdown button {
+	font-size:24px;
+	font-weight:bold;
+	padding:0;
+	border:0;
+}
+.zone-selector .dropdown button:hover,
+.zone-selector .dropdown button:focus,
+.zone-selector .dropdown.open button,
+.zone-selector .dropdown.open button:hover,
+.zone-selector .dropdown.open button:focus {
+	background:white;
+}
+
+.probe-selector {
+	margin:10px -15px;
+}
+.probe-selector ul.nav-pills li>a,
+.probe-selector ul.nav-pills li>a:hover,
+.probe-selector ul.nav-pills li>a:focus {
+	color:black;
+	font-size:20px;
+
+	background:white;
+	border:0;
+	border-radius:0;
+	border-bottom:4px solid #FFF;
+	padding:12px 24px 8px;
+
+	transition-property:border-color;
+	transition-duration:500ms;
+}
+
+.probe-selector ul.nav-pills li>a:hover {
+	border-bottom:4px solid #A6C5ED;
+	padding:12px 24px 8px;
+}
+
+.probe-selector ul.nav-pills li.active>a {
+	border-bottom:4px solid #5D9CEC;
+	padding:12px 24px 8px;
+}
+.probe-selector ul.nav-pills li.active>a:hover,
+.probe-selector ul.nav-pills li.active>a:focus:hover {
+	border-bottom:4px solid #3C6499;
+	padding:12px 24px 8px;
+}
+
+.probe-editor {
+	display:block;
+	position:relative;
+	padding:12px 24px 8px;
+	font-size:20px;
+}
+.probe-editor i {
+	margin-right:4px;
+}
+
+.header-greenhouse {
+	color:white;
+
+	background-image:url('/images/greenhouse-combagroup.jpg');
+	background-repeat:no-repeat;
+	background-position:center center;
+	background-size:cover;
+	background-color:black;
+
+	position:relative;
+	height:400px;
+}
+.header-greenhouse h3 small{
+	color:white;
+	font-style:italic;
+}
+
+.header-probe {
+	background:#8CC152;
+}
+.header-probe-preview {
+	position:relative;
+
+	height:325px;
+	background-image:url('/images/salad.jpg');
+	background-repeat:no-repeat;
+	background-position:center center;
+	background-size:cover;
+	background-color:black;
+}
+.header-probe .growth {
+	color:white;
+	font-size:24px;
+	font-weight:bold;
+
+	margin:15px;
+}
+.header-probe .growth small {
+	font-size:18px;
+	font-weight:normal;
+}
+@media (min-width:992px) {
+	.header-probe .value-block {
+		margin-top:36px;
+	}
+}
+
+.graph, .graph-filter {
+	display:none;
+}
+
+.row-title {
+	font-size:1.6em;
+	padding:4px 24px;
+}
+.row-title .glyphicon-triangle-bottom {
+	font-size:0.8em;
+}
+.row-dashboard-title {
+	font-size:1.6em;
+	padding:4px 0;
+}
+.row-content {}
+
+.value-block {
+	display:flex;
+	position:relative;
+	align-items:center;
+	justify-content:center;
+	
+	height:200px;
+	margin-bottom:20px;
+}
+
+.value-block.white {
+	color:white;
+}
+
+.value-block.air {
+	color:white;
+	background:#5D9CEC;
+}
+
+.value-block.light {
+	color:white;
+	background:#F6BB42;
+}
+
+.value-block.nutrient {
+	color:white;
+	background:#ADC169;
+}
+
+.value-block .block-handle {
+	position:absolute;
+	top:16px;
+	left:12px;
+
+	opacity:0;
+	transition-property:opacity;
+	transition-duration:500ms;
+}
+.value-block:hover .block-handle {
+	opacity:1;
+}
+
+.value-label {
+	display:block;
+	position:absolute;
+	top:12px;
+	width:calc(100% - 20px);
+
+	font-size:18px;
+	text-align:center;
+}
+.value-medium {
+	display:block;
+	text-align:center;
+	/*padding-top:12px;*/
+	font-size:48px;
+	flex:1;
+}
+.value-medium .unit {
+	display:block;
+	font-size:0.75em;
+	line-height:0.75em
+}
+@media (max-width:480px) {
+	.value-medium {
+		font-size:36px;
+	}
+}
+
+.air-quality.row-content {
+	color:#656D78;
+	background:#E6E9ED;
+}
+.air-quality.row-content span.title {
+	color:#4A89DC;
+	font-size:36px;
+	font-weight:bold;
+
+	display:block;
+	padding-top:20px;
+	padding-bottom:10px;
+}
+
+.light .light-intensity {
+	position:absolute;
+	display:block;
+	top:10px;
+	left:30px;
+
+	color:black;
+	font-size:72px;
+}
+@media (max-width:480px) {
+	.light .light-intensity {
+		font-size:64px;
+	}
+}
+
+/* V1 ONLY */
+.nutrient.row-content .value-block {
+	background:#ACA4BD;
+	color:white;
+	height:200px;
+	margin-bottom:20px;
+}
+/* V1 ONLY END */
+
+.live-label {
+	opacity:0.75;
+	transition-property:opacity !important;
+	transition-duration:2s !important;
+}
+.live-label.refresh {
+	opacity:1;
+	transition-duration:0s !important;
+}

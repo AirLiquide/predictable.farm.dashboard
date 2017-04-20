@@ -1,0 +1,18 @@
+{
+	"name" : "prectiable_dashboard",
+	"description" : "Dashboard for predictable farm",
+	"main" : "server.js",
+	"scripts" : {
+		"start" : "node server.js"
+	},
+	"dependencies": {
+		"express": "4.13.4",
+		"ejs" : "2.5.2",
+		"body-parser" : "1.15.2",
+		"cookie-parser" : "1.4.3",
+		"cookie-session" : "latest",
+		"morgan" : "1.7.0",
+		"socket.io": "1.4.5",
+		"mariasql" : "0.2.6"
+	}
+}
