@@ -8,10 +8,8 @@ module.exports = function(table, _keepAlive) {
 	// TODO debug_mode to display requests
 
 	var DB_HOST = 'localhost';
-	//var DB_USER = 'predictableuser';
-	//var DB_PASS = 'predictable';
-	var DB_USER = 'root';
-	var DB_PASS = 'root';
+	var DB_USER = 'predictableuser';
+	var DB_PASS = 'predictable';
 	var DB_BASE = 'predictabledata';
 
 	this.lastRequest = '';

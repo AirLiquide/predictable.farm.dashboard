@@ -13,6 +13,6 @@
 		"cookie-session" : "latest",
 		"morgan" : "1.7.0",
 		"socket.io": "1.4.5",
-		"mariasql" : "0.2.6"
+		"mariasql" : "latest"
 	}
 }
