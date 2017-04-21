@@ -1,0 +1,13 @@
+
+version: '3'
+
+services:
+  web:
+    build: .
+    container_name: predictable-dashboard
+    ports:
+    - 8080:8080
+    volumes:
+    - .:/usr/src/app/
+    - /usr/src/app/server/node_modules
+

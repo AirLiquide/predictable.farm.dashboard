@@ -1,5 +1,5 @@
 # Source docker
-FROM node:boron
+FROM node
 
 # Install mariadb
 RUN apt-get update
@@ -18,7 +18,8 @@ RUN service mysql start \
 && echo "CREATE DATABASE predictabledata; CREATE USER 'predictableuser'@'localhost' IDENTIFIED BY 'predictable'; GRANT ALL PRIVILEGES ON predictabledata.* TO 'predictableuser'@'localhost';" | mysql -uroot \
 && mysql -uroot predictabledata < ./lib/dump_dev.sql
 
-# Operations to run after first start
-#service mysql start
-#npm install
-#node server.js
+#install node modules
+RUN rm -rf ./node_modules && npm install
+
+CMD service mysql start && service mysql status && node server.js
+EXPOSE 8080
