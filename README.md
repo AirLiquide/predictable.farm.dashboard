@@ -1,5 +1,6 @@
 # Readme
 ----------
+This project provides a dashboard UI for predictable.farm 
 
 ## Installation 
 
