@@ -1,3 +1,8 @@
+@font-face { font-family: Roboto; src: url('client/lib/fonts/Roboto-Regular.ttf') format('ttf'); }
+h1,h2, p, span {
+font-family: Roboto;
+}
+
 /* Creates a gradient fade on a position:relative parent */
 .fader {
 	position:absolute;
@@ -13,7 +18,7 @@
 #ui-container {
 	padding-bottom:20px;
 }
- /* V1 ONLY */ 
+ /* V1 ONLY */
 .greenhouse-selector {
 	margin:10px -15px;
 }
@@ -162,24 +167,18 @@
 	position:relative;
 	align-items:center;
 	justify-content:center;
-	
+
 	height:200px;
 	margin-bottom:20px;
+	color:white;
+	background:white;
+	border: 1px solid rgba(0, 0, 0, 0.11);
+border-radius: 5px;
+width: calc(100% - 20px);
+margin: auto;
+
 }
 
-.value-block.white {
-	color:white;
-}
-
-.value-block.air {
-	color:white;
-	background:#5D9CEC;
-}
-
-.value-block.light {
-	color:white;
-	background:#F6BB42;
-}
 
 .value-block.nutrient {
 	color:white;
@@ -202,23 +201,31 @@
 .value-label {
 	display:block;
 	position:absolute;
-	top:12px;
-	width:calc(100% - 20px);
-
+	top:0px;
+	width: 100%;
+	border-radius: 4px 4px 0 0;
 	font-size:18px;
 	text-align:center;
 }
+.air .value-label {
+background:#5D9CEC;
+}
+.light .value-label {
+background:#f5ba4f;
+}
+
 .value-medium {
 	display:block;
 	text-align:center;
 	/*padding-top:12px;*/
 	font-size:48px;
 	flex:1;
+	color:#424242;
 }
 .value-medium .unit {
 	display:block;
 	font-size:0.75em;
-	line-height:0.75em
+	line-height:0.75em;
 }
 @media (max-width:480px) {
 	.value-medium {
@@ -272,4 +279,7 @@
 .live-label.refresh {
 	opacity:1;
 	transition-duration:0s !important;
+}
+.sensor-block, .btn-group{
+	    margin-top: 20px;
 }

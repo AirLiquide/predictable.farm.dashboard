@@ -24,15 +24,29 @@ var app = express();
 app.set('port', configServer.httpPort);
 app.set('views', './views');
 
+console.log('hi')
 app.use(express.static(configServer.staticFolder));
 app.use(morgan('dev'));
 
 app.get('/', function(req, res) {
-	//console.log('app.get(/)');
 
-	res.render('nav.ejs', {
-		'setup' : setup.get()
+
+	var RouteNavURL = 'dashboard'
+	res.render( 'nav.ejs', {
+		'setup' : setup.get(),
+		RouteNavURL: RouteNavURL
 	});
+
+
+});
+app.get('/recipies', function(req, res) {
+	//console.log('app.get(/)');
+	var RouteNavURL = 'recipies'
+	res.render( 'navbar.ejs', {
+		RouteNavURL: 'recipies'
+	});
+
+
 });
 
 app.get('/general', function(req, res) {

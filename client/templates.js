@@ -1,3 +1,6 @@
+
+
+
 var greenhouse_templates = {
 	zone_selector : '\
 	<div class="row zone-selector">\
@@ -42,21 +45,21 @@ var greenhouse_templates = {
 	<div class="row probe-selector">\
 		<ul class="nav nav-pills" id="probe-selector">\
 			{{#zone.dashboards}}\
-				<li role="presentation"{{#selected}} class="active"{{/selected}}>\
+				<li  role="presentation"class="onglet {{#selected}}active{{/selected}}">\
 					<a href="#dashboard-{{id_zone}}-{{index}}" data-type="dashboard" data-id-zone="{{id_zone}}"" data-dashboard_index="{{index}}">\
-						<i class="glyphicon glyphicon-tree-deciduous"></i> <span class="name">{{name}}</span>\
+						<span class="name">{{name}}</span>\
 					</a>\
 				</li>\
 			{{/zone.dashboards}}\
 			{{#probes}}\
-			<li role="presentation"{{#selected}} class="active"{{/selected}}>\
+			<li  role="presentation" class="onglet {{#selected}}active{{/selected}}">\
 				<a href="#probe-{{id_probe}}-{{uuid}}" data-type="probe" data-id-probe="{{id_probe}}" data-uuid="{{uuid}}">\
-					<i class="glyphicon glyphicon-leaf live-label" data-live-label-id="{{uuid}}" data-live-label-style="just-refresh"></i> <span class="name">{{name}}</span>\
+					<span class="name">{{name}} cc</span>\
 				</a>\
 			</li>\
 			{{/probes}}\
-			<li role="presentation" class="action-button">\
-				<a href="javascript:;" onclick="setup.addDashboard({{zone.id_zone}}, function(d){ window.location = \'/#dashboard-\'+d.id_zone+\'-\'+d.index; });" class=""><i class="glyphicon glyphicon-plus"></i></a>\
+			<li role="presentation" class="action-button onglet">\
+				<a href="javascript:;" onclick="setup.addDashboard({{zone.id_zone}}, function(d){ window.location = \'/#dashboard-\'+d.id_zone+\'-\'+d.index; });" class=""><span class="name" style="opacity:1.0!important;">+ new</span>\</a>\
 			</li>\
 		</ul>\
 	</div>',
@@ -101,7 +104,7 @@ var greenhouse_templates = {
 					</div>\
 				{{/sensors}}\
 				<div class="col-md-3 col-xs-6 btn-group">\
-					<button class="btn btn-default dropdown-toggle value-block" data-toggle="dropdown" style="width:100%">\
+					<button class="btn btn-default dropdown-toggle value-block" data-toggle="dropdown" style="    width: calc(100% - 30px);margin-left: 15px;">\
 						<span class="value-label">Ajouter un capteur</span>\
 						<span class="value-medium">+</span>\
 					</button>\

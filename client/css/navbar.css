@@ -1,0 +1,62 @@
+
+.navbar{
+  min-height: 60px;
+
+}
+.hamburger-menu{
+      margin: 15px 0 15px 30px;
+        display:inline-block;
+}
+.logo{
+      margin: 11px 20px;
+      display:inline-block;
+}
+.route-name{
+color: #4a4a4a;
+
+display:inline-block;
+margin: 0;
+    margin: 5px 40px;
+}
+.change-view{
+  float: right;
+  margin:15px 30px;
+  display:inline-block;
+}
+.dash-icon{
+  display: inline-block;
+  vertical-align: top;
+    margin-left: 15px;
+    opacity: 0.5;
+    transition: all .8s ease-in-out;
+    -moz-transition: all .8s ease-in-out;
+    -webkit-transition: all .8s;
+    cursor: pointer;
+}
+.recipies-icon{
+  display: inline-block;
+  vertical-align: top;
+opacity: 0.5;
+transition: all .8s ease-in-out;
+    -moz-transition: all .8s ease-in-out;
+    -webkit-transition: all .8s;
+    cursor: pointer;
+}
+.dash-icon:hover{
+opacity: 1.0;
+transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -webkit-transition: all .5s;
+}
+.recipies-icon:hover{
+opacity: 1.0;
+transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -webkit-transition: all .5s;
+}
+.dash-icon.dashboard{
+  opacity: 1.0;
+}
+.recipies-icon.recipies{
+  opacity: 1.0;
+}

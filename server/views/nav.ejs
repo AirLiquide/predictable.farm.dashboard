@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -7,13 +9,17 @@
 
 		<title>Predictable Farm</title>
 		<link rel="stylesheet" type="text/css" href="/lib/bootstrap-3.3.7-dist/css/bootstrap.min.css" />
+		<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 		<link rel="stylesheet" type="text/css" href="/lib/dragula-3.7.2/dragula.min.css" />
 		<link rel="stylesheet" type="text/css" href="/css/gutter.css" />
 		<link rel="stylesheet" type="text/css" href="/css/submenu.css" />
 		<link rel="stylesheet" type="text/css" href="/css/style.css" />
+		<link rel="stylesheet" type="text/css" href="/css/onglet.css" />
 	</head>
 	<body>
-		<div class="container" id="ui-container"></div>
+		<%- include navbar.ejs %>
+
+		<div class="container-new" id="ui-container"></div>
 
 		<script type="text/javascript" src="/lib/jquery-3.1.0/jquery-3.1.0.min.js"></script>
 		<script type="text/javascript" src="/lib/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
@@ -35,7 +41,7 @@
 		<script type="text/javascript" src="/lib/ProbeEditor.js"></script>
 		<script type="text/javascript" src="/lib/DashboardBlockEditor.js"></script>
 		<script type="text/javascript" src="/templates.js"></script>
-		
+
 		<script type="text/javascript">
 		/**********/
 		/* CONFIG */
@@ -124,8 +130,8 @@
 		template.setBlocks(greenhouse_templates); // from /templates.js
 
 		setup.selectZone(0);
-		
-		var templateContent = { 
+
+		var templateContent = {
 			zones : setup.getListZone(),
 			zone : setup.getSelectedZone(),
 			probe : {},
@@ -151,7 +157,7 @@
 
 					return false;
 				};
-				
+
 				// Creates the html for a zone's menu
 				var getZoneMenu = function(id_zone, boldZone) {
 					if (typeof boldZone !== 'boolean') {
@@ -168,7 +174,7 @@
 
 					var probes = setup.getListProbeByZone(zone.id_zone);
 					var sensors;
-					
+
 					var disabled = '';
 					var onclick = '';
 					for (var i=0; i < probes.length; i++) {
@@ -258,7 +264,7 @@
 			}
 
 			template.render(uiContainer, blocks);
-			
+
 			// Live labels
 			initLiveLabels();
 
@@ -286,7 +292,7 @@
 
 						if (type === 'probe') {
 							var id_probe = target.getAttribute('data-id-probe');
-							
+
 							// probe object is modified + xhr to change server setup
 							setup.renameProbe(id_probe, renameData.name);
 						}
@@ -364,7 +370,7 @@
 				for (var i=0; i < listChildren.length; i++) {
 					listSensorId.push(listChildren[i].getAttribute('data-id_sensor'));
 				}
-				
+
 				// Update locally & on the server
 				setup.sortSensors(listSensorId);
 			});
@@ -540,7 +546,7 @@
 			for (var i=0; i < labels.length; i++) {
 				var label = labels[i];
 				var sensorId = label.getAttribute('data-live-label-id');
-				
+
 				if (!!sensorId) {
 					var live = new LiveLabel();
 					live.addElement(label);

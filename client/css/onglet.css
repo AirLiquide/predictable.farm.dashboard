@@ -1,0 +1,57 @@
+
+.onglet{
+  background: #F9F9F9;
+width: 185px !important;
+height: 45px !important;
+overflow: hidden;
+opacity:0.6;
+margin: 0 -2px 0 0!important;
+max-width: 10%;
+}
+.onglet a{
+  height: 50px!important;
+background: #F9F9F9!important;
+border-radius: 10px 10px 0 0 !important;
+border: 1px solid #ccc!important;
+margin: 0 10px 0!important;
+box-shadow: 0 0 2px #fff inset!important;
+-webkit-transform: perspective(100px) rotateX(30deg)!important;
+-moz-transform: perspective(100px) rotateX(30deg)!important;
+color:#909090;
+font-size: 15px!important;
+overflow: hidden;
+}
+
+.onglet span{
+width: 100%;
+  white-space: normal;
+overflow-x: auto;
+height: 18px;
+max-height: 18px;
+display: block;
+overflow: hidden;
+}
+.active{
+
+  opacity: 1.0!important;
+}
+.active a{
+  background: white !important;
+}
+
+.container-new{
+  width: 90%;
+  margin: auto;
+}
+.top-front{
+  background-color: #F9F9F9;
+  position: absolute;
+  width: 100%;
+  height: 136px;
+  z-index: -1;
+  top: 0;
+
+}
+.zone-selector{
+  display: none!important;
+}
