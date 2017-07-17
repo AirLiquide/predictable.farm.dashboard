@@ -68,7 +68,7 @@ var DataCache = function() {
 			if (result[result.length-1][0] < end) {
 				result = result.concat([[end, null]]);
 			}
-
+			result = 'coucou'
 			return result;
 		}
 	};
@@ -143,7 +143,7 @@ var DataCache = function() {
 		if (typeof serie === 'undefined') {
 			return -1;
 		}
-		
+
 		var start = 0;
 		var stop = serie.length - 1;
 		var middle = Math.floor((start + stop) / 2);
@@ -165,7 +165,7 @@ var DataCache = function() {
 		if (serie[middle][0] == searched) {
 			return middle;
 		}
-		
+
 		return -1;
 	};
 

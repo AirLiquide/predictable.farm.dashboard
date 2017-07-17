@@ -87,11 +87,11 @@
          *
          * @function #error
          * @memberOf Highcharts
-         * @param {Number|String} code - The error code. See [errors.xml]{@link 
+         * @param {Number|String} code - The error code. See [errors.xml]{@link
          *     https://github.com/highcharts/highcharts/blob/master/errors/errors.xml}
          *     for available codes. If it is a string, the error message is printed
          *     directly in the console.
-         * @param {Boolean} [stop=false] - Whether to throw an error or just log a 
+         * @param {Boolean} [stop=false] - Whether to throw an error or just log a
          *     warning in the console.
          */
         H.error = function(code, stop) {
@@ -346,7 +346,7 @@
                 }
 
                 /**
-                 * If shifting points, prepend a dummy point to the end path. 
+                 * If shifting points, prepend a dummy point to the end path.
                  */
                 function prepend(arr, other) {
                     while (arr.length < fullLength) {
@@ -382,7 +382,7 @@
                         // is sliced out. In an area graph, the positionFactor is 2,
                         // causing the middle two points to be sliced out, since an area
                         // path starts at left, follows the upper path then turns and
-                        // follows the bottom back. 
+                        // follows the bottom back.
                         slice = arr.slice().splice(
                             (arr.length / positionFactor) - numParams,
                             numParams * positionFactor
@@ -435,7 +435,7 @@
 
                 if (start.length && H.isNumber(shift)) {
 
-                    // The common target length for the start and end array, where both 
+                    // The common target length for the start and end array, where both
                     // arrays are padded in opposite ends
                     fullLength = end.length + shift * positionFactor * numParams;
 
@@ -476,7 +476,7 @@
         /**
          * Utility function to deep merge two or more objects and return a third object.
          * If the first argument is true, the contents of the second object is copied
-         * into the first object. The merge function can also be used with a single 
+         * into the first object. The merge function can also be used with a single
          * object argument to create a deep copy of an object.
          *
          * @function #merge
@@ -486,7 +486,7 @@
          * @param {Object} a - The first object to extend. When only this is given, the
                   function returns a deep copy.
          * @param {...Object} [n] - An object to merge into the previous one.
-         * @returns {Object} - The merged object. If the first argument is true, the 
+         * @returns {Object} - The merged object. If the first argument is true, the
          * return is the same as the second argument.
          */
         H.merge = function() {
@@ -916,7 +916,7 @@
                 shortWeekdays = lang.shortWeekdays,
                 pad = H.pad,
 
-                // List all format keys. Custom formats can be added from the outside. 
+                // List all format keys. Custom formats can be added from the outside.
                 replacements = H.extend({
 
                     //-- Day
@@ -1179,7 +1179,7 @@
          * @function #stableSort
          * @memberOf Highcharts
          * @param {Array} arr - The array to sort.
-         * @param {Function} sortFunction - The function to sort it with, like with 
+         * @param {Function} sortFunction - The function to sort it with, like with
          *        regular Array.prototype.sort.
          * @returns {void}
          */
@@ -1500,7 +1500,7 @@
         };
 
         /**
-         * Return the value of the first element in the array that satisfies the 
+         * Return the value of the first element in the array that satisfies the
          * provided testing function.
          *
          * @function #find
@@ -1521,7 +1521,7 @@
          * @function #map
          * @memberOf Highcharts
          * @param {Array} arr - The array to map.
-         * @param {Function} fn - The callback function. Return the new value for the 
+         * @param {Function} fn - The callback function. Return the new value for the
          *        new array.
          * @returns {Array} - A new array item with modified items.
          */
@@ -1609,7 +1609,7 @@
          * @param {Object} el - The element or object to add a listener to. It can be a
          *        {@link HTMLDOMElement}, an {@link SVGElement} or any other object.
          * @param {String} type - The event type.
-         * @param {Function} fn - The function callback to execute when the event is 
+         * @param {Function} fn - The function callback to execute when the event is
          *        fired.
          * @returns {Function} A callback function to remove the added event.
          */
@@ -1736,7 +1736,7 @@
          * @param {String} type - The type of event.
          * @param {Object} [eventArguments] - Custom event arguments that are passed on
          *        as an argument to the event handler.
-         * @param {Function} [defaultFunction] - The default function to execute if the 
+         * @param {Function} [defaultFunction] - The default function to execute if the
          *        other listeners haven't returned false.
          * @returns {void}
          */
@@ -1782,7 +1782,7 @@
                         target: el,
                         // If the type is not set, we're running a custom event (#2297).
                         // If it is set, we're running a browser event, and setting it
-                        // will cause en error in IE8 (#2465).		
+                        // will cause en error in IE8 (#2465).
                         type: type
                     });
                 }
@@ -1937,7 +1937,7 @@
 
         /**
          * Get a unique key for using in internal element id's and pointers. The key
-         * is composed of a random hash specific to this Highcharts instance, and a 
+         * is composed of a random hash specific to this Highcharts instance, and a
          * counter.
          * @function #uniqueKey
          * @memberOf Highcharts
@@ -2100,7 +2100,7 @@
 
         /**
          * @typedef {string} ColorString
-         * A valid color to be parsed and handled by Highcharts. Highcharts internally 
+         * A valid color to be parsed and handled by Highcharts. Highcharts internally
          * supports hex colors like `#ffffff`, rgb colors like `rgb(255,255,255)` and
          * rgba colors like `rgba(255,255,255,1)`. Other colors may be supported by the
          * browsers and displayed correctly, but Highcharts is not able to process them
@@ -2309,7 +2309,7 @@
          * labels, when `text` or `label` elements are created with the `useHTML`
          * parameter.
          *
-         * The SVGElement instances are created through factory functions on the 
+         * The SVGElement instances are created through factory functions on the
          * {@link SVGRenderer} object, like [rect]{@link SVGRenderer#rect},
          * [path]{@link SVGRenderer#path}, [text]{@link SVGRenderer#text}, [label]{@link
          * SVGRenderer#label}, [g]{@link SVGRenderer#g} and more.
@@ -2344,8 +2344,8 @@
              */
             init: function(renderer, nodeName) {
 
-                /** 
-                 * The DOM node. Each SVGRenderer instance wraps a main DOM node, but 
+                /**
+                 * The DOM node. Each SVGRenderer instance wraps a main DOM node, but
                  * may also represent more nodes.
                  * @type {SVGDOMNode|HTMLDOMNode}
                  */
@@ -2362,7 +2362,7 @@
 
             /**
              * Animate to given attributes or CSS properties.
-             * 
+             *
              * @param {SVGAttributes} params SVG attributes or CSS to animate.
              * @param {AnimationOptions} [options] Animation options.
              * @param {Function} [complete] Function to perform at the end of animation.
@@ -2428,7 +2428,7 @@
              * @private
              * @param {GradientOptions} color The gradient options structure.
              * @param {string} prop The property to apply, can either be `fill` or
-             * `stroke`. 
+             * `stroke`.
              * @param {SVGDOMElement} elem SVG DOM element to apply the gradient on.
              */
             colorGradient: function(color, prop, elem) {
@@ -2549,7 +2549,7 @@
              *
              * @private
              * @param {String} textOutline A custom CSS `text-outline` setting, defined
-             *    by `width color`. 
+             *    by `width color`.
              * @example
              * // Specific color
              * text.css({
@@ -2595,7 +2595,7 @@
                 if (strokeWidth && strokeWidth !== 'none') {
 
                     // Since the stroke is applied on center of the actual outline, we
-                    // need to double it to get the correct stroke-width outside the 
+                    // need to double it to get the correct stroke-width outside the
                     // glyphs.
                     strokeWidth = strokeWidth.replace(
                         /(^[\d\.]+)(.*?)$/g,
@@ -2659,7 +2659,7 @@
              */
             /**
              * Apply native and custom attributes to the SVG elements.
-             * 
+             *
              * In order to set the rotation center for rotation, set x and y to 0 and
              * use `translateX` and `translateY` attributes to position the element
              * instead.
@@ -2668,8 +2668,8 @@
              * `stroke-width`.
              *
              * @param {SVGAttributes|String} hash - The native and custom SVG
-             *    attributes. 
-             * @param {string} [val] - If the type of the first argument is `string`, 
+             *    attributes.
+             * @param {string} [val] - If the type of the first argument is `string`,
              *    the second can be a value, which will serve as a single attribute
              *    setter. If the first argument is a string and the second is undefined,
              *    the function serves as a getter and the current value of the property
@@ -2680,11 +2680,11 @@
              * @param {boolean} continueAnimation - Used internally when `.attr` is
              *    called as part of an animation step. Otherwise, calling `.attr` for an
              *    attribute will stop animation for that attribute.
-             *    
-             * @returns {SVGElement|string|number} If used as a setter, it returns the 
-             *    current {@link SVGElement} so the calls can be chained. If used as a 
+             *
+             * @returns {SVGElement|string|number} If used as a setter, it returns the
+             *    current {@link SVGElement} so the calls can be chained. If used as a
              *    getter, the current value of the attribute is returned.
-             * 
+             *
              * @example
              * // Set multiple attributes
              * element.attr({
@@ -2699,7 +2699,7 @@
              *
              * // Get an attribute
              * element.attr('stroke'); // => 'red'
-             * 
+             *
              */
             attr: function(hash, val, complete, continueAnimation) {
                 var key,
@@ -2842,7 +2842,7 @@
 
             /**
              * Apply a clipping rectangle to this element.
-             * 
+             *
              * @param {ClipRect} [clipRect] - The clipping rectangle. If skipped, the
              *    current clip is removed.
              * @returns {SVGElement} Returns the SVG element to allow chaining.
@@ -2859,7 +2859,7 @@
             /**
              * Calculate the coordinates needed for drawing a rectangle crisply and
              * return the calculated attributes.
-             * 
+             *
              * @param {Object} rect - A rectangle.
              * @param {number} rect.x - The x position.
              * @param {number} rect.y - The y position.
@@ -2901,8 +2901,8 @@
             },
 
             /**
-             * Set styles for the element. In addition to CSS styles supported by 
-             * native SVG and HTML elements, there are also some custom made for 
+             * Set styles for the element. In addition to CSS styles supported by
+             * native SVG and HTML elements, there are also some custom made for
              * Highcharts, like `width`, `ellipsis` and `textOverflow` for SVG text
              * elements.
              * @param {CSSObject} styles The new CSS styles.
@@ -2999,9 +2999,9 @@
             /**
              * Get the computed stroke width in pixel values. This is used extensively
              * when drawing shapes to ensure the shapes are rendered crsip and
-             * positioned correctly relative to each other. Using `shape-rendering: 
+             * positioned correctly relative to each other. Using `shape-rendering:
              * crispEdges` leaves us less control over positioning, for example when we
-             * want to stack columns next to each other, or position things 
+             * want to stack columns next to each other, or position things
              * pixel-perfectly within the plot box.
              *
              * The common pattern when placing a shape is:
@@ -3010,7 +3010,7 @@
              * * Place it based on the stroke width.
              *
              * @returns {number} The stroke width in pixels. Even if the given stroke
-             * widtch (in CSS or by attributes) is based on `em` or other units, the 
+             * widtch (in CSS or by attributes) is based on `em` or other units, the
              * pixel size is returned.
              */
             strokeWidth: function() {
@@ -3040,8 +3040,8 @@
              * Add an event listener. This is a simple setter that replaces all other
              * events of the same type, opposed to the {@link Highcharts#addEvent}
              * function.
-             * @param {string} eventType - The event type. If the type is `click`, 
-             *    Highcharts will internally translate it to a `touchstart` event on 
+             * @param {string} eventType - The event type. If the type is `click`,
+             *    Highcharts will internally translate it to a `touchstart` event on
              *    touch devices, to prevent the browser from waiting for a click event
              *    from firing.
              * @param {Function} handler - The handler callback.
@@ -3101,7 +3101,7 @@
 
             /**
              * Move an object and its children by x and y values.
-             * 
+             *
              * @param {number} x - The x value.
              * @param {number} y - The y value.
              */
@@ -3113,7 +3113,7 @@
             },
 
             /**
-             * Invert a group, rotate and flip. This is used internally on inverted 
+             * Invert a group, rotate and flip. This is used internally on inverted
              * charts, where the points and graphs are drawn as if not inverted, then
              * the series group elements are inverted.
              *
@@ -3437,7 +3437,7 @@
             },
 
             /**
-             * Show the element after it has been hidden. 
+             * Show the element after it has been hidden.
              *
              * @param {boolean} [inherit=false] Set the visibility attribute to
              * `inherit` rather than `visible`. The difference is that an element with
@@ -3466,7 +3466,7 @@
             /**
              * Fade out an element by animating its opacity down to 0, and hide it on
              * complete. Used internally for the tooltip.
-             * 
+             *
              * @param {number} [duration=150] The fade duration in milliseconds.
              */
             fadeOut: function(duration) {
@@ -3485,7 +3485,7 @@
 
             /**
              * Add the element to the DOM. All elements must be added this way.
-             * 
+             *
              * @param {SVGElement|SVGDOMElement} [parent] The parent item to add it to.
              *   If undefined, the element is added to the {@link SVGRenderer.box}.
              *
@@ -3835,12 +3835,12 @@
                 // object properties
                 renderer.isSVG = true;
 
-                /** 
+                /**
                  * The root `svg` node of the renderer.
                  * @type {SVGDOMElement}
                  */
                 this.box = element;
-                /** 
+                /**
                  * The wrapper for the root `svg` node of the renderer.
                  * @type {SVGElement}
                  */
@@ -3914,7 +3914,7 @@
              * @param {Object} def - A serialized form of an SVG definition, including
              *   children
              *
-             * @return {SVGElement} The inserted node. 
+             * @return {SVGElement} The inserted node.
              */
             definition: function(def) {
                 var ren = this;
@@ -3960,7 +3960,7 @@
             /**
              * Detect whether the renderer is hidden. This happens when one of the
              * parent elements has display: none. Used internally to detect when we need
-             * to render preliminarily in another div to get the text bounding boxes 
+             * to render preliminarily in another div to get the text bounding boxes
              * right.
              *
              * @returns {boolean} True if it is hidden.
@@ -3999,11 +3999,11 @@
             },
 
             /**
-             * Create a wrapper for an SVG element. Serves as a factory for 
-             * {@link SVGElement}, but this function is itself mostly called from 
+             * Create a wrapper for an SVG element. Serves as a factory for
+             * {@link SVGElement}, but this function is itself mostly called from
              * primitive factories like {@link SVGRenderer#path}, {@link
              * SVGRenderer#rect} or {@link SVGRenderer#text}.
-             * 
+             *
              * @param {string} nodeName - The node name, for example `rect`, `g` etc.
              * @returns {SVGElement} The generated SVGElement.
              */
@@ -4338,7 +4338,7 @@
              * @param {string} text - The text or HTML to draw.
              * @param {number} x - The x position of the button's left side.
              * @param {number} y - The y position of the button's top side.
-             * @param {Function} callback - The function to execute on button click or 
+             * @param {Function} callback - The function to execute on button click or
              *    touch.
              * @param {SVGAttributes} [normalState] - SVG attributes for the normal
              *    state.
@@ -4399,7 +4399,7 @@
 
             /**
              * Make a straight line crisper by not spilling out to neighbour pixels.
-             * 
+             *
              * @param {Array} points - The original points on the format `['M', 0, 0,
              *    'L', 100, 0]`.
              * @param {number} width - The width of the line.
@@ -4421,9 +4421,9 @@
 
             /**
              * Draw a path, wraps the SVG `path` element.
-             * 
+             *
              * @param {Array} [path] An SVG path definition in array form.
-             * 
+             *
              * @example
              * var path = renderer.path(['M', 10, 10, 'L', 30, 30, 'z'])
              *     .attr({ stroke: '#ff00ff' })
@@ -4432,7 +4432,7 @@
              */
             /**
              * Draw a path, wraps the SVG `path` element.
-             * 
+             *
              * @param {SVGAttributes} [attribs] The initial attributes.
              * @returns {SVGElement} The generated wrapper element.
              */
@@ -4450,7 +4450,7 @@
 
             /**
              * Draw a circle, wraps the SVG `circle` element.
-             * 
+             *
              * @param {number} [x] The center x position.
              * @param {number} [y] The center y position.
              * @param {number} [r] The radius.
@@ -4458,7 +4458,7 @@
              */
             /**
              * Draw a circle, wraps the SVG `circle` element.
-             * 
+             *
              * @param {SVGAttributes} [attribs] The initial attributes.
              * @returns {SVGElement} The generated wrapper element.
              */
@@ -4531,7 +4531,7 @@
              */
             /**
              * Draw and return a rectangle.
-             * @param {SVGAttributes} [attributes] General SVG attributes for the 
+             * @param {SVGAttributes} [attributes] General SVG attributes for the
              *    rectangle.
              * @returns {SVGElement} The generated wrapper element.
              */
@@ -4597,7 +4597,7 @@
 
             /**
              * Create and return an svg group element.
-             * 
+             *
              * @param {string} [name] The group will be given a class name of
              * `highcharts-{name}`. This can be used for styling and scripting.
              * @returns {SVGElement} The generated wrapper element.
@@ -4614,7 +4614,7 @@
              * @param {string} src The image source.
              * @param {number} [x] The X position.
              * @param {number} [y] The Y position.
-             * @param {number} [width] The image width. If omitted, it defaults to the 
+             * @param {number} [width] The image width. If omitted, it defaults to the
              *    image file width.
              * @param {number} [height] The image height. If omitted it defaults to the
              *    image file height.
@@ -4661,7 +4661,7 @@
              * @param {number} width - The pixel width.
              * @param {number} height - The pixel height.
              * @param {Object} [options] - Additional options, depending on the actual
-             *    symbol drawn. 
+             *    symbol drawn.
              * @param {number} [options.anchorX] - The anchor X position for the
              *    `callout` symbol. This is where the chevron points to.
              * @param {number} [options.anchorY] - The anchor Y position for the
@@ -4800,7 +4800,7 @@
                                 }
 
                                 // Center the image
-                                symbolSizes[imageSrc] = { // Cache for next	
+                                symbolSizes[imageSrc] = { // Cache for next
                                     width: this.width,
                                     height: this.height
                                 };
@@ -4833,7 +4833,7 @@
 
             /**
              * @typedef {string} Symbol
-             * 
+             *
              * Can be one of `arc`, `callout`, `circle`, `diamond`, `square`,
              * `triangle`, `triangle-down`. Symbols are used internally for point
              * markers, button and label borders and backgrounds, or custom shapes.
@@ -5020,7 +5020,7 @@
             /**
              * @typedef {SVGElement} ClipRect - A clipping rectangle that can be applied
              * to one or more {@link SVGElement} instances. It is instanciated with the
-             * {@link SVGRenderer#clipRect} function and applied with the {@link 
+             * {@link SVGRenderer#clipRect} function and applied with the {@link
              * SVGElement#clip} function.
              *
              * @example
@@ -5181,8 +5181,8 @@
             /**
              * Add a label, a text item that can hold a colored or gradient background
              * as well as a border and shadow. Supported custom attributes include
-             * `padding`. 
-             * 
+             * `padding`.
+             *
              * @param {string} str
              * @param {number} x
              * @param {number} y
@@ -8610,7 +8610,7 @@
             },
 
             /**
-             * Get the general slot width for this axis. This may change between the pre-render (from Axis.getOffset) 
+             * Get the general slot width for this axis. This may change between the pre-render (from Axis.getOffset)
              * and the final tick rendering and placement (#5086).
              */
             getSlotWidth: function() {
@@ -9300,7 +9300,7 @@
 
             /**
              * Draw the crosshair
-             * 
+             *
              * @param  {Object} e The event arguments from the modified pointer event
              * @param  {Object} point The Point object
              */
@@ -9499,7 +9499,7 @@
                         (
                             // Long range, assume we're crossing over.
                             max - min > 4 * timeUnits.month ||
-                            // Short range, check if min and max are in different time 
+                            // Short range, check if min and max are in different time
                             // zones.
                             getTZOffset(min) !== getTZOffset(max)
                         );
@@ -10315,7 +10315,7 @@
 
             /**
              * Render the split tooltip. Loops over each point's text and adds
-             * a label next to the point, then uses the distribute function to 
+             * a label next to the point, then uses the distribute function to
              * find best non-overlapping positions.
              */
             renderSplit: function(labels, points) {
@@ -10439,7 +10439,7 @@
                 // do the move
                 this.move(
                     Math.round(pos.x),
-                    Math.round(pos.y || 0), // can be undefined (#3977) 
+                    Math.round(pos.y || 0), // can be undefined (#3977)
                     point.plotX + chart.plotLeft,
                     point.plotY + chart.plotTop
                 );
@@ -10657,7 +10657,7 @@
 
                 // chartX and chartY
                 if (ePos.pageX === undefined) { // IE < 9. #886.
-                    chartX = Math.max(e.x, e.clientX - chartPosition.left); // #2005, #2129: the second case is 
+                    chartX = Math.max(e.x, e.clientX - chartPosition.left); // #2005, #2129: the second case is
                     // for IE10 quirks mode within framesets
                     chartY = e.y;
                 } else {
@@ -14034,7 +14034,7 @@
 
             },
 
-            /** 
+            /**
              * On chart load
              */
             onload: function() {
@@ -14080,7 +14080,7 @@
             removeEvent = H.removeEvent;
 
         /**
-         * The Point object. The point objects are generated from the series.data 
+         * The Point object. The point objects are generated from the series.data
          * configuration objects or raw numbers. They can be accessed from the
          * Series.points array.
          * @constructor Point
@@ -14617,7 +14617,7 @@
 
             /**
              * Insert the series in a collection with other series, either the chart
-             * series or yAxis series, in the correct order according to the index 
+             * series or yAxis series, in the correct order according to the index
              * option.
              * @param  {Array} collection A collection of series.
              * @returns {Number} The index of the series in the collection.
@@ -16346,17 +16346,17 @@
             // Initialize total value
             this.total = null;
 
-            // This will keep each points' extremes stored by series.index and point 
+            // This will keep each points' extremes stored by series.index and point
             // index
             this.points = {};
 
-            // Save the stack option on the series configuration object, and whether to 
+            // Save the stack option on the series configuration object, and whether to
             // treat it as percent
             this.stack = stackOption;
             this.leftCliff = 0;
             this.rightCliff = 0;
 
-            // The align options and text align varies on whether the stack is negative 
+            // The align options and text align varies on whether the stack is negative
             // and if the chart is inverted or not.
             // First test the user supplied value, then use the dynamic.
             this.alignOptions = {
@@ -16941,7 +16941,7 @@
                 this.loadingShown = false;
             },
 
-            /** 
+            /**
              * These properties cause isDirtyBox to be set to true when updating. Can be extended from plugins.
              */
             propsRequireDirtyBox: ['backgroundColor', 'borderColor', 'borderWidth', 'margin', 'marginTop', 'marginRight',
@@ -16950,7 +16950,7 @@
                 'plotShadow', 'shadow'
             ],
 
-            /** 
+            /**
              * These properties cause all series to be updated when updating. Can be
              * extended from plugins.
              */
@@ -16974,7 +16974,7 @@
                     newWidth,
                     newHeight;
 
-                // If the top-level chart option is present, some special updates are required		
+                // If the top-level chart option is present, some special updates are required
                 if (optionsChart) {
                     merge(true, this.options.chart, optionsChart);
 
@@ -17033,7 +17033,7 @@
                     merge(true, this.options.plotOptions, options.plotOptions);
                 }
 
-                // Setters for collections. For axes and series, each item is referred by an id. If the 
+                // Setters for collections. For axes and series, each item is referred by an id. If the
                 // id is not found, it defaults to the first item in the collection, so setting series
                 // without an id, will update the first series in the chart.
                 each(['xAxis', 'yAxis', 'series'], function(coll) {
@@ -17492,8 +17492,8 @@
                 // fillColor: null
         }, /** @lends seriesTypes.area.prototype */ {
             singleStacks: false,
-            /** 
-             * Return an array of stacked points, where null and missing points are replaced by 
+            /**
+             * Return an array of stacked points, where null and missing points are replaced by
              * dummy points in order for gaps to be drawn correctly in stacks.
              */
             getStackPoints: function() {
@@ -17559,7 +17559,7 @@
                                             if (i === seriesIndex) {
                                                 pointMap[x][nullName] = true;
 
-                                                // If there are missing points in the next stack in any of the 
+                                                // If there are missing points in the next stack in any of the
                                                 // series below this one, we need to substract the missing values
                                                 // and add a hiatus to the left or right.
                                             } else if (visibleSeries[i]) {
@@ -17577,7 +17577,7 @@
                             });
 
 
-                            // There is no point for this X value in this series, so we 
+                            // There is no point for this X value in this series, so we
                             // insert a dummy point in order for the areas to be drawn
                             // correctly.
                         } else {
@@ -17632,7 +17632,7 @@
                     yBottom,
                     connectNulls = options.connectNulls || stacking === 'percent',
                     /**
-                     * To display null points in underlying stacked series, this series graph must be 
+                     * To display null points in underlying stacked series, this series graph must be
                      * broken, and the area also fall down to fill the gap left by the null point. #2069
                      */
                     addDummyPoints = function(i, otherI, side) {
@@ -18925,7 +18925,7 @@
         /**
          * Generatl distribution algorithm for distributing labels of differing size along a
          * confined length in two dimensions. The algorithm takes an array of objects containing
-         * a size, a target and a rank. It will place the labels as close as possible to their 
+         * a size, a target and a rank. It will place the labels as close as possible to their
          * targets, skipping the lowest ranked labels if necessary.
          */
         H.distribute = function(boxes, len) {
@@ -19756,7 +19756,7 @@
             pick = H.pick,
             addEvent = H.addEvent;
 
-        // Collect potensial overlapping data labels. Stack labels probably don't need to be 
+        // Collect potensial overlapping data labels. Stack labels probably don't need to be
         // considered because they are usually accompanied by data labels that lie inside the columns.
         Chart.prototype.callbacks.push(function(chart) {
             function collectAndHide() {
@@ -19788,7 +19788,7 @@
         });
 
         /**
-         * Hide overlapping labels. Labels are moved and faded in and out on zoom to provide a smooth 
+         * Hide overlapping labels. Labels are moved and faded in and out on zoom to provide a smooth
          * visual imression.
          */
         Chart.prototype.hideOverlappingLabels = function(labels) {
@@ -19879,7 +19879,7 @@
                             };
                         }
 
-                        // Animate or set the opacity					
+                        // Animate or set the opacity
                         label.alignAttr.opacity = newOpacity;
                         label[label.isOld ? 'animate' : 'attr'](label.alignAttr, null, complete);
 
@@ -20578,7 +20578,7 @@
                         d: point.haloPath(haloOptions.size)
                     });
                     halo.attr({
-                        'class': 'highcharts-halo highcharts-color-' +
+                        'class': 'coucou highcharts-halo highcharts-color-' +
                             pick(point.colorIndex, series.colorIndex)
                     });
                     halo.point = point; // #6055

@@ -14,7 +14,7 @@
 .route-name{
 color: #4a4a4a;
 
-display:inline-block;
+display:none;
 margin: 0;
     margin: 5px 40px;
 }
@@ -43,14 +43,14 @@ transition: all .8s ease-in-out;
     cursor: pointer;
 }
 .dash-icon:hover{
-opacity: 1.0;
-transition: all .5s ease-in-out;
-    -moz-transition: all .5s ease-in-out;
-    -webkit-transition: all .5s;
+  opacity: 1.0;
+  transition: all .5s ease-in-out;
+  -moz-transition: all .5s ease-in-out;
+  -webkit-transition: all .5s;
 }
 .recipies-icon:hover{
-opacity: 1.0;
-transition: all .5s ease-in-out;
+  opacity: 1.0;
+  transition: all .5s ease-in-out;
     -moz-transition: all .5s ease-in-out;
     -webkit-transition: all .5s;
 }

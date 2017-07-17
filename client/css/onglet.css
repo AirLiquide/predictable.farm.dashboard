@@ -1,3 +1,6 @@
+#probe-selector::-webkit-scrollbar {
+   display: none !important;
+}
 
 .onglet{
   background: #F9F9F9;
@@ -7,6 +10,7 @@ overflow: hidden;
 opacity:0.6;
 margin: 0 -2px 0 0!important;
 max-width: 10%;
+min-width: 100px;
 }
 .onglet a{
   height: 50px!important;
@@ -47,11 +51,108 @@ overflow: hidden;
   background-color: #F9F9F9;
   position: absolute;
   width: 100%;
-  height: 136px;
+  height: 129px;
   z-index: -1;
   top: 0;
 
 }
 .zone-selector{
   display: none!important;
+}
+
+.invisible-btn-active{
+  text-decoration: underline!important;
+}
+.invisible-btn-text{
+  border:none!important;
+  background-color: transparent;
+
+}
+.invisible-btn-text:hover{
+  border:none!important;
+  text-decoration: underline gray!important;
+}
+.block-cal{
+      width: 180px;
+      margin-top: -16px;
+  display: inline-block;
+}
+.ten-marging-top{
+  margin-top:10px;
+}
+.row-dashboard-title{
+  display: none;
+}
+.highcharts-credits{
+  display: none;
+}
+.row-chart{
+  min-height: 400px;
+}
+
+@media (min-width: 600px) {
+  .route-name{
+  display:inline-block !important;
+  }
+
+ }
+
+ .nav-pills>li {
+   display: inline-block !important;
+   float: none !important;
+ }
+ .nav-pills{
+   overflow-y: hidden;
+   overflow-x: auto;
+   max-height: 40px;
+  white-space: nowrap;
+ }
+
+@media (max-width: 600px) {
+ .block-cal{
+   text-align: center !important;
+   margin: auto;
+   margin-top: 20px;
+   left: 0;
+   right: 0;
+   position: absolute!important;
+   min-height: 81px;
+
+ }
+ .row-chart{
+       margin-top: 30px;
+ }
+ .top-front{
+   height: 129px;
+ }
+ }
+
+.highcharts-markers path:not(.highcharts-halo) {
+  fill: transparent;
+  stroke: transparent;
+}
+.highcharts-halo {
+    fill: white;
+}
+.highcharts-halo.highcharts-color-0 {
+    fill: white;
+    stroke: rgb(124, 181, 236);
+
+}
+.highcharts-halo.highcharts-color-1 {
+    fill: white;
+    stroke: black;
+
+}
+.highcharts-halo.highcharts-color-2 {
+    fill: white;
+    stroke: rgb(144, 237, 125);
+
+}
+.highcharts-halo.highcharts-color-3 {
+  fill: white;
+  stroke: rgb(247, 163, 92);
+  }
+.highcharts-point{
+  d:path("M 8 7 C 13.328 7 13.328 15 8 15 C 2.672 15 2.672 7 8 7 Z");
 }

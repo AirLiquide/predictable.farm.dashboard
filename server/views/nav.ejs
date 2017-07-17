@@ -15,6 +15,7 @@
 		<link rel="stylesheet" type="text/css" href="/css/submenu.css" />
 		<link rel="stylesheet" type="text/css" href="/css/style.css" />
 		<link rel="stylesheet" type="text/css" href="/css/onglet.css" />
+		<link rel="stylesheet" type="text/css" href="/css/responsive.scss" />
 	</head>
 	<body>
 		<%- include navbar.ejs %>
@@ -180,13 +181,13 @@
 					for (var i=0; i < probes.length; i++) {
 						sensors = setup.getListSensorByProbe(probes[i].id_probe);
 
-						html += '<li class="dropdown-submenu">';
+						html += '<li class="title-sensors">';
 							html += '<a href="javascript:;">' + probes[i].name + '</a>';
-							html += '<ul class="dropdown-menu">';
+							html += '<ul class="list-btn">';
 								for (var j=0; j < sensors.length; j++) {
 									// Check if the sensor is already in the block
 									if (isSensorInDashboardBlock(sensors[j].id_sensor)) {
-										disabled = ' class="disabled"';
+										disabled = ' disabled';
 										onclick = '';
 									}
 									else {
@@ -194,12 +195,12 @@
 										onclick = ' onclick="setup.addSensorToDashboardBlock(' + dashboardBlock.id_zone + ', ' + dashboardBlock.dashboard_index + ', ' + dashboardBlock.block_index + ', ' + sensors[j].id_sensor + ', urlChangeHandler)"';
 									}
 
-									html += '<li' + disabled + '>';
+									html += '<li class="btn btn-add btn-' + sensors[j].class   + disabled + '"' +  '>';
 									html += '<a href="javascript:;"' + onclick + '>';
 										html += sensors[j].label;
 									html += '</a></li>';
 								}
-							html += '</ul>';
+							html += '</ul> ';
 						html += '</li>';
 					}
 
@@ -215,8 +216,8 @@
 				html += getZoneMenu(zoneSelected.id_zone, true);
 				html += '<li class="divider"></li>';
 
-				// Other zones
-				for (var i=0; i < zones.length; i++) {
+				// Other zones for (var i=0; i < zones.length; i++)
+				for (var i=0; i < 1; i++) {
 					if (zones[i].id_zone == zoneSelected.id_zone) {
 						continue;
 					}
@@ -595,10 +596,10 @@
 					var btn = document.getElementById(btnPeriodPrefix + period);
 
 					if (chartPeriod === chartPeriods[period]) {
-						btn.className = 'btn btn-primary';
+						btn.className = 'btn btn-default invisible-btn-text invisible-btn-active ';
 					}
 					else {
-						btn.className = 'btn btn-default';
+						btn.className = 'btn btn-default invisible-btn-text';
 					}
 				}
 
@@ -615,10 +616,10 @@
 
 				if (btn) {
 					if (chartPeriod === chartPeriods[period]) {
-						btn.className = 'btn btn-primary';
+						btn.className = ' invisible-btn-text invisible-btn-active';
 					}
 					else {
-						btn.className = 'btn btn-default';
+						btn.className = ' invisible-btn-text';
 					}
 
 					btn.addEventListener('click', _btnPeriodClick);
@@ -705,6 +706,7 @@
 					var yAxisIndex = {};
 
 					for (var j=0; j < chartSensors.length && j < 4; j++) {
+						var optiIndex = 0
 						var sensor = setup.getSensor(chartSensors[j]);
 
 						// create a new axis if needed
@@ -725,13 +727,25 @@
 							yAxisId = yAxisIndex[sensor.type];
 						}
 
-						series.push({
-							type : 'spline',
-							name : sensor.label,
-							data : cache.getCache(sensor.id_sensor, chartStart, (chartStart + chartPeriod), false),
-							yAxis : yAxisId
-						});
+							series.push({
+								type : 'spline',
+								name : sensor.label,
+								data : cache.getCache(sensor.id_sensor, chartStart, (chartStart + chartPeriod), false),
+								yAxis : yAxisId
+							});
+
+
+							var temp = []
+							var newTemp = series[j].data
+							for (indexZ = 0; indexZ < newTemp.length; indexZ++) {
+									temp.push(newTemp[indexZ])
+									indexZ = indexZ + 5
+
+							}
+							series[j].data = temp
 					}
+
+
 
 					charts.push(Highcharts.chart(chartTags[i], {
 						chart : {
@@ -876,6 +890,19 @@
 
 		window.addEventListener("hashchange", urlChangeHandler);
 		urlChangeHandler();
+
+		var openDropDown = function() {
+    	var x = document.getElementById('arrow-down');
+	    if (x.style.display === 'none'){
+				document.getElementById('shadow-dropdown').style.display = 'block';
+				document.getElementById('dropdown-menu').style.display = 'block';
+				  x.style.display = 'block';
+	    } else {
+				document.getElementById('shadow-dropdown').style.display = 'none';
+				document.getElementById('dropdown-menu').style.display = 'none';
+	        x.style.display = 'none';
+	    }
+		}
 		</script>
 	</body>
 </html>

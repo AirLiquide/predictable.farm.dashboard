@@ -19,22 +19,31 @@ var greenhouse_templates = {
 
 	period_selector : '\
 	<div class="row row-period">\
-		<div class="col-md-1 col-xs-2"><button type="button" class="btn btn-default btn-block" id="period_navigation_previous">&lt;</button></div>\
-		<div class="col-md-4 col-xs-8 text-center" id="period_navigation_label">{{{periodLabel}}}</div>\
-		<div class="col-md-1 col-xs-2"><button type="button" class="btn btn-default btn-block" id="period_navigation_next">&gt;</button></div>\
-		<div class="col-md-6 col-xs-12">\
+	<div class="ten-marging-top">\
+			<div class="col-md-1 col-xs-2"><button type="button" class="btn btn-default btn-block invisible-btn" id="period_navigation_previous">\
+			<img src="/images/left.svg"/>\
+			</button></div>\
+			<div class="col-md-4 col-xs-8 text-center" id="period_navigation_label">{{{periodLabel}}}</div>\
+			<div class="col-md-1 col-xs-2"><button type="button" class="btn btn-default btn-block invisible-btn" id="period_navigation_next">\
+			<img src="/images/right.svg"/>\
+			</button></div>\
+		</div>\
+		<div class="block-cal">\
 			<div class="btn-group btn-group-justified" role="group">\
 				<div class="btn-group" role="group">\
-					<button type="button" class="btn btn-default" id="period_selector_day">Journée</button>\
+					<button type="button" class="btn btn-default invisible-btn-text" id="period_selector_day">Day</button>\
+					<p style="display:inline-block">|</p>\
 				</div>\
 				<div class="btn-group" role="group">\
-					<button type="button" class="btn btn-default" id="period_selector_week">Semaine</button>\
+					<button type="button" class="btn btn-default invisible-btn-text" id="period_selector_week">Week </button>\
+					<p style="display:inline-block">|</p>\
 				</div>\
 				<div class="btn-group" role="group">\
-					<button type="button" class="btn btn-default" id="period_selector_month">Mois</button>\
+					<button type="button" class="btn btn-default invisible-btn-text" id="period_selector_month">Month </button>\
+						<p class="last-pip" style="display:inline-block">|</p>\
 				</div>\
-				<div class="btn-group" role="group">\
-					<button type="button" class="btn btn-default"  id="period_selector_year">Année</button>\
+				<div class="year-select" class="btn-group" role="group">\
+					<button type="button" class="btn btn-default invisible-btn-text"  id="period_selector_year">Year</button>\
 				</div>\
 			</div>\
 		</div>\
@@ -46,15 +55,15 @@ var greenhouse_templates = {
 		<ul class="nav nav-pills" id="probe-selector">\
 			{{#zone.dashboards}}\
 				<li  role="presentation"class="onglet {{#selected}}active{{/selected}}">\
-					<a href="#dashboard-{{id_zone}}-{{index}}" data-type="dashboard" data-id-zone="{{id_zone}}"" data-dashboard_index="{{index}}">\
-						<span class="name">{{name}}</span>\
+					<a title="{{name}}" href="#dashboard-{{id_zone}}-{{index}}" data-type="dashboard" data-id-zone="{{id_zone}}"" data-dashboard_index="{{index}}">\
+						<span class="name" title="{{name}}">{{name}}</span>\
 					</a>\
 				</li>\
 			{{/zone.dashboards}}\
 			{{#probes}}\
 			<li  role="presentation" class="onglet {{#selected}}active{{/selected}}">\
-				<a href="#probe-{{id_probe}}-{{uuid}}" data-type="probe" data-id-probe="{{id_probe}}" data-uuid="{{uuid}}">\
-					<span class="name">{{name}} cc</span>\
+				<a title="{{name}}" href="#probe-{{id_probe}}-{{uuid}}" data-type="probe" data-id-probe="{{id_probe}}" data-uuid="{{uuid}}">\
+					<span title="{{name}}" class="name">{{name}} </span>\
 				</a>\
 			</li>\
 			{{/probes}}\
@@ -95,7 +104,7 @@ var greenhouse_templates = {
 			<div class="row row-chart {{^displayChart}}hidden{{/displayChart}}" data-type="dashboard-block" data-id_zone="{{id_zone}}" data-dashboard_index="{{dashboard_index}}" data-block_index="{{block_index}}" data-sensor_ids="{{sensor_ids}}"></div>\
 			<div class="row row-content gutter-20 {{^displaySensor}}hidden{{/displaySensor}}" data-id_zone="{{id_zone}}" data-dashboard_index="{{dashboard_index}}" data-block_index="{{block_index}}">\
 				{{#sensors}}\
-					<div class="sensor-block col-md-3 col-xs-6" data-id_sensor="{{id_sensor}}">\
+					<div class="sensor-block col-md-3 col-xs-6" data-id_sensor="{{id_sensor}}" style="max-width: 300px!important;">\
 						<div class="value-block {{class}}">\
 							<span class="value-label">{{probe_name}}<br />{{label}}</span>\
 							<span class="value-medium live-label" data-live-label-id="{{probe_uuid}}:{{type}}" data-live-label-style="{{style}}">--</span>\
@@ -103,21 +112,17 @@ var greenhouse_templates = {
 						</div>\
 					</div>\
 				{{/sensors}}\
-				<div class="col-md-3 col-xs-6 btn-group">\
-					<button class="btn btn-default dropdown-toggle value-block" data-toggle="dropdown" style="    width: calc(100% - 30px);margin-left: 15px;">\
+				<div class="col-md-3 col-xs-6 btn-group" style="max-width: 300px!important;">\
+					<button class="btn btn-default dropdown-toggle value-block"  onclick="openDropDown()" style="    width: calc(100% - 30px);margin-left: 15px;">\
 						<span class="value-label">Ajouter un capteur</span>\
 						<span class="value-medium">+</span>\
 					</button>\
-					<ul class="dropdown-menu">\
+					<ul class="dropdown-menu" id="dropdown-menu">\
 						{{{dashboardBlock_addSensor}}}\
 					</ul>\
+					<div class="arrow-down" id="arrow-down"></div>\
+					<div class="shadow-dropdown" id="shadow-dropdown" onclick="openDropDown()" ></div>\
 				</div>\
-			</div>\
-			<div class="btn-group">\
-				<!--<button class="btn btn-default dropdown-toggle" data-toggle="dropdown">Ajouter un capteur <span class="caret"></span></button>-->\
-				<ul class="dropdown-menu">\
-					{{{dashboardBlock_addSensor}}}\
-				</ul>\
 			</div>\
 		</div>\
 	{{/dashboard.blocks}}',
