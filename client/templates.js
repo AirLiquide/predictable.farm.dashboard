@@ -79,7 +79,7 @@ var greenhouse_templates = {
 		{{#sensors}}\
 			<div class="sensor-block col-md-3 col-xs-6" data-id_sensor="{{id_sensor}}">\
 				<div class="value-block {{class}}">\
-					<span class="value-label">{{label}}</span>\
+					<span class="value-label" title="{{label}}">{{label}}</span>\
 					<span class="value-medium live-label" data-live-label-id="{{probe_uuid}}:{{type}}" data-live-label-style="{{style}}" data-live-label-value="" data-device_id="{{probe_uuid}}" data-sensor_type="{{type}}">--</span>\
 					<div class="block-handle"><i class="glyphicon glyphicon-sort block-handle-icon"></i></div>\
 				</div>\
@@ -101,23 +101,26 @@ var greenhouse_templates = {
 					</button>\
 				</div>\
 			</div>\
+			<div class="container-chart">\
 			<div class="row row-chart {{^displayChart}}hidden{{/displayChart}}" data-type="dashboard-block" data-id_zone="{{id_zone}}" data-dashboard_index="{{dashboard_index}}" data-block_index="{{block_index}}" data-sensor_ids="{{sensor_ids}}"></div>\
-			<div class="row row-content gutter-20 {{^displaySensor}}hidden{{/displaySensor}}" data-id_zone="{{id_zone}}" data-dashboard_index="{{dashboard_index}}" data-block_index="{{block_index}}">\
+			</div>\
+			<div onload="hackUnitStyle()" class="row row-content gutter-20 {{^displaySensor}}hidden{{/displaySensor}}" data-id_zone="{{id_zone}}" data-dashboard_index="{{dashboard_index}}" data-block_index="{{block_index}}">\
 				{{#sensors}}\
 					<div class="sensor-block col-md-3 col-xs-6" data-id_sensor="{{id_sensor}}" style="max-width: 300px!important;">\
 						<div class="value-block {{class}}">\
-							<span class="value-label">{{probe_name}}<br />{{label}}</span>\
+							<span class="value-label" title="{{label}} in {{probe_name}}">{{probe_name}}<br />{{label}}</span>\
 							<span class="value-medium live-label" data-live-label-id="{{probe_uuid}}:{{type}}" data-live-label-style="{{style}}">--</span>\
 							<div class="block-handle"><i class="glyphicon glyphicon-sort block-handle-icon"></i></div>\
 						</div>\
 					</div>\
 				{{/sensors}}\
-				<div class="col-md-3 col-xs-6 btn-group" style="max-width: 300px!important;">\
-					<button class="btn btn-default dropdown-toggle value-block"  onclick="openDropDown()" style="    width: calc(100% - 30px);margin-left: 15px;">\
-						<span class="value-label">Ajouter un capteur</span>\
-						<span class="value-medium">+</span>\
+				<div class="col-md-3 col-xs-6 btn-group " style="max-width: 300px!important;" >\
+					<button class="btn btn-default dropdown-toggle value-block btn-add-sensor"  onclick="openDropDown()" style="    width: calc(100% - 30px);margin-left: 15px;">\
+						<span class="value-medium plus-medium">+</span>\
 					</button>\
 					<ul class="dropdown-menu" id="dropdown-menu">\
+						<img class="close-dropdown" src="/images/close.svg">\
+						<h2 class="title-dropdown">PICK ONE ELEMENT</h2>\
 						{{{dashboardBlock_addSensor}}}\
 					</ul>\
 					<div class="arrow-down" id="arrow-down"></div>\
@@ -129,7 +132,7 @@ var greenhouse_templates = {
 	dashboard_empty : '<div class="row text-center">\
 		<div class="lead text-center"><br />Ce tableau est vide pour l\'instant</div>\
 	</div>',
-	dashboard_create_block : '<div class="row text-center">\
+	dashboard_create_block : '<div class="row text-center"><br>\
 		<button class="btn btn-default" onclick="setup.addDashboardBlock({{dashboard.id_zone}}, {{dashboard.index}}, urlChangeHandler)">Ajouter un bloc</button>\
 	</div>',
 

@@ -60,7 +60,24 @@
 			'redlight' : { label : 'Lumière rouge', class : 'light' },
 			'greenlight' : { label : 'Lumière verte', class : 'light' },
 			'bluelight' : { label : 'Lumière bleue', class : 'light' },
-			'dust' : { label : 'Poussières', class : 'air' }
+			'dust' : { label : 'Poussières', class : 'air' },
+      'air_pressure' : { style : 'pascal-to-hectopascal', label : 'Pression Atmosphérique', class : 'air' },
+      'air_co2' : { style : 'ppm', label : 'CO2 Air ', class : 'air' },
+      'air_co' : { style : 'ppm', label : 'CO Air ', class : 'air' },
+      'air_ch4' : { style : 'ppm', label : 'CH4 Air ', class : 'air' },
+      'air_temperature' : { style : 'celcius-degrees', label : 'Température air', class : 'air' },
+      'air_humidity' : { style : 'percent', label : 'Humidité de l\'air', class : 'air' },
+      'light_lux' : { style : 'lux', label : 'Luminosité Lux', class : 'light' },
+      'light_par' : { style : 'par', label : 'Photosynthetically active radiation', class : 'light' },
+      'light_dli' : { style : 'dli', label : 'Daily Light Integral', class : 'light' },
+      'light_uv' : { label : 'UV (Ultraviolet)', class : 'light' },
+      'water_temperature' : { style : 'celcius-degrees', label : 'Température eau', class : 'water' },
+      'water_ph' : { label : 'PH eau', class : 'water' },
+      'water_ec' : { style : 'mVolt', label : 'EC eau', class : 'water' },
+      'water_orp' : { style : 'mVolt', label : 'ORP eau', class : 'water' },
+      'water_do' : { style : 'do', label : 'DO eau', class : 'water' },
+      'moisture' : { style : 'percent', label : 'Soil moisture', class : 'soil' }
+
 		};
 		for (var i=1; i <= 12; i++) {
 			configSensorType['relay' + i] = { style : 'relay', label : 'Relai #' + i, class : 'relay' };
@@ -78,6 +95,14 @@
 			'pascal-to-hectopascal' : [{ format : function(value, element) { element.innerHTML = (value/100).toFixed(2) + ' <span class="unit">hPa</span>'; } }],
 			'ohm' : [{ format : '[value] <span class="unit">Ohm</span>' }],
 			'volt' : [{ format : '[value] <span class="unit">V</span>' }],
+			'co2' : [{ format : '[value] <span class="unit">V</span>' }],
+      'do' : [{ format : '[value] <span class="unit">mg/l</span>' }],
+      'mVolt' : [{ format : '[value] <span class="unit">mV</span>' }],
+      'ec' : [{ format : '[value] <span class="unit">µS/cm</span>' }],
+      'par' : [{ format : '[value] <span class="unit">mol/m²/sec</span>' }],
+      'dli' : [{ format : '[value] <span class="unit">mol/m²/day</span>' }],
+      'ph' : [{ format : '[value]' }],
+
 
 			'air-quality' : [
 				{ minValue : 0, format : 'Très mauvaise', className : 'air-quality-very-bad' },
@@ -903,6 +928,21 @@
 	        x.style.display = 'none';
 	    }
 		}
+		jQuery.fn.highlight = function (str, className) {
+    var regex = new RegExp(str, "gi");
+
+    return this.each(function () {
+        this.innerHTML = this.innerHTML.replace(regex, function(matched) {return "<span class=\"" + className + "\">" + matched + "</span>";});
+		    });
+		};
+		setInterval(function(){
+			$("span").highlight("%","highlight");
+			$("span").highlight("°C","highlight");
+			$("span").highlight("lux","highlight");
+			$("span").highlight("hPa","highlight");
+			$("span").highlight("lux","highlight");
+}, 5000);
+
 		</script>
 	</body>
 </html>

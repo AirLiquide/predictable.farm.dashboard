@@ -9,7 +9,7 @@ height: 45px !important;
 overflow: hidden;
 opacity:0.6;
 margin: 0 -2px 0 0!important;
-max-width: 10%;
+max-width: 15%;
 min-width: 100px;
 }
 .onglet a{
@@ -95,6 +95,7 @@ overflow: hidden;
   display:inline-block !important;
   }
 
+
  }
 
  .nav-pills>li {
@@ -107,6 +108,7 @@ overflow: hidden;
    max-height: 40px;
   white-space: nowrap;
  }
+
 
 @media (max-width: 600px) {
  .block-cal{
@@ -125,6 +127,22 @@ overflow: hidden;
  .top-front{
    height: 129px;
  }
+ .dropdown-menu{
+   position: fixed;
+ left: 0;
+ margin: auto;
+ bottom: 0;
+ right: 0;
+ width: 90vw;
+ height: 90vh;
+ overflow-y: auto;
+ z-index: 99;
+ top: 0 !important;
+       overflow-y: auto;
+       z-index: 99;
+ }
+ .arrow-down {display: none!important}
+
  }
 
 .highcharts-markers path:not(.highcharts-halo) {
@@ -155,4 +173,83 @@ overflow: hidden;
   }
 .highcharts-point{
   d:path("M 8 7 C 13.328 7 13.328 15 8 15 C 2.672 15 2.672 7 8 7 Z");
+}
+
+
+@media (max-width: 450px) {
+  .hamburger-menu{
+
+          display:none!important;
+
+  }
+  .logo{
+  margin: 11px 0 11px 20px !important;
+  max-width: 50%!important;
+  overflow: hidden;
+  }
+/*  .highcharts-yaxis-labels, .highcharts-yaxis{
+    display: none;
+  }*/
+  .row-chart{
+    width: 200%;
+  }
+  .container-chart{
+width: 100%;
+overflow: auto;
+
+  }
+  .dropdown-menu{
+    position: fixed;
+  left: 0;
+  margin: auto;
+  bottom: 0;
+  right: 0;
+  width: 90vw;
+  height: 90vh;
+  overflow-y: auto;
+  z-index: 99;
+  top: 0 !important;
+        overflow-y: auto;
+        z-index: 99;
+  }
+  .arrow-down {display: none!important}
+  .block-handle{display: none!important}
+.value-block {
+  height: 150px;
+  width: calc(100% )!important;
+}
+.value-medium {
+	margin-top:50px;
+}
+.plus-medium{margin-top:0px;}
+  .onglet{
+
+  margin: 0 -12px 0 0!important;
+  }
+  .invisible-btn{
+    min-width: 50px;
+  }
+  .btn-add-sensor{
+    height: 150px;
+    width: calc(100% - 10px)!important;
+    margin-left:5px!important;
+
+  }
+  .close-dropdown{
+  	float:left;
+  	margin:20px;
+  	width: 10px;
+  }
+  .title-dropdown{
+  font-family: 'Roboto';
+  font-size: 15px;
+  color: #000000;
+
+  text-align: center;
+  }
+  .btn-add{
+  	width: 90%;
+  	margin: 20px 20px 20px 0;
+
+  }
 }

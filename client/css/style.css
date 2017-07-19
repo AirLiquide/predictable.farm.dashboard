@@ -203,6 +203,8 @@ margin: auto;
 	border-radius: 4px 4px 0 0;
 	font-size:18px;
 	text-align:center;
+	max-height: 50PX;
+	background:gray;
 }
 .air .value-label {
 background:#5D9CEC;
@@ -211,6 +213,12 @@ background:#5D9CEC;
 background:#f5ba4f;
 }
 .nutrient .value-label {
+background:#ADC169;
+}
+.water .value-label {
+background: #08a2c1;
+}
+.soil .value-label {
 background:#ADC169;
 }
 .value-medium {
@@ -296,8 +304,7 @@ background:#ADC169;
 			left: -90px;
 			width: 440px;
 			height: 535px;
-			max-width: 90vh;
-			max-height: 90vh;
+
 			overflow-y: auto;
 			z-index: 99;
 }
@@ -362,5 +369,37 @@ display: none;
 	opacity: 0.4;
 	display: none;
 	z-index: 2;
+
+}
+.btn-add-sensor{
+	z-index: 3!important;
+	background-color: white!important;
+
+}
+.btn-add-sensor:hover{
+	z-index: 3!important;
+	background-color: #e6e6e6!important;
+
+}
+.highlight{
+
+font-family: Roboto;
+font-size: 16px;
+color: #B5B5B5;
+letter-spacing: 1.08px;
+vertical-align: top;
+}
+
+.close-dropdown{
+	float:left;
+	margin:20px;
+position: absolute;
+}
+.title-dropdown{
+font-family: 'Roboto';
+font-size: 30px;
+color: #000000;
+text-align: center;
+
 
 }

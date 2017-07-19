@@ -1,0 +1,16 @@
+
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 45.1 (43504) - http://www.bohemiancoding.com/sketch -->
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Dashboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Dashboard_Mobile-V2-Pop-up" transform="translate(-87.000000, -134.000000)" fill="#000000">
+            <g id="Pop-up" transform="translate(58.000000, 106.000000)">
+                <g id="Close" transform="translate(28.000000, 27.000000)">
+                    <rect id="Rectangle-3" transform="translate(13.000000, 13.000000) rotate(45.000000) translate(-13.000000, -13.000000) " x="11.375" y="-3.25" width="3.25" height="32.5" rx="1.625"></rect>
+                    <rect id="Rectangle-3" transform="translate(13.000000, 13.000000) rotate(-45.000000) translate(-13.000000, -13.000000) " x="11.375" y="-3.25" width="3.25" height="32.5" rx="1.625"></rect>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
