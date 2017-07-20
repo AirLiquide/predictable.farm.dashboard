@@ -15,8 +15,8 @@ WORKDIR /usr/src/app/server
 
 # Install database
 RUN service mysql start \
-&& echo "CREATE DATABASE predictabledata; CREATE USER 'predictableuser'@'localhost' IDENTIFIED BY 'predictable'; GRANT ALL PRIVILEGES ON predictabledata.* TO 'predictableuser'@'localhost';" | mysql -uroot \
-&& mysql -uroot predictabledata < ./lib/dump_dev.sql
+#&& echo "CREATE DATABASE predictabledata; CREATE USER 'predictableuser'@'localhost' IDENTIFIED BY 'predictable'; GRANT ALL PRIVILEGES ON predictabledata.* TO 'predictableuser'@'localhost';" | mysql -uroot \
+&& mysql -uroot < ./lib/db.sql
 
 #install node modules
 RUN rm -rf ./node_modules && npm install

@@ -107,6 +107,7 @@ overflow: hidden;
    overflow-x: auto;
    max-height: 40px;
   white-space: nowrap;
+  position: relative;
  }
 
 
@@ -252,4 +253,37 @@ overflow: auto;
   	margin: 20px 20px 20px 0;
 
   }
+}
+
+.probe-selector .glyphicon-chevron-right{
+  color:gray;
+  opacity: 0.5;
+  float: right;
+  top: 15px;
+  right: -30px;
+  position: absolute;
+  z-index: 55;
+  display: none;
+}
+.probe-selector .glyphicon-chevron-left{
+  color:gray;
+  opacity: 0.5;
+  float: left;
+  left: -30px;
+  top: 15px;
+  position: absolute;
+  z-index: 55;
+  display: none;
+}
+.probe-selector{
+  position: relative;
+}
+.fix-hover-bug:hover .glyphicon-chevron-left, .fix-hover-bug:hover .glyphicon-chevron-right  {
+  display: block;
+}
+.fix-hover-bug{
+  padding: 0 35px;
+}
+.btn-group{
+      vertical-align: top;
 }

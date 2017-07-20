@@ -51,26 +51,30 @@ var greenhouse_templates = {
 	',
 
 	probe_selector : '\
+	<div class="fix-hover-bug">\
 	<div class="row probe-selector">\
-		<ul class="nav nav-pills" id="probe-selector">\
-			{{#zone.dashboards}}\
-				<li  role="presentation"class="onglet {{#selected}}active{{/selected}}">\
-					<a title="{{name}}" href="#dashboard-{{id_zone}}-{{index}}" data-type="dashboard" data-id-zone="{{id_zone}}"" data-dashboard_index="{{index}}">\
-						<span class="name" title="{{name}}">{{name}}</span>\
+		<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>\
+			<ul class="nav nav-pills innerWrapper" id="probe-selector">\
+				{{#zone.dashboards}}\
+					<li  role="presentation"class="onglet {{#selected}}active{{/selected}}">\
+						<a title="{{name}}" href="#dashboard-{{id_zone}}-{{index}}" data-type="dashboard" data-id-zone="{{id_zone}}"" data-dashboard_index="{{index}}">\
+							<span class="name" title="{{name}}">{{name}}</span>\
+						</a>\
+					</li>\
+				{{/zone.dashboards}}\
+				{{#probes}}\
+				<li  role="presentation" class="onglet {{#selected}}active{{/selected}}">\
+					<a title="{{name}}" href="#probe-{{id_probe}}-{{uuid}}" data-type="probe" data-id-probe="{{id_probe}}" data-uuid="{{uuid}}">\
+						<span title="{{name}}" class="name">{{name}} </span>\
 					</a>\
 				</li>\
-			{{/zone.dashboards}}\
-			{{#probes}}\
-			<li  role="presentation" class="onglet {{#selected}}active{{/selected}}">\
-				<a title="{{name}}" href="#probe-{{id_probe}}-{{uuid}}" data-type="probe" data-id-probe="{{id_probe}}" data-uuid="{{uuid}}">\
-					<span title="{{name}}" class="name">{{name}} </span>\
-				</a>\
-			</li>\
-			{{/probes}}\
-			<li role="presentation" class="action-button onglet">\
-				<a href="javascript:;" onclick="setup.addDashboard({{zone.id_zone}}, function(d){ window.location = \'/#dashboard-\'+d.id_zone+\'-\'+d.index; });" class=""><span class="name" style="opacity:1.0!important;">+ new</span>\</a>\
-			</li>\
-		</ul>\
+				{{/probes}}\
+				<li role="presentation" class="action-button onglet">\
+					<a href="javascript:;" onclick="setup.addDashboard({{zone.id_zone}}, function(d){ window.location = \'/#dashboard-\'+d.id_zone+\'-\'+d.index; });" class=""><span class="name" style="opacity:1.0!important;">+ new</span>\</a>\
+				</li>\
+			</ul>\
+			<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>\
+		</div>\
 	</div>',
 
 	sensor_group : '\

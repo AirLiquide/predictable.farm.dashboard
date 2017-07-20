@@ -41,11 +41,7 @@ app.get('/', function(req, res) {
 });
 app.get('/recipies', function(req, res) {
 	//console.log('app.get(/)');
-	var RouteNavURL = 'recipies'
-	res.render( 'navbar.ejs', {
-		RouteNavURL: 'recipies'
-	});
-
+	res.redirect('http://ecf-berlin.predictable.farm/automation/');
 
 });
 
