@@ -111,7 +111,7 @@
 				{ minValue : 3, format : 'Très bonne', className : 'air-quality-very-good', }
 			],
 			'just-refresh' : [{ format : function() { return; }}],
-			'relay' : [{ minValue : 0, format : 'off' }, { minValue : 1, format : 'on' }]
+			'relay' : [{ minValue : 0, format : 'on' }, { minValue : 1, format : 'off' }]
 		};
 
 		var setup = new SetupClient(<%- JSON.stringify(setup) %>, configSensorType);
