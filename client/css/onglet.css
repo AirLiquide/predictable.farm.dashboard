@@ -287,3 +287,8 @@ overflow: auto;
 .btn-group{
       vertical-align: top;
 }
+.onglet span{
+position: absolute;
+top: 15px;
+text-align: center;
+}
