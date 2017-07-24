@@ -203,10 +203,10 @@ pointer-events:none;
     overflow-x: hidden;
   }
   #period_navigation_next{
-    margin-left: -5px!important;
+    margin-left: -7px!important;
   }
   .nav-pills{
-    width: 110%;
+    width: 111%;
     margin-left:-20px;
   }
 /*  .highcharts-yaxis-labels, .highcharts-yaxis{
