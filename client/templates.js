@@ -21,11 +21,11 @@ var greenhouse_templates = {
 	<div class="row row-period">\
 	<div class="ten-marging-top">\
 			<div class="col-md-1 col-xs-2"><button type="button" class="btn btn-default btn-block invisible-btn" id="period_navigation_previous">\
-			<img src="/images/left.svg"/>\
+			<img src="/images/left.svg" id="period_navigation_previous" />\
 			</button></div>\
 			<div class="col-md-4 col-xs-8 text-center" id="period_navigation_label">{{{periodLabel}}}</div>\
 			<div class="col-md-1 col-xs-2"><button type="button" class="btn btn-default btn-block invisible-btn" id="period_navigation_next">\
-			<img src="/images/right.svg"/>\
+			<img src="/images/right.svg" id="period_navigation_next"/>\
 			</button></div>\
 		</div>\
 		<div class="block-cal">\
@@ -59,7 +59,7 @@ var greenhouse_templates = {
 					<li  role="presentation"class="onglet {{#selected}}active{{/selected}}">\
 						<a title="{{name}}" href="#dashboard-{{id_zone}}-{{index}}" data-type="dashboard" data-id-zone="{{id_zone}}"" data-dashboard_index="{{index}}">\
 						</a>\
-						<span class="name" title="{{name}}">{{name}}</span>\
+						<span class="name" title="{{name}}" href="#dashboard-{{id_zone}}-{{index}}" data-type="dashboard" data-id-zone="{{id_zone}}"" data-dashboard_index="{{index}}">{{name}}</span>\
 					</li>\
 				{{/zone.dashboards}}\
 				{{#probes}}\
@@ -83,9 +83,9 @@ var greenhouse_templates = {
 	<div class="row row-chart" data-type="probe-block" data-id_probe="{{probe.id_probe}}" data-sensor_ids="{{probe.sensor_ids}}""></div>\
 	<div class="row row-content gutter-20" id="sensor-list" data-id_probe="{{probe.id_probe}}">\
 		{{#sensors}}\
-			<div class="sensor-block col-md-3 col-xs-6" data-id_sensor="{{id_sensor}}">\
+			<div class="sensor-block col-md-3 col-xs-6" data-id_sensor="{{id_sensor}}" style="max-width: 300px!important;">\
 				<div class="value-block {{class}}">\
-					<span class="value-label" title="{{label}}">{{label}}</span>\
+					<span class="value-label" title="{{label}}" style="padding-top: 12px;">{{label}}</span>\
 					<span class="value-medium live-label" data-live-label-id="{{probe_uuid}}:{{type}}" data-live-label-style="{{style}}" data-live-label-value="" data-device_id="{{probe_uuid}}" data-sensor_type="{{type}}">--</span>\
 					<div class="block-handle"><i class="glyphicon glyphicon-sort block-handle-icon"></i></div>\
 				</div>\
@@ -115,7 +115,7 @@ var greenhouse_templates = {
 					<div class="sensor-block col-md-3 col-xs-6" data-id_sensor="{{id_sensor}}" style="max-width: 300px!important;">\
 						<div class="value-block {{class}}">\
 							<span class="value-label" title="{{label}} in {{probe_name}}">{{probe_name}}<br />{{label}}</span>\
-							<span class="value-medium live-label" data-live-label-id="{{probe_uuid}}:{{type}}" data-live-label-style="{{style}}">--</span>\
+							<span class="value-medium live-label" id="{{type}}{{probe_uuid}}" ondblclick="initRelayDoubleClick()" data-sensor_type="{{type}}" data-device_id="{{probe_uuid}}" data-live-label-id="{{probe_uuid}}:{{type}}" data-live-label-style="{{style}}">--</span>\
 							<div class="block-handle"><i class="glyphicon glyphicon-sort block-handle-icon"></i></div>\
 						</div>\
 					</div>\
@@ -139,7 +139,7 @@ var greenhouse_templates = {
 		<div class="lead text-center"><br />Ce tableau est vide pour l\'instant</div>\
 	</div>',
 	dashboard_create_block : '<div class="row text-center"><br>\
-		<button class="btn btn-default" onclick="setup.addDashboardBlock({{dashboard.id_zone}}, {{dashboard.index}}, urlChangeHandler)">Ajouter un bloc</button>\
+		<button class="btn btn-default" onclick="setup.addDashboardBlock({{dashboard.id_zone}}, {{dashboard.index}}, urlChangeHandler)">Add a block</button>\
 	</div>',
 
 	not_found : '<div class="row text-center">\

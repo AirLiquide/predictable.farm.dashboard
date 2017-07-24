@@ -205,6 +205,7 @@ margin: auto;
 	text-align:center;
 	max-height: 50PX;
 	background:gray;
+	min-height: 50px;
 }
 .air .value-label {
 background:#5D9CEC;
@@ -381,7 +382,7 @@ display: none;
 	background-color: #e6e6e6!important;
 
 }
-.highlight{
+.highlight, .unit{
 
 font-family: Roboto;
 font-size: 16px;

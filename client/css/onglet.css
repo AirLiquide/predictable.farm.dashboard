@@ -9,7 +9,6 @@ height: 45px !important;
 overflow: hidden;
 opacity:0.6;
 margin: 0 -2px 0 0!important;
-max-width: 15%;
 min-width: 100px;
 }
 .onglet a{
@@ -34,6 +33,7 @@ height: 18px;
 max-height: 18px;
 display: block;
 overflow: hidden;
+pointer-events:none;
 }
 .active{
 
@@ -188,6 +188,27 @@ overflow: hidden;
   max-width: 50%!important;
   overflow: hidden;
   }
+  .logo-big{
+
+  width: 100%!important;
+  overflow: hidden;
+  }
+  .container-new{
+    width: 100%;
+  }
+  .probe-selector .glyphicon{
+    display: none;
+  }
+  body, html{
+    overflow-x: hidden;
+  }
+  #period_navigation_next{
+    margin-left: -5px!important;
+  }
+  .nav-pills{
+    width: 110%;
+    margin-left:-20px;
+  }
 /*  .highcharts-yaxis-labels, .highcharts-yaxis{
     display: none;
   }*/
@@ -253,6 +274,7 @@ overflow: auto;
   	margin: 20px 20px 20px 0;
 
   }
+
 }
 
 .probe-selector .glyphicon-chevron-right{
@@ -291,4 +313,12 @@ overflow: auto;
 position: absolute;
 top: 15px;
 text-align: center;
+}
+.value-medium, p, #period_navigation_label, h3, .value-label{
+  -webkit-touch-callout: none; /* iOS Safari */
+   -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+      -moz-user-select: none; /* Firefox */
+       -ms-user-select: none; /* Internet Explorer/Edge */
+           user-select: none; /* Non-p
 }

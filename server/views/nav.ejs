@@ -6,6 +6,7 @@
 		<meta charset=utf-8>
 		<meta content="IE=edge" http-equiv=X-UA-Compatible>
 		<meta content="width=device-width,initial-scale=1" name=viewport>
+		
 
 		<title>Predictable Farm</title>
 		<link rel="stylesheet" type="text/css" href="/lib/bootstrap-3.3.7-dist/css/bootstrap.min.css" />
@@ -16,6 +17,7 @@
 		<link rel="stylesheet" type="text/css" href="/css/style.css" />
 		<link rel="stylesheet" type="text/css" href="/css/onglet.css" />
 		<link rel="stylesheet" type="text/css" href="/css/responsive.scss" />
+		<link rel="icon" href="/images/logo-min.png">
 	</head>
 	<body>
 		<%- include navbar.ejs %>
@@ -48,34 +50,34 @@
 		/* CONFIG */
 		/**********/
 		var configSensorType = {
-			'temperature' : { style : 'celcius-degrees', label : 'Température', class : 'air' },
-			'pressure' : { style : 'pascal-to-hectopascal', label : 'Pression Atmosphérique', class : 'air' },
-			'lux' : { style : 'lux', label : 'Luminosité', class : 'light' },
+			'temperature' : { style : 'celcius-degrees', label : 'Temperature', class : 'air' },
+			'pressure' : { style : 'pascal-to-hectopascal', label : 'Atmospheric Pressure', class : 'air' },
+			'lux' : { style : 'lux', label : 'Brightness', class : 'light' },
 			'sunuvlight' : { label : 'UV (Ultraviolet)', class : 'light' },
-			'sunvisiblelight' : { label : 'Lumière visible', class : 'light' },
-			'sunirlight' : { label : 'IR (Infrarouge)', class : 'light' },
-			'humidity' : { style : 'percent', label : 'Humidité', class : 'air' },
-			'misttemperature' : { style : 'celcius-degrees', label : 'Température brume', class : 'nutrient' },
-			'airquality' : { style : 'air-quality', label : 'Qualité de l\'air', class : 'air' },
-			'redlight' : { label : 'Lumière rouge', class : 'light' },
-			'greenlight' : { label : 'Lumière verte', class : 'light' },
-			'bluelight' : { label : 'Lumière bleue', class : 'light' },
-			'dust' : { label : 'Poussières', class : 'air' },
-      'air_pressure' : { style : 'pascal-to-hectopascal', label : 'Pression Atmosphérique', class : 'air' },
+			'sunvisiblelight' : { label : 'Visible Light', class : 'light' },
+			'sunirlight' : { label : 'IR (Infrared)', class : 'light' },
+			'humidity' : { style : 'percent', label : 'Humidity', class : 'air' },
+			'misttemperature' : { style : 'celcius-degrees', label : 'Mist Temperature', class : 'nutrient' },
+			'airquality' : { style : 'air-quality', label : 'Air Quality', class : 'air' },
+			'redlight' : { label : 'Red Light', class : 'light' },
+			'greenlight' : { label : 'Green Light', class : 'light' },
+			'bluelight' : { label : 'Blue Light', class : 'light' },
+			'dust' : { label : 'Dust', class : 'air' },
+      'air_pressure' : { style : 'pascal-to-hectopascal', label : 'Atmospheric Pressure', class : 'air' },
       'air_co2' : { style : 'ppm', label : 'CO2 Air ', class : 'air' },
       'air_co' : { style : 'ppm', label : 'CO Air ', class : 'air' },
       'air_ch4' : { style : 'ppm', label : 'CH4 Air ', class : 'air' },
-      'air_temperature' : { style : 'celcius-degrees', label : 'Température air', class : 'air' },
-      'air_humidity' : { style : 'percent', label : 'Humidité de l\'air', class : 'air' },
-      'light_lux' : { style : 'lux', label : 'Luminosité Lux', class : 'light' },
+      'air_temperature' : { style : 'celcius-degrees', label : 'Temperature air', class : 'air' },
+      'air_humidity' : { style : 'percent', label : 'Air Humidity', class : 'air' },
+      'light_lux' : { style : 'lux', label : 'Light Lux', class : 'light' },
       'light_par' : { style : 'par', label : 'Photosynthetically active radiation', class : 'light' },
       'light_dli' : { style : 'dli', label : 'Daily Light Integral', class : 'light' },
       'light_uv' : { label : 'UV (Ultraviolet)', class : 'light' },
-      'water_temperature' : { style : 'celcius-degrees', label : 'Température eau', class : 'water' },
-      'water_ph' : { label : 'PH eau', class : 'water' },
-      'water_ec' : { style : 'mVolt', label : 'EC eau', class : 'water' },
-      'water_orp' : { style : 'mVolt', label : 'ORP eau', class : 'water' },
-      'water_do' : { style : 'do', label : 'DO eau', class : 'water' },
+      'water_temperature' : { style : 'celcius-degrees', label : 'Temperature Water', class : 'water' },
+      'water_ph' : { label : 'PH Water', class : 'water' },
+      'water_ec' : { style : 'mVolt', label : 'EC Water', class : 'water' },
+      'water_orp' : { style : 'mVolt', label : 'ORP Water', class : 'water' },
+      'water_do' : { style : 'do', label : 'DO Water', class : 'water' },
       'moisture' : { style : 'percent', label : 'Soil moisture', class : 'soil' }
 
 		};
@@ -85,30 +87,30 @@
 
 
 		var configLabelStyle = {
-			'lux' : [{ format : '[value] <span class="unit">lux</span>' }],
-			'ppm' : [{ format : '[value] <span class="unit">ppm</span>' }],
+			'lux' : [{ format : '[value] <span class="unit highlight">lux</span>' }],
+			'ppm' : [{ format : '[value] <span class="unit highlight">ppm</span>' }],
 			//'celcius-degrees' : [{ format : '[value]°C' }],
 			'celcius-degrees' : [{ format : function(value, element) { element.innerHTML = (value/1).toFixed(1) + '°C' }}],
 			'percent' : [{ format : '[value]%' }],
-			'pascal' : [{ format : '[value] <span class="unit">Pa</span>' }],
-			'hectopascal' : [{ format : '[value] <span class="unit">hPa</span>' }],
+			'pascal' : [{ format : '[value] <span class="unit highlight">Pa</span>' }],
+			'hectopascal' : [{ format : '[value] <span class="unit highlight">hPa</span>' }],
 			'pascal-to-hectopascal' : [{ format : function(value, element) { element.innerHTML = (value/100).toFixed(2) + ' <span class="unit">hPa</span>'; } }],
-			'ohm' : [{ format : '[value] <span class="unit">Ohm</span>' }],
-			'volt' : [{ format : '[value] <span class="unit">V</span>' }],
-			'co2' : [{ format : '[value] <span class="unit">V</span>' }],
-      'do' : [{ format : '[value] <span class="unit">mg/l</span>' }],
-      'mVolt' : [{ format : '[value] <span class="unit">mV</span>' }],
-      'ec' : [{ format : '[value] <span class="unit">µS/cm</span>' }],
-      'par' : [{ format : '[value] <span class="unit">mol/m²/sec</span>' }],
-      'dli' : [{ format : '[value] <span class="unit">mol/m²/day</span>' }],
+			'ohm' : [{ format : '[value] <span class="unit highlight">Ohm</span>' }],
+			'volt' : [{ format : '[value] <span class="unit highlight">V</span>' }],
+			'co2' : [{ format : '[value] <span class="unit highlight">V</span>' }],
+      'do' : [{ format : '[value] <span class="unit highlight">mg/l</span>' }],
+      'mVolt' : [{ format : '[value] <span class="unit highlight">mV</span>' }],
+      'ec' : [{ format : '[value] <span class="unit highlight">µS/cm</span>' }],
+      'par' : [{ format : '[value] <span class="unit highlight">mol/m²/sec</span>' }],
+      'dli' : [{ format : '[value] <span class="unit highlight">mol/m²/day</span>' }],
       'ph' : [{ format : '[value]' }],
 
 
 			'air-quality' : [
-				{ minValue : 0, format : 'Très mauvaise', className : 'air-quality-very-bad' },
-				{ minValue : 1, format : 'Mauvaise', className : 'air-quality-bad' },
-				{ minValue : 2, format : 'Bonne', className : 'air-quality-good' },
-				{ minValue : 3, format : 'Très bonne', className : 'air-quality-very-good', }
+				{ minValue : 0, format : 'Very Bad', className : 'air-quality-very-bad' },
+				{ minValue : 1, format : 'Bad', className : 'air-quality-bad' },
+				{ minValue : 2, format : 'Good', className : 'air-quality-good' },
+				{ minValue : 3, format : 'Very Good', className : 'air-quality-very-good', }
 			],
 			'just-refresh' : [{ format : function() { return; }}],
 			'relay' : [{ minValue : 0, format : 'on' }, { minValue : 1, format : 'off' }]
@@ -525,7 +527,9 @@
 
 		var initRelayDoubleClick = function() {
 			var _dblclickHandler = function(e) {
+
 				var currentValue = e.target.getAttribute('data-live-label-value');
+				document.getElementById(e.target.getAttribute('id')).value = 'on'
 
 				var url = '/change-relay';
 				url += '?device_id=' + e.target.getAttribute('data-device_id');
@@ -653,6 +657,7 @@
 
 			var btnNavPrefix = 'period_navigation_';
 			var _btnNavClick = function(e) {
+				console.log('coucou')
 				var clicked = e.target;
 				var clickedNav = e.target.id.substr(btnNavPrefix.length);
 
@@ -935,18 +940,12 @@
         this.innerHTML = this.innerHTML.replace(regex, function(matched) {return "<span class=\"" + className + "\">" + matched + "</span>";});
 		    });
 		};
-		setInterval(function(){
-			$("span").highlight("%","highlight");
-			$("span").highlight("°C","highlight");
-			$("span").highlight("lux","highlight");
-			$("span").highlight("hPa","highlight");
-			$("span").highlight("lux","highlight");
-}, 5000);
+
 document.getElementById("period_selector_day").click();
 
 $(document).ready(function(){
     $(".glyphicon-chevron-left").hover(function(){
-			
+
 			var leftPos = $('.innerWrapper').scrollLeft();
 			$(".innerWrapper").animate({scrollLeft: leftPos - 200}, 800);
 
@@ -958,6 +957,22 @@ $(document).ready(function(){
 
     });
 });
+$(".container-chart").animate({scrollLeft:  150}, 800);
+$(function(){
+  $(document).click(function(){
+  $(".container-chart").animate({scrollLeft:  150}, 800);
+	$("span").highlight("%","highlight");
+	$("span").highlight("°C","highlight");
+	$("span").highlight("lux","highlight");
+	$("span").highlight("hPa","highlight");
+	$("span").highlight("lux","highlight");
+  });
+});
+$("span").highlight("%","highlight");
+$("span").highlight("°C","highlight");
+$("span").highlight("lux","highlight");
+$("span").highlight("hPa","highlight");
+$("span").highlight("lux","highlight");
 		</script>
 	</body>
 </html>
