@@ -1,6 +1,8 @@
 # Source docker
 FROM node
 
+RUN npm install pm2 -g
+
 # Install mariadb
 RUN apt-get update
 RUN apt-get -y install vim
@@ -21,5 +23,5 @@ RUN service mysql start \
 #install node modules
 RUN rm -rf ./node_modules && npm install
 
-CMD service mysql start && service mysql status && node server.js
-EXPOSE 8080
+CMD service mysql start && service mysql status && pm2 start server.js --name=dashboard && pm2 logs
+EXPOSE 80

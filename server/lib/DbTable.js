@@ -1,150 +1,174 @@
 var MariaSql = require('mariasql');
 
-module.exports = function(table, _keepAlive) {
-	if (typeof _keepAlive === 'undefined') {
-		_keepAlive = false;
-	}
+var tableWrapper = {
 
-	// TODO debug_mode to display requests
+DB_HOST : 'localhost',
+DB_USER : 'predictableuser',
+DB_PASS : 'predictable',
+DB_BASE : 'predictabledata',
 
-	var DB_HOST = 'localhost';
-	var DB_USER = 'predictableuser';
-	var DB_PASS = 'predictable';
-	var DB_BASE = 'predictabledata';
 
-	this.lastRequest = '';
+    connection: false,
+	_table: '',
 
-	var connection = false;
-	var connect = function() {
-		connection = new MariaSql({
-			host : DB_HOST,
-			user : DB_USER,
-			password : DB_PASS,
-			db : DB_BASE
-		});
-		connection.query('SET NAMES utf8');
-	};
+    open: function(table, _keepAlive) {
+        if (typeof _keepAlive === 'undefined') {
+            this._keepAlive = false;
+        }
+		console.log('Openning table', table);
+        this._table = table;
+        if (!this.connection) {
+            this.connect();
+        }
+        // TODO debug_mode to display requests
 
-	var disconnect = function() {
-		connection.end();
-		connection = false;
-	};
+        this.lastRequest = '';
+        return this;
 
-	// params : columns, where, whereValues, callback, keepAlive
-	this.select = function(params) {
-		var keepAlive = _keepAlive;
-		if (typeof params.keepAlive !== 'undefined') {
-			keepAlive = params.keepAlive;
-		}
+    },
 
-		if (typeof params.columns === 'undefined') {
-			params.columns = '*';
-		}
+    connect: function() {
+        console.warn('Connecting');
+        this.connection = new MariaSql({
+            host : this.DB_HOST,
+            user : this.DB_USER,
+            password : this.DB_PASS,
+            db : this.DB_BASE
+        });
+        this.connection.query('SET NAMES utf8');
+    },
 
-		var request = 'SELECT ' + params.columns + ' FROM ' + table;
 
-		if (typeof params.where !== 'undefined') {
-			request += ' WHERE ' + params.where;
-		}
+    disconnect: function() {
+        console.warn('disconnecting');
+        this.connection.end();
+        this.connection = false;
+    },
 
-		if (!connection) {
-			connect();
-		}
 
-		this.lastRequest = request;
-		connection.query(request, params.whereValues, params.callback);
 
-		if (!keepAlive) {
-			disconnect();
-		}
-	};
+    // params : columns, where, whereValues, callback, keepAlive
+    // params : columns, where, whereValues, callback, keepAlive
+    select: function(params) {
+        var keepAlive = this._keepAlive;
+        if (typeof params.keepAlive !== 'undefined') {
+            this._keepAlive = params.keepAlive;
+        }
 
-	// params : values, callback, keepAlive
-	this.insert = function(params) {
-		var keepAlive = _keepAlive;
-		if (typeof params.keepAlive !== 'undefined') {
-			keepAlive = params.keepAlive;
-		}
+        if (typeof params.columns === 'undefined') {
+            params.columns = '*';
+        }
 
-		var request = 'INSERT INTO ' + table;
+        var request = 'SELECT ' + params.columns + ' FROM ' + this._table;
 
-		if (typeof params.values === 'object') {
-			var separator = ' SET ';
-			for (var field in params.values) {
-				request += separator + field + '=:' + field;
-				separator = ' , ';
-			}
-		}
+        if (typeof params.where !== 'undefined') {
+            request += ' WHERE ' + params.where;
+        }
 
-		if (!connection) {
-			connect();
-		}
+        if (!this.connection) {
+            this.connect();
+        }
 
-		connection.query(request, params.values, params.callback);
+        this.lastRequest = request;
+        this.connection.query(request, params.whereValues, params.callback);
 
-		if (!keepAlive) {
-			disconnect();
-		}
-	};
+        if (!this._keepAlive) {
+         //   disconnect();
+        }
+    },
 
-	// params : values, where, whereValues, callback
-	this.update = function(params) {
-		var keepAlive = _keepAlive;
-		if (typeof params.keepAlive !== 'undefined') {
-			keepAlive = params.keepAlive;
-		}
+// params : values, callback, keepAlive
+    insert: function(params) {
+        var keepAlive = this._keepAlive;
+        if (typeof params.keepAlive !== 'undefined') {
+            keepAlive = params.keepAlive;
+        }
 
-		var request = 'UPDATE ' + table;
+        var request = 'INSERT INTO ' + this._table;
 
-		if (typeof params.values === 'object') {
-			var separator = ' SET ';
-			for (var field in params.values) {
-				request += separator + field + '=:' + field;
-				separator = ' , ';
-			}
-			if (typeof params.where !== 'undefined') {
-				request += ' WHERE ' + params.where;
+        if (typeof params.values === 'object') {
+            var separator = ' SET ';
+            for (var field in params.values) {
+                request += separator + field + '=:' + field;
+                separator = ' , ';
+            }
+        }
 
-				if (typeof params.whereValues === 'object') {
-					for (var field in params.whereValues) {
-						params.values[field] = params.whereValues[field];
-					}
-				}
-			}
-		}
+        if (!this.connection) {
+            this.connect();
+        }
 
-		if (!connection) {
-			connect();
-		}
+        this.connection.query(request, params.values, params.callback);
 
-		connection.query(request, params.values, params.callback);
+        // if (!keepAlive) {
+        //   //  disconnect();
+        // }
+    },
 
-		if (!keepAlive) {
-			disconnect();
-		}
-	};
+// params : values, where, whereValues, callback
+    update: function(params) {
+        var keepAlive = this._keepAlive;
+        if (typeof params.keepAlive !== 'undefined') {
+            keepAlive = params.keepAlive;
+        }
 
-	// params : where, whereValues, callback, keepAlive
-	this.delete = function(params) {
-		var keepAlive = _keepAlive;
-		if (typeof params.keepAlive !== 'undefined') {
-			keepAlive = params.keepAlive;
-		}
+        var request = 'UPDATE ' + this._table;
 
-		var request = 'DELETE FROM ' + table;
-		if (typeof params.where !== 'undefined') {
-			request += ' WHERE ' + params.where;
-		}
+        if (typeof params.values === 'object') {
+            var separator = ' SET ';
+            for (var field in params.values) {
+                request += separator + field + '=:' + field;
+                separator = ' , ';
+            }
+            if (typeof params.where !== 'undefined') {
+                request += ' WHERE ' + params.where;
 
-		if (!connection) {
-			connect();
-		}
+                if (typeof params.whereValues === 'object') {
+                    for (var field in params.whereValues) {
+                        params.values[field] = params.whereValues[field];
+                    }
+                }
+            }
+        }
 
-		connection.query(request, params.whereValues, params.callback);
+        if (!this.connection) {
+            this.connect();
+        }
 
-		if (!keepAlive) {
-			disconnect();
-		}
-	};
+        this.connection.query(request, params.values, params.callback);
+        //
+        // if (!keepAlive) {
+        //  //   disconnect();
+        // }
+    },
+
+// params : where, whereValues, callback, keepAlive
+    delete : function(params) {
+        var keepAlive = this._keepAlive;
+        if (typeof params.keepAlive !== 'undefined') {
+            keepAlive = params.keepAlive;
+        }
+
+        var request = 'DELETE FROM ' + this._table;
+        if (typeof params.where !== 'undefined') {
+            request += ' WHERE ' + params.where;
+        }
+
+        if (!this.connection) {
+            this.connect();
+        }
+
+        this.connection.query(request, params.whereValues, params.callback);
+
+        // if (!keepAlive) {
+        //   //  disconnect();
+        // }
+    }
+
 };
 
+
+module.exports = function(table, keepAlive){
+	var newTableWrapper = Object.assign({},tableWrapper);
+	return newTableWrapper.open(table, keepAlive);
+}

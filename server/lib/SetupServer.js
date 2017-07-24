@@ -3,9 +3,9 @@ var DbTable = require('./DbTable');
 module.exports = function() {
 	var self = this;
 
-	var dbZone = new DbTable('zone', false);
-	var dbProbe = new DbTable('probe', false);
-	var dbSensor = new DbTable('sensor', false);
+	var dbZone =  new DbTable('zone', true);
+	var dbProbe = new DbTable('probe', true);
+	var dbSensor = new DbTable('sensor', true);
 
 	var zoneCache = []; // request cache
 	var zoneTime = -1; // timestamp of the request
@@ -195,7 +195,7 @@ module.exports = function() {
 			callback : function() {
 				// Refresh zones cache
 				self.loadZones();
-				
+
 				if (typeof callback === 'function') {
 					callback();
 				}
@@ -248,7 +248,7 @@ module.exports = function() {
 			callback : function() {
 				// Refresh probes cache
 				self.loadProbes();
-				
+
 				if (typeof callback === 'function') {
 					callback();
 				}
@@ -264,7 +264,7 @@ module.exports = function() {
 			callback : function() {
 				// Refresh probes cache
 				self.loadSensors();
-				
+
 				if (typeof callback === 'function') {
 					callback();
 				}

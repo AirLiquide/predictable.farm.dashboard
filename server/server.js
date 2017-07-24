@@ -41,7 +41,7 @@ app.get('/', function(req, res) {
 });
 app.get('/recipies', function(req, res) {
 	//console.log('app.get(/)');
-	res.redirect('http://ecf-berlin.predictable.farm/recipies/');
+	res.redirect('/recipies/');
 
 });
 
