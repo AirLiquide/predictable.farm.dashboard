@@ -333,3 +333,7 @@ text-align: center;
 .dashboard-block {
   display: none;
 }
+
+.probe-editor .dropdown{
+  display: none!important;
+}

@@ -49,7 +49,7 @@ var ProbeEditor = function() {
 
 		_dropdownDelete = document.createElement('li');
 		_dropdownDelete.innerHTML = '<a href="javascript:;">Supprimer</a>';
-		_dropdownDelete.addEventListener('click', function() {
+		_handle.addEventListener('click', function() {
 			if (typeof _ondelete === 'function') _ondelete();
 			_dropdown.className = 'dropdown'; // closes the dropdown
 			self.hide();
