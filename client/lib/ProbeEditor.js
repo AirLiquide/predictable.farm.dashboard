@@ -35,7 +35,7 @@ var ProbeEditor = function() {
 
 		_dropdown = document.createElement('span');
 		_dropdown.className = 'dropdown';
-		
+
 		var dropdownButton = document.createElement('button');
 		dropdownButton.type = 'button';
 		dropdownButton.setAttribute('data-toggle', 'dropdown');
@@ -76,7 +76,7 @@ var ProbeEditor = function() {
 			else {
 				self.hide();
 			}
-		});	
+		});
 	};
 
 	this.show = function(element, options) {
@@ -155,8 +155,8 @@ var ProbeEditor = function() {
 			_handle.className = 'handle glyphicon glyphicon-resize-horizontal';
 		}
 		else {
-			var sourceIcon = _shown.getElementsByTagName('i')[0];
-			_handle.className = sourceIcon.className;
+
+			_handle.className = 'handle glyphicon glyphicon-remove';
 		}
 
 		if (options.deletable) {

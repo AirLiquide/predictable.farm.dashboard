@@ -302,14 +302,13 @@
 
 			// Probe list : long press handling
 			initProbeListLongpress(function(e) {
-				
+
 				var target = e.target;
-console.log(target)
-					target = target.parentNode;
 				console.log(target)
 
-				var type = target.getAttribute('data-type');
 
+				var type = target.getAttribute('data-type');
+					console.log(type)
 				probeEditor.show(target, {
 					renamable : true,
 					deletable : (type === 'dashboard'),

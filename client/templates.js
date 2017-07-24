@@ -58,21 +58,21 @@ var greenhouse_templates = {
 				{{#zone.dashboards}}\
 					<li  role="presentation"class="onglet {{#selected}}active{{/selected}}">\
 						<a title="{{name}}" href="#dashboard-{{id_zone}}-{{index}}" data-type="dashboard" data-id-zone="{{id_zone}}"" data-dashboard_index="{{index}}">\
+							<span class="name" title="{{name}}" href="#dashboard-{{id_zone}}-{{index}}" data-type="dashboard" data-id-zone="{{id_zone}}"" data-dashboard_index="{{index}}">{{name}}</span>\
 						</a>\
-						<span class="name" title="{{name}}" href="#dashboard-{{id_zone}}-{{index}}" data-type="dashboard" data-id-zone="{{id_zone}}"" data-dashboard_index="{{index}}">{{name}}</span>\
 					</li>\
 				{{/zone.dashboards}}\
 				{{#probes}}\
 				<li  role="presentation" class="onglet {{#selected}}active{{/selected}}">\
 					<a title="{{name}}" href="#probe-{{id_probe}}-{{uuid}}" data-type="probe" data-id-probe="{{id_probe}}" data-uuid="{{uuid}}">\
+						<span title="{{name}}" class="name">{{name}} </span>\
 					</a>\
-					<span title="{{name}}" class="name">{{name}} </span>\
 				</li>\
 				{{/probes}}\
 				<li role="presentation" class="action-button onglet">\
 					<a href="javascript:;" onclick="setup.addDashboard({{zone.id_zone}}, function(d){ window.location = \'/#dashboard-\'+d.id_zone+\'-\'+d.index; });" class="">\
+						<span class="name" style="opacity:1.0!important;">+ new</span>\
 					</a>\
-					<span class="name" style="opacity:1.0!important;">+ new</span>\
 				</li>\
 			</ul>\
 			<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>\
