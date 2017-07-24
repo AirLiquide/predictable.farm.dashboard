@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -303,10 +302,11 @@
 
 			// Probe list : long press handling
 			initProbeListLongpress(function(e) {
+				
 				var target = e.target;
-				if (target.tagName != 'A') {
+console.log(target)
 					target = target.parentNode;
-				}
+				console.log(target)
 
 				var type = target.getAttribute('data-type');
 
@@ -941,38 +941,38 @@
 		    });
 		};
 
-document.getElementById("period_selector_day").click();
+			document.getElementById("period_selector_day").click();
 
-$(document).ready(function(){
-    $(".glyphicon-chevron-left").hover(function(){
+			$(document).ready(function(){
+			    $(".glyphicon-chevron-left").hover(function(){
 
-			var leftPos = $('.innerWrapper').scrollLeft();
-			$(".innerWrapper").animate({scrollLeft: leftPos - 200}, 800);
+						var leftPos = $('.innerWrapper').scrollLeft();
+						$(".innerWrapper").animate({scrollLeft: leftPos - 200}, 800);
 
-    });
-		$(".glyphicon-chevron-right").hover(function(){
+			    });
+					$(".glyphicon-chevron-right").hover(function(){
 
-			var rightPos = $('.innerWrapper').scrollLeft();
-			$(".innerWrapper").animate({scrollLeft: rightPos + 200}, 800);
+						var rightPos = $('.innerWrapper').scrollLeft();
+						$(".innerWrapper").animate({scrollLeft: rightPos + 200}, 800);
 
-    });
-});
-$(".container-chart").animate({scrollLeft:  180}, 800);
-$(function(){
-  $(document).click(function(){
-  $(".container-chart").animate({scrollLeft:  180}, 800);
-	$("span").highlight("%","highlight");
-	$("span").highlight("°C","highlight");
-	$("span").highlight("lux","highlight");
-	$("span").highlight("hPa","highlight");
-	$("span").highlight("lux","highlight");
-  });
-});
-$("span").highlight("%","highlight");
-$("span").highlight("°C","highlight");
-$("span").highlight("lux","highlight");
-$("span").highlight("hPa","highlight");
-$("span").highlight("lux","highlight");
+			    });
+			});
+			$(".container-chart").animate({scrollLeft:  180}, 800);
+			$(function(){
+			  $(document).click(function(){
+			  $(".container-chart").animate({scrollLeft:  180}, 800);
+				$("span").highlight("%","highlight");
+				$("span").highlight("°C","highlight");
+				$("span").highlight("lux","highlight");
+				$("span").highlight("hPa","highlight");
+				$("span").highlight("lux","highlight");
+			  });
+			});
+			$("span").highlight("%","highlight");
+			$("span").highlight("°C","highlight");
+			$("span").highlight("lux","highlight");
+			$("span").highlight("hPa","highlight");
+			$("span").highlight("lux","highlight");
 		</script>
 	</body>
 </html>
