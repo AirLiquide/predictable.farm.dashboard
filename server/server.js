@@ -39,9 +39,9 @@ app.get('/', function(req, res) {
 
 
 });
-app.get('/recipies', function(req, res) {
+app.get('/recipes', function(req, res) {
 	//console.log('app.get(/)');
-	res.redirect('/recipies/');
+	res.redirect('/recipes/');
 
 });
 
