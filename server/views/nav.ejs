@@ -15,7 +15,6 @@
 		<link rel="stylesheet" type="text/css" href="/css/submenu.css" />
 		<link rel="stylesheet" type="text/css" href="/css/style.css" />
 		<link rel="stylesheet" type="text/css" href="/css/onglet.css" />
-		<link rel="stylesheet" type="text/css" href="/css/responsive.scss" />
 		<link rel="icon" href="/images/logo-min.png">
 	</head>
 	<body>
@@ -112,7 +111,7 @@
 				{ minValue : 3, format : 'Very Good', className : 'air-quality-very-good', }
 			],
 			'just-refresh' : [{ format : function() { return; }}],
-			'relay' : [{ minValue : 0, format : 'on' }, { minValue : 1, format : 'off' }]
+			'relay' : [{ minValue : 0, format : 'off' }, { minValue : 1, format : 'on' }]
 		};
 
 		var setup = new SetupClient(<%- JSON.stringify(setup) %>, configSensorType);
@@ -304,11 +303,11 @@
 			initProbeListLongpress(function(e) {
 
 				var target = e.target;
-				console.log(target)
+
 
 
 				var type = target.getAttribute('data-type');
-					console.log(type)
+
 				probeEditor.show(target, {
 					renamable : true,
 					deletable : (type === 'dashboard'),
@@ -336,11 +335,21 @@
 							var id_zone = target.getAttribute('data-id-zone');
 							var dashboard_index = target.getAttribute('data-dashboard_index');
 
+
 							// dashboard object is delete + xhr to change server setup
 							setup.deleteDashboard(id_zone, dashboard_index);
 
 							urlChangeHandler();
 						}
+						if (type === 'probe') {
+
+							var probe_index = target.getAttribute('data-id-probe')
+							var id_zone = target.getAttribute('data-id-zone')
+							setup.deleteProbe(id_zone, probe_index);
+						}
+					},
+					ondeletePopup : function() {
+
 					}
 				});
 			});
@@ -526,7 +535,6 @@
 
 		var initRelayDoubleClick = function() {
 			var _dblclickHandler = function(e) {
-
 				var currentValue = e.target.getAttribute('data-live-label-value');
 				document.getElementById(e.target.getAttribute('id')).value = 'on'
 
@@ -656,7 +664,7 @@
 
 			var btnNavPrefix = 'period_navigation_';
 			var _btnNavClick = function(e) {
-				console.log('coucou')
+
 				var clicked = e.target;
 				var clickedNav = e.target.id.substr(btnNavPrefix.length);
 
@@ -920,15 +928,16 @@
 		window.addEventListener("hashchange", urlChangeHandler);
 		urlChangeHandler();
 
-		var openDropDown = function() {
-    	var x = document.getElementById('arrow-down');
+		var openDropDown = function(block_index) {
+
+    	var x = document.getElementById('arrow-down-' + block_index);
 	    if (x.style.display === 'none'){
 				document.getElementById('shadow-dropdown').style.display = 'block';
-				document.getElementById('dropdown-menu').style.display = 'block';
+				document.getElementById('dropdown-menu-' + block_index).style.display = 'block';
 				  x.style.display = 'block';
 	    } else {
 				document.getElementById('shadow-dropdown').style.display = 'none';
-				document.getElementById('dropdown-menu').style.display = 'none';
+				document.getElementById('dropdown-menu-' + block_index).style.display = 'none';
 	        x.style.display = 'none';
 	    }
 		}
@@ -972,6 +981,80 @@
 			$("span").highlight("lux","highlight");
 			$("span").highlight("hPa","highlight");
 			$("span").highlight("lux","highlight");
+
+			document.querySelectorAll('.switch input').forEach( (checkbox) =>{
+				if (checkbox.getAttribute('data-live-label-value') == 1){
+					checkbox.setAttribute("checked", "checked");
+					checkbox.checked = true;
+				}
+			} );
+
+			var newLoad = function(){
+
+
+				document.querySelectorAll('.switch input').forEach( (checkbox) =>{
+
+					if (checkbox.getAttribute('data-live-label-value') == 1){
+						checkbox.setAttribute("checked", "checked");
+						checkbox.checked = true;
+					}
+				} );
+			}
+			var newLoadWait = function(){
+			setTimeout(newLoad, 1000);
+			}
+			$(".probe-tab.glyphicon-remove").click(function(){
+
+
+			});
+
+			document.querySelectorAll('.glyphicon-remove').forEach( (probe) =>{
+				probe.addEventListener('click', function(){ console.log('hi'); })
+			} )
+			function checkAlertRelay(checkboxElem) {
+				switchRelay(checkboxElem)
+				//if (checkboxElem.checked) {
+			   // alert ("hi");
+			  //} else {
+			    //alert ("bye");
+			  //}
+			}
+			var switchRelay = function(e) {
+
+
+					var currentValue = e.getAttribute('data-live-label-value');
+					var sensor_id = e.getAttribute('data-device_id')
+
+
+					//io.connect('/')[e.getAttribute('data-device_id')].emit('sensor-receive', JSON.stringify({
+					//	device_id : e.getAttribute('data-device_id'),
+					//	sensor_id : '-',
+					//	sensor_type : e.getAttribute('data-sensor_type'),
+					//	sensor_value : (currentValue == 1 ? '0' : '1')
+					//}));
+					var zone = setup.getZone(0);
+
+
+				//	UPDATE sensor SET last_value: sensor_value WHERE device_id = :device_id;
+
+					var url = '/change-relay';
+					url += '?device_id=' + e.getAttribute('data-device_id');
+					url += '&sensor_type=' + e.getAttribute('data-sensor_type');
+					url += '&sensor_value=' + (currentValue == 1 ? '0' : '1');
+					url += '&id_sensor=' + e.getAttribute('data-id_sensor');
+
+					document.getElementById("checkbox-" + e.getAttribute('data-device_id')).setAttribute("data-live-label-value", "1");
+					document.getElementById("valueMedium-" + e.getAttribute('data-device_id')).setAttribute("data-live-label-value", "1");
+					$.get(url);
+				};
+
+
+
+
+
+
+
 		</script>
 	</body>
+
 </html>

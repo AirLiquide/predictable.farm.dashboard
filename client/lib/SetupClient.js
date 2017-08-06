@@ -40,6 +40,7 @@ var SetupClient = function(_data, _config) {
 			var probe = _data.probes[sensor.id_probe];
 
 			// add probe.uuid to sensors
+			if (probe) {
 			sensor.probe_uuid = probe.uuid;
 
 			// add probe name to sensors
@@ -47,6 +48,7 @@ var SetupClient = function(_data, _config) {
 
 			// add probe.id_zone to sensors
 			sensor.id_zone = probe.id_zone;
+		}
 
 			// add config informations
 			if (typeof _config === 'object' && typeof _config[sensor.type] === 'object') {
@@ -94,6 +96,7 @@ var SetupClient = function(_data, _config) {
 		for (var id_zone in _data.zones) {
 			var zone = _data.zones[id_zone];
 
+
 			for (var dash_i=0; dash_i < zone.dashboards.length; dash_i++) {
 				var dash = _data.zones[id_zone].dashboards[dash_i];
 				dash.id_zone = id_zone;
@@ -106,15 +109,25 @@ var SetupClient = function(_data, _config) {
 					block.block_index = block_i;
 
 					var sensor_ids = '';
-					for (var sensor_i=0; sensor_i < block.sensors.length; sensor_i++) {
-						var cloneSensor = JSON.parse(JSON.stringify(_data.sensors[block.sensors[sensor_i].id_sensor]));
-						cloneSensor.color = block.sensors[sensor_i].color;
-						cloneSensor.sensor_index = sensor_i;
-						block.sensors[sensor_i] = cloneSensor;
 
-						sensor_ids += (sensor_ids == '' ? '' : ',');
-						sensor_ids += cloneSensor.id_sensor;
+					if (block.sensors != null){
+						for (var sensor_i=0; sensor_i < block.sensors.length; sensor_i++) {
+
+
+								if (_data.sensors[block.sensors[sensor_i].id_sensor]) {
+
+									var cloneSensor = JSON.parse(JSON.stringify(_data.sensors[block.sensors[sensor_i].id_sensor]));
+									cloneSensor.color = block.sensors[sensor_i].color;
+									cloneSensor.sensor_index = sensor_i;
+									block.sensors[sensor_i] = cloneSensor;
+
+									sensor_ids += (sensor_ids == '' ? '' : ',');
+									sensor_ids += cloneSensor.id_sensor;
+
+							}
+						}
 					}
+
 
 					block.sensor_ids = sensor_ids;
 				}
@@ -161,6 +174,9 @@ var SetupClient = function(_data, _config) {
 
 	this.getProbe = function(id_probe) {
 		return _data.probes[id_probe];
+	};
+	this.getProbes = function(id_probe) {
+		return _data.probes;
 	};
 
 	this.hasSensor = function(id_sensor) {
@@ -260,7 +276,7 @@ var SetupClient = function(_data, _config) {
 		if (_selectedDashboard) {
 			var id_zone = _selectedDashboard[0];
 			var index_dashboard = _selectedDashboard[1];
-			
+
 			if (typeof _data.zones[id_zone].dashboards[index_dashboard] === 'object') {
 				delete _data.zones[id_zone].dashboards[index_dashboard].selected;
 			}
@@ -303,7 +319,7 @@ var SetupClient = function(_data, _config) {
 		}
 
 		var probes;
-		
+
 		if (typeof id_zone === 'undefined') {
 			probes = _data.probes;
 		}
@@ -315,7 +331,7 @@ var SetupClient = function(_data, _config) {
 				}
 			}
 		}
-		
+
 		if (indexed) {
 			return probes;
 		}
@@ -401,17 +417,20 @@ var SetupClient = function(_data, _config) {
 
 	this.addDashboardBlock = function(id_zone, dashboard_index, callback) {
 		// Check zone
+
 		if (typeof _data.zones[id_zone] !== 'object') {
 			return false;
+
 		}
 		// Check dashboard
 		if (typeof _data.zones[id_zone].dashboards[dashboard_index] !== 'object') {
 			return false;
+
 		}
 
 		var newBlock = {
 			type : 'sensors',
-			name : 'Nouveau bloc',
+			name : 'New block',
 			sensors : [],
 			displayChart : true,
 			displaySensor : true
@@ -426,6 +445,7 @@ var SetupClient = function(_data, _config) {
 				callback(newBlock);
 			}
 		});
+
 	};
 
 	this.renameDashboardBlock = function(id_zone, dashboard_index, block_index, name, callback) {
@@ -481,7 +501,7 @@ var SetupClient = function(_data, _config) {
 	};
 
 	this.addSensorToDashboardBlock = function(id_zone, dashboard_index, block_index, id_sensor, callback) {
-		console.log('addSensorToDashboardBlock');
+
 		var newSensor = {
 			id_sensor : id_sensor,
 			color : 'red'
@@ -516,6 +536,7 @@ var SetupClient = function(_data, _config) {
 
 	this.deleteDashboard = function(id_zone, dashboard_index, callback) {
 		// Check zone
+
 		if (typeof _data.zones[id_zone] !== 'object') {
 			return false;
 		}
@@ -528,6 +549,23 @@ var SetupClient = function(_data, _config) {
 		_data.zones[id_zone].dashboards.splice(dashboard_index, 1);
 
 		self.updateZone(id_zone, callback);
+	};
+	this.deleteProbe = function(id_zone, probe_index, callback) {
+		// Check zone
+
+		if (typeof _data.zones[id_zone] !== 'object') {
+			return false;
+		}
+
+		// Check probe
+		if (typeof _data.probes[probe_index] !== 'object') {
+			return false;
+		}
+
+		// Delete probe
+		delete _data.probes[probe_index];
+
+		_deleteProbe(probe_index, callback);
 	};
 
 	this.renameProbe = function(id_probe, name, callback) {
@@ -619,6 +657,52 @@ var SetupClient = function(_data, _config) {
 		xhr.open('POST', '/update-probe', true);
 		xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 		xhr.send('probe=' + encodeURIComponent(JSON.stringify(probe)));
+	};
+
+	var _deleteProbe = function(id_probe, callback) {
+		// Preparing the object for server sending
+
+
+
+		var zone = setup.getZone(0)
+
+		for (i = 0; i < zone.dashboards.length; i++) {
+			for (j = 0; j < zone.dashboards[i].blocks.length; j++) {
+						//zone.dashboards[i].blocks.splice(j, 1);
+						if (zone.dashboards[i].blocks[j].sensors.length > 0){
+							for (k = 0; k < zone.dashboards[i].blocks[j].sensors.length  ; k++) {
+								if (zone.dashboards[i].blocks[j].sensors[k].id_probe == id_probe ){
+								zone.dashboards[i].blocks[j].sensors.splice(k, 1);
+								}
+							}
+							for (k = 0; k < zone.dashboards[i].blocks[j].sensors.length  ; k++) {
+								if (zone.dashboards[i].blocks[j].sensors[k].id_probe == id_probe ){
+								zone.dashboards[i].blocks[j].sensors.splice(k, 1);
+								//index_splice = index_splice + 1;
+								}
+							}
+						}
+			}
+		}
+		
+		var zoneUpdate = zone //-probe
+		var xhr = new XMLHttpRequest();
+
+		if (typeof callback === 'function') {
+			xhr.onreadystatechange = function() {
+				if (xhr.readyState != 4 || xhr.status != 200) {
+					return;
+				}
+
+				callback();
+			};
+		}
+		xhr.open('POST', '/update-zone', true);
+		xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+		xhr.send('zone=' + encodeURIComponent(JSON.stringify(zoneUpdate)));
+		xhr.open('POST', '/delete-probe', true);
+		xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+		xhr.send('probe_id=' + encodeURIComponent(JSON.stringify(id_probe)));
 	};
 
 	var _updateSensorsOrder = function(sensorsOrder, callback) {

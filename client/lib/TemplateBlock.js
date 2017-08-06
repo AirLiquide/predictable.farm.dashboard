@@ -28,7 +28,7 @@ var TemplateBlock = function() {
 		if (typeof content !== 'undefined') {
 			_content = content;
 		}
-		
+
 		//Mustache.parse(template); // (optionnal, sopp)
 		return _rendered = Mustache.render(_template, _content);
 	};

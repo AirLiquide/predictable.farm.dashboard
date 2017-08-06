@@ -131,6 +131,7 @@ module.exports = function() {
 
 	this.updateZone = function(zone, callback) {
 		zone = _cleanZone(zone);
+		console.log('lol')
 
 		if (_checkZone(zone)) {
 			_saveZone(zone, callback);
@@ -138,6 +139,22 @@ module.exports = function() {
 		else {
 			callback(false);
 		}
+	};
+	this.deleteProbe = function(probe_id, callback) {
+		var MariaSql = require('mariasql');
+		this.connection = new MariaSql({
+				host : 'localhost',
+				user : 'predictableuser',
+				password : 'predictable',
+				db : 'predictabledata'
+		});
+
+		this.connection.query("DELETE FROM probe WHERE id_probe = :ProbeID",
+                     			{ProbeID: probe_id})
+		this.connection.query("DELETE FROM sensor WHERE id_probe = :ProbeID",
+								          {ProbeID: probe_id})
+
+
 	};
 
 	var _checkZone = function(zone) {

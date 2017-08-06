@@ -51,42 +51,47 @@ var greenhouse_templates = {
 	',
 
 	probe_selector : '\
-	<div class="fix-hover-bug">\
+	<div class="fix-hover-bug" id="fix-hover-bug">\
 	<div class="row probe-selector">\
 		<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>\
 			<ul class="nav nav-pills innerWrapper" id="probe-selector">\
 				{{#zone.dashboards}}\
-					<li  role="presentation"class="onglet {{#selected}}active{{/selected}}">\
-						<a title="{{name}}" href="#dashboard-{{id_zone}}-{{index}}" data-type="dashboard" data-id-zone="{{id_zone}}"" data-dashboard_index="{{index}}">\
-							<span class="name" title="{{name}}" href="#dashboard-{{id_zone}}-{{index}}" data-type="dashboard" data-id-zone="{{id_zone}}"" data-dashboard_index="{{index}}">{{name}}</span>\
+					<li  role="presentation"class="onglet {{#selected}}active{{/selected}}" onclick="newLoadWait()">\
+						<a title="{{name}}" href="#dashboard-{{id_zone}}-{{index}}" data-type="dashboard" data-id-zone="{{id_zone}}" data-dashboard_index="{{index}}" >\
+							<span class="name" title="{{name}}" href="#dashboard-{{id_zone}}-{{index}}" data-type="dashboard" data-id-zone="{{id_zone}}"" data-dashboard_index="{{index}}" >{{name}}</span>\
 						</a>\
 					</li>\
 				{{/zone.dashboards}}\
 				{{#probes}}\
-				<li  role="presentation" class="onglet {{#selected}}active{{/selected}}">\
-					<a title="{{name}}" href="#probe-{{id_probe}}-{{uuid}}" data-type="probe" data-id-probe="{{id_probe}}" data-uuid="{{uuid}}">\
-						<span title="{{name}}" class="name">{{name}} </span>\
+				<li  role="presentation" class="onglet probe-tab {{#selected}}active{{/selected}}" onclick="newLoadWait()">\
+					<a title="{{name}}" href="#probe-{{id_probe}}-{{uuid}}" data-id-zone="{{id_zone}}" data-type="probe" data-id-probe="{{id_probe}}" data-uuid="{{uuid}}" >\
+						<span title="{{name}}" class="name" >{{name}} </span>\
 					</a>\
 				</li>\
 				{{/probes}}\
-				<li role="presentation" class="action-button onglet">\
-					<a href="javascript:;" onclick="setup.addDashboard({{zone.id_zone}}, function(d){ window.location = \'/#dashboard-\'+d.id_zone+\'-\'+d.index; });" class="">\
+				<li role="presentation" class="action-button onglet" >\
+					<a href="javascript:;" onclick="setup.addDashboard({{zone.id_zone}}, function(d){ window.location = \'/#dashboard-\'+d.id_zone+\'-\'+d.index; });" class="" >\
 						<span class="name" style="opacity:1.0!important;">+ new</span>\
 					</a>\
 				</li>\
 			</ul>\
 			<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>\
 		</div>\
-	</div>',
+	</div>\
+	<script>alert("tamer")</script>',
 
 	sensor_group : '\
 	<div class="row row-chart" data-type="probe-block" data-id_probe="{{probe.id_probe}}" data-sensor_ids="{{probe.sensor_ids}}""></div>\
-	<div class="row row-content gutter-20" id="sensor-list" data-id_probe="{{probe.id_probe}}">\
+	<div class="row row-content gutter-20" id="sensor-list" data-id_probe="{{probe.id_probe}}" >\
 		{{#sensors}}\
 			<div class="sensor-block col-md-3 col-xs-6" data-id_sensor="{{id_sensor}}" style="max-width: 300px!important;">\
 				<div class="value-block {{class}}">\
 					<span class="value-label" title="{{label}}" style="padding-top: 12px;">{{label}}</span>\
-					<span class="value-medium live-label" data-live-label-id="{{probe_uuid}}:{{type}}" data-live-label-style="{{style}}" data-live-label-value="" data-device_id="{{probe_uuid}}" data-sensor_type="{{type}}">--</span>\
+					<span class="value-medium live-label" id="valueMedium-{{probe_uuid}}" data-live-label-id="{{probe_uuid}}:{{type}}" data-live-label-style="{{style}}" data-live-label-value="" data-device_id="{{probe_uuid}}" data-sensor_type="{{type}}">--</span>\
+					<label class="switch"  onload="alert("{{sensors}}")">\
+					  <input type="checkbox" class="live-label" id="checkbox-{{probe_uuid}}" onchange=" checkAlertRelay(this) " data-relay="{{sensors}}" data-id_sensor="{{id_sensor}}" data-live-label-id="{{probe_uuid}}:{{type}}" data-live-label-style="{{style}}" data-live-label-value="" data-device_id="{{probe_uuid}}" data-sensor_type="{{type}}" data-last-value="{{last_value}}" data-block_index="{{block_index}}" data-dashboard_index="{{dashboard_index}}" data-sensor_index={{sensor_index}}>\
+					  <span class="slider round"></span>\
+					</label>\
 					<div class="block-handle"><i class="glyphicon glyphicon-sort block-handle-icon"></i></div>\
 				</div>\
 			</div>\
@@ -121,16 +126,16 @@ var greenhouse_templates = {
 					</div>\
 				{{/sensors}}\
 				<div class="col-md-3 col-xs-6 btn-group " style="max-width: 300px!important;" >\
-					<button class="btn btn-default dropdown-toggle value-block btn-add-sensor"  onclick="openDropDown()" style="    width: calc(100% - 30px);margin-left: 15px;">\
+					<button class="btn btn-default dropdown-toggle value-block btn-add-sensor"  onclick="openDropDown({{block_index}})" style="    width: calc(100% - 30px);margin-left: 15px;">\
 						<span class="value-medium plus-medium">+</span>\
 					</button>\
-					<ul class="dropdown-menu" id="dropdown-menu">\
+					<ul class="dropdown-menu" id="dropdown-menu-{{block_index}}">\
 						<img class="close-dropdown" src="/images/close.svg">\
 						<h2 class="title-dropdown">PICK ONE ELEMENT</h2>\
 						{{{dashboardBlock_addSensor}}}\
 					</ul>\
-					<div class="arrow-down" id="arrow-down"></div>\
-					<div class="shadow-dropdown" id="shadow-dropdown" onclick="openDropDown()" ></div>\
+					<div class="arrow-down" id="arrow-down-{{block_index}}"></div>\
+					<div class="shadow-dropdown" id="shadow-dropdown" onclick="openDropDown({{block_index}})" ></div>\
 				</div>\
 			</div>\
 		</div>\

@@ -23,5 +23,10 @@ RUN service mysql start \
 #install node modules
 RUN rm -rf ./node_modules && npm install
 
+ARG TZ
+RUN echo $TZ > /etc/timezone && dpkg-reconfigure -f noninteractive tzdata \
+ && cp /etc/timezone /tz/ && cp /etc/localtime /tz/
+VOLUME /tz
+
 CMD service mysql start && service mysql status && pm2 start server.js --name=dashboard && pm2 logs
 EXPOSE 80

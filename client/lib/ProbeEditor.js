@@ -50,7 +50,9 @@ var ProbeEditor = function() {
 		_dropdownDelete = document.createElement('li');
 		_dropdownDelete.innerHTML = '<a href="javascript:;">Supprimer</a>';
 		_handle.addEventListener('click', function() {
+			if (typeof _ondelete != 'function') _ondelete();
 			if (typeof _ondelete === 'function') _ondelete();
+
 			_dropdown.className = 'dropdown'; // closes the dropdown
 			self.hide();
 		});
@@ -80,7 +82,7 @@ var ProbeEditor = function() {
 	};
 
 	this.show = function(element, options) {
-		console.log('ProbeEditor.show');
+
 		//console.debug(element);
 		//console.debug(options);
 
@@ -150,6 +152,7 @@ var ProbeEditor = function() {
 
 		_onrename = options.onrename;
 		_ondelete = options.ondelete;
+		_ondeletepopup = options.ondeletepopup;
 
 		if (options.movable) {
 			_handle.className = 'handle glyphicon glyphicon-resize-horizontal';
@@ -163,7 +166,7 @@ var ProbeEditor = function() {
 			_dropdownDelete.style.display = 'block';
 		}
 		else {
-			_dropdownDelete.style.display = 'none';
+			_dropdownDelete.style.display = 'block';
 		}
 
 		if (options.transferable) {

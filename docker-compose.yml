@@ -3,7 +3,11 @@ version: '3'
 
 services:
   web:
-    build: .
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      args:
+          - TZ=Europe/Berlin
     container_name: predictable-dashboard
     ports:
     - 80:80

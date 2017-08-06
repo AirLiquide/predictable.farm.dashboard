@@ -33,7 +33,7 @@ margin: 0;
     -webkit-transition: all .8s;
     cursor: pointer;
 }
-.recipies-icon{
+.recipes-icon{
   display: inline-block;
   vertical-align: top;
 opacity: 0.5;
@@ -48,7 +48,7 @@ transition: all .8s ease-in-out;
   -moz-transition: all .5s ease-in-out;
   -webkit-transition: all .5s;
 }
-.recipies-icon:hover{
+.recipes-icon:hover{
   opacity: 1.0;
   transition: all .5s ease-in-out;
     -moz-transition: all .5s ease-in-out;
@@ -57,7 +57,7 @@ transition: all .8s ease-in-out;
 .dash-icon.dashboard{
   opacity: 1.0;
 }
-.recipies-icon.recipies{
+.recipes-icon.recipes{
   opacity: 1.0;
 }
 

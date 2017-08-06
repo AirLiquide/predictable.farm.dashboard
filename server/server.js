@@ -18,6 +18,7 @@ var DataReading = require('./lib/DataReading.js');
 var dataReading = new DataReading();
 
 var dataSender = require('./lib/DataSending.js');
+console.log(dataSender)
 
 // app parameters
 var app = express();
@@ -120,6 +121,19 @@ app.post('/update-probe', urlencodedParser, function(req, res) {
 		});
 	}
 });
+app.post('/delete-probe', urlencodedParser, function(req, res) {
+	//console.log('app.post(/update-probe)');
+	//console.log(req.body);
+
+	// TODO check login & user rights
+
+	if (typeof req.body.probe_id !== 'undefined') {
+		setup.deleteProbe(JSON.parse(req.body.probe_id), function() {
+			res.end('done');
+		});
+
+	}
+});
 
 app.post('/update-sensors-order', urlencodedParser, function(req, res) {
 	//console.log('app.post(/update-sensors-order)');
@@ -145,6 +159,7 @@ app.get('/change-relay', urlencodedParser, function(req, res) {
 
 	// check required parameters
 	var params = ['device_id', 'sensor_type', 'sensor_value'];
+
 	for (var i=0; i < params.length; i++) {
 		if (typeof req.query[params[i]] === 'undefined') {
 			res.end('fail');
@@ -152,18 +167,22 @@ app.get('/change-relay', urlencodedParser, function(req, res) {
 		}
 	}
 
-	if (!dataSender.know(req.query.device_id)) {
-		res.end('unknown');
-	}
-	else {
+
 		dataSender.send(
 			req.query.device_id,
 			req.query.sensor_type,
-			req.query.sensor_value
-		);
+			req.query.sensor_value,
+			req.query.id_sensor
+			, function(text) {
+				res.end(text);
+			});
 
-		res.end('done');
-	}
+
+
+
+
+
+
 });
 
 // serve index
