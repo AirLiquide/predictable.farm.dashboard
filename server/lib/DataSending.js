@@ -38,7 +38,7 @@ var DataSending = function() {
 		callback('error socket.io')
 		console.log('error socket.io')
 	} else{
-			console.log('soscket device find')
+			console.log('socket device find')
 			_sockets[device_id].emit('sensor-receive', JSON.stringify({
 				device_id : device_id,
 				sensor_id : '-',

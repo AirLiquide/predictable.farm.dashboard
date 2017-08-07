@@ -40,11 +40,6 @@ app.get('/', function(req, res) {
 
 
 });
-app.get('/recipes', function(req, res) {
-	//console.log('app.get(/)');
-	res.redirect('/recipes/');
-
-});
 
 app.get('/general', function(req, res) {
 	console.log('app.get(/general)');
@@ -128,9 +123,13 @@ app.post('/delete-probe', urlencodedParser, function(req, res) {
 	// TODO check login & user rights
 
 	if (typeof req.body.probe_id !== 'undefined') {
+		console.log('coucou before if' )
 		setup.deleteProbe(JSON.parse(req.body.probe_id), function() {
 			res.end('done');
-		});
+		})
+
+
+
 
 	}
 });

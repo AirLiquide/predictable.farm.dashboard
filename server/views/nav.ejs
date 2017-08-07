@@ -345,7 +345,10 @@
 
 							var probe_index = target.getAttribute('data-id-probe')
 							var id_zone = target.getAttribute('data-id-zone')
-							setup.deleteProbe(id_zone, probe_index);
+							setup.deleteProbe(id_zone, probe_index)
+								setTimeout(function () {
+						        window.location.replace("/");
+						    }, 7000);
 						}
 					},
 					ondeletePopup : function() {

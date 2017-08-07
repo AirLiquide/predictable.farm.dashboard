@@ -20,13 +20,13 @@ RUN service mysql start \
 #&& echo "CREATE DATABASE predictabledata; CREATE USER 'predictableuser'@'localhost' IDENTIFIED BY 'predictable'; GRANT ALL PRIVILEGES ON predictabledata.* TO 'predictableuser'@'localhost';" | mysql -uroot \
 && mysql -uroot < ./lib/db.sql
 
+
 #install node modules
 RUN rm -rf ./node_modules && npm install
 
-ARG TZ
-RUN echo $TZ > /etc/timezone && dpkg-reconfigure -f noninteractive tzdata \
- && cp /etc/timezone /tz/ && cp /etc/localtime /tz/
-VOLUME /tz
+#install locale zone
+RUN bash -c 'echo "Europe/Berlin" > /etc/timezone'
+RUN bash -c 'dpkg-reconfigure -f noninteractive tzdata'
 
 CMD service mysql start && service mysql status && pm2 start server.js --name=dashboard && pm2 logs
 EXPOSE 80
