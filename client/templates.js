@@ -87,11 +87,12 @@ var greenhouse_templates = {
 			<div class="sensor-block col-md-3 col-xs-6" data-id_sensor="{{id_sensor}}" style="max-width: 300px!important;">\
 				<div class="value-block {{class}}">\
 					<span class="value-label" title="{{label}}" style="padding-top: 12px;">{{label}}</span>\
-					<span class="value-medium live-label" id="valueMedium-{{probe_uuid}}" data-live-label-id="{{probe_uuid}}:{{type}}" data-live-label-style="{{style}}" data-live-label-value="" data-device_id="{{probe_uuid}}" data-sensor_type="{{type}}">--</span>\
+					<span class="value-medium live-label" id="valueMedium-{{probe_uuid}}" data-live-label-id="{{probe_uuid}}:{{type}}" data-live-label-style="{{style}}" data-live-label-value="" data-device_id="{{probe_uuid}}" data-sensor_type="{{type}}" data-id_sensor="{{id_sensor}}">--</span>\
 					<label class="switch"  onload="alert("{{sensors}}")">\
 					  <input type="checkbox" class="live-label" id="checkbox-{{probe_uuid}}" onchange=" checkAlertRelay(this) " data-relay="{{sensors}}" data-id_sensor="{{id_sensor}}" data-live-label-id="{{probe_uuid}}:{{type}}" data-live-label-style="{{style}}" data-live-label-value="" data-device_id="{{probe_uuid}}" data-sensor_type="{{type}}" data-last-value="{{last_value}}" data-block_index="{{block_index}}" data-dashboard_index="{{dashboard_index}}" data-sensor_index={{sensor_index}}>\
 					  <span class="slider round"></span>\
 					</label>\
+					<button class="automation-btn automation-btn-{{id_sensor}}" onclick="clickToAutomationMode()" id="automation-btn" data-text-swap="Automatic mode active">back to automatic mode</button>\
 					<div class="block-handle"><i class="glyphicon glyphicon-sort block-handle-icon"></i></div>\
 				</div>\
 			</div>\

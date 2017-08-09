@@ -1,8 +1,8 @@
-var MariaSql = require('mariasql');
+var Cassandra = require('cassandra');
 
 var tableWrapper = {
 
-DB_HOST : 'localhost',
+DB_HOST : 'localhost:7000',
 DB_USER : 'predictableuser',
 DB_PASS : 'predictable',
 DB_BASE : 'predictabledata',
@@ -29,7 +29,7 @@ DB_BASE : 'predictabledata',
 
     connect: function() {
         console.warn('Connecting');
-        this.connection = new MariaSql({
+        this.connection = new Cassandra({
             host : this.DB_HOST,
             user : this.DB_USER,
             password : this.DB_PASS,

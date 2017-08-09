@@ -13,7 +13,7 @@
 DROP DATABASE IF EXISTS predictabledata;
 CREATE DATABASE predictabledata;
 
-CREATE USER 'predictableuser'@'localhost' IDENTIFIED BY 'predictable';
+CREATE USER 'predictableuser'@'localhost:7000' IDENTIFIED BY 'predictable';
 GRANT ALL PRIVILEGES ON predictabledata.* TO 'predictableuser'@'localhost';
 FLUSH PRIVILEGES;
 

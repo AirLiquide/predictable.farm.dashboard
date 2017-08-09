@@ -49,11 +49,11 @@
 		/**********/
 		var configSensorType = {
 			'temperature' : { style : 'celcius-degrees', label : 'Temperature', class : 'air' },
-			'pressure' : { style : 'pascal-to-hectopascal', label : 'Atmospheric Pressure', class : 'air' },
-			'lux' : { style : 'lux', label : 'Brightness', class : 'light' },
-			'sunuvlight' : { label : 'UV (Ultraviolet)', class : 'light' },
+			'pressure' : { style : 'pascal-to-hectopascal', label : 'Air Pressure', class : 'air' },
+			'lux' : { style : 'lux', label : 'Sunrise', class : 'light' },
+			'sunuvlight' : { label : 'Light UV', class : 'light' },
 			'sunvisiblelight' : { label : 'Visible Light', class : 'light' },
-			'sunirlight' : { label : 'IR (Infrared)', class : 'light' },
+			'sunirlight' : { label : 'Light IR', class : 'light' },
 			'humidity' : { style : 'percent', label : 'Humidity', class : 'air' },
 			'misttemperature' : { style : 'celcius-degrees', label : 'Mist Temperature', class : 'nutrient' },
 			'airquality' : { style : 'air-quality', label : 'Air Quality', class : 'air' },
@@ -62,25 +62,25 @@
 			'bluelight' : { label : 'Blue Light', class : 'light' },
 			'dust' : { label : 'Dust', class : 'air' },
       'air_pressure' : { style : 'pascal-to-hectopascal', label : 'Atmospheric Pressure', class : 'air' },
-      'air_co2' : { style : 'ppm', label : 'CO2 Air ', class : 'air' },
-      'air_co' : { style : 'ppm', label : 'CO Air ', class : 'air' },
-      'air_ch4' : { style : 'ppm', label : 'CH4 Air ', class : 'air' },
-      'air_temperature' : { style : 'celcius-degrees', label : 'Temperature air', class : 'air' },
+      'air_co2' : { style : 'ppm', label : 'Air CO2 ', class : 'air' },
+      'air_co' : { style : 'ppm', label : 'Air CO', class : 'air' },
+      'air_ch4' : { style : 'ppm', label : 'Air CH4', class : 'air' },
+      'air_temperature' : { style : 'celcius-degrees', label : 'Air Temperature', class : 'air' },
       'air_humidity' : { style : 'percent', label : 'Air Humidity', class : 'air' },
       'light_lux' : { style : 'lux', label : 'Light Lux', class : 'light' },
-      'light_par' : { style : 'par', label : 'Photosynthetically active radiation', class : 'light' },
-      'light_dli' : { style : 'dli', label : 'Daily Light Integral', class : 'light' },
-      'light_uv' : { label : 'UV (Ultraviolet)', class : 'light' },
-      'water_temperature' : { style : 'celcius-degrees', label : 'Temperature Water', class : 'water' },
-      'water_ph' : { label : 'PH Water', class : 'water' },
-      'water_ec' : { style : 'mVolt', label : 'EC Water', class : 'water' },
-      'water_orp' : { style : 'mVolt', label : 'ORP Water', class : 'water' },
+      'light_par' : { style : 'μmol', label : 'Light PAR', class : 'light' },
+      'light_dli' : { style : 'dli', label : 'Light  DLI', class : 'light' },
+      'light_uv' : { label : 'Light UV', class : 'light' },
+      'water_temperature' : { style : 'celcius-degrees', label : 'Water Temperature', class : 'water' },
+      'water_ph' : { label : 'Water PH', class : 'water' },
+      'water_ec' : { style : 'mS/cm', label : 'Water EC', class : 'water' },
+      'water_orp' : { style : 'mVolt', label : 'Water ORP', class : 'water' },
       'water_do' : { style : 'do', label : 'DO Water', class : 'water' },
       'moisture' : { style : 'percent', label : 'Soil moisture', class : 'soil' }
 
 		};
 		for (var i=1; i <= 12; i++) {
-			configSensorType['relay' + i] = { style : 'relay', label : 'Relai #' + i, class : 'relay' };
+			configSensorType['relay' + i] = { style : 'relay', label : 'Relay #' + i, class : 'relay' };
 		}
 
 
@@ -1014,8 +1014,12 @@
 			document.querySelectorAll('.glyphicon-remove').forEach( (probe) =>{
 				probe.addEventListener('click', function(){ console.log('hi'); })
 			} )
+
+			var clickToAutomationMode = function() {
+				alert('comming soon');
+			}
 			function checkAlertRelay(checkboxElem) {
-				switchRelay(checkboxElem)
+				switchRelay(checkboxElem);
 				//if (checkboxElem.checked) {
 			   // alert ("hi");
 			  //} else {
@@ -1026,7 +1030,7 @@
 
 
 					var currentValue = e.getAttribute('data-live-label-value');
-					var sensor_id = e.getAttribute('data-device_id')
+					var sensor_id = e.getAttribute('data-id_sensor')
 
 
 					//io.connect('/')[e.getAttribute('data-device_id')].emit('sensor-receive', JSON.stringify({
@@ -1036,12 +1040,15 @@
 					//	sensor_value : (currentValue == 1 ? '0' : '1')
 					//}));
 					var zone = setup.getZone(0);
+					var device_id = e.getAttribute('data-device_id')
+					document.querySelectorAll('.automation-btn-' + sensor_id ).forEach( (automationBtn) =>{
+						automationBtn.className += " automation-btn-show";
 
-
+					} )
 				//	UPDATE sensor SET last_value: sensor_value WHERE device_id = :device_id;
 
 					var url = '/change-relay';
-					url += '?device_id=' + e.getAttribute('data-device_id');
+					url += '?device_id=' + device_id;
 					url += '&sensor_type=' + e.getAttribute('data-sensor_type');
 					url += '&sensor_value=' + (currentValue == 1 ? '0' : '1');
 					url += '&id_sensor=' + e.getAttribute('data-id_sensor');
@@ -1049,6 +1056,8 @@
 					document.getElementById("checkbox-" + e.getAttribute('data-device_id')).setAttribute("data-live-label-value", "1");
 					document.getElementById("valueMedium-" + e.getAttribute('data-device_id')).setAttribute("data-live-label-value", "1");
 					$.get(url);
+					//show automation-btn
+
 				};
 
 
