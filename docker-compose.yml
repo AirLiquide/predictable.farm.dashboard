@@ -14,3 +14,18 @@ services:
     volumes:
     - .:/usr/src/app/
     - /usr/src/app/server/node_modules
+  db:
+    environment:
+    - "TZ=Europe/Berlin"
+    image: cassandra-brice
+    container_name: local-test-ecf-berlin_predictable-cassandra
+
+    volumes:
+    #- ./dashboard-predictable-farm/:/usr/src/app/
+    - test-cassandra:/var/lib/cassandra/
+    #- ./mysql/:/var/lib/mysql2/
+    restart: always
+
+
+volumes:
+  test-cassandra:

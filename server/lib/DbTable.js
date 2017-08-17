@@ -1,8 +1,22 @@
-var Cassandra = require('cassandra');
+var Cassandra = require('cassandra-driver');
+
+var dbConfig = {
+    defaults: {
+        //hosts: {value: "predictable-server"}, //don't use localhost or 127.0.0.1
+        hosts: {value: 'db'}, //oriented for docker sub-network
+        port: {value: "9042"},
+        keyspace: {value: "predictablefarm"}
+    },
+    credentials: {
+        user: {type: ""},
+        password: {type: ""}
+    }
+};
+
 
 var tableWrapper = {
 
-DB_HOST : 'localhost:7000',
+DB_HOST : 'localhost:9042',
 DB_USER : 'predictableuser',
 DB_PASS : 'predictable',
 DB_BASE : 'predictabledata',
@@ -29,13 +43,23 @@ DB_BASE : 'predictabledata',
 
     connect: function() {
         console.warn('Connecting');
-        this.connection = new Cassandra({
-            host : this.DB_HOST,
-            user : this.DB_USER,
-            password : this.DB_PASS,
-            db : this.DB_BASE
+        this.connection = new Cassandra.Client({
+          contactPoints: dbConfig.defaults.hosts.value.replace(/ /g, "").split(","),
+            keyspace: dbConfig.defaults.keyspace.value
         });
-        this.connection.query('SET NAMES utf8');
+        this.connection.connect(function (err) {
+
+           if (err) {
+
+               console.log(err);
+           } else {
+               this.connected = true;
+
+               console.log("Connection to cassandra database done")
+           }
+       });
+
+
     },
 
 
@@ -50,10 +74,7 @@ DB_BASE : 'predictabledata',
     // params : columns, where, whereValues, callback, keepAlive
     // params : columns, where, whereValues, callback, keepAlive
     select: function(params) {
-        var keepAlive = this._keepAlive;
-        if (typeof params.keepAlive !== 'undefined') {
-            this._keepAlive = params.keepAlive;
-        }
+
 
         if (typeof params.columns === 'undefined') {
             params.columns = '*';
@@ -70,7 +91,10 @@ DB_BASE : 'predictabledata',
         }
 
         this.lastRequest = request;
-        this.connection.query(request, params.whereValues, params.callback);
+        console.log(request)
+        this.connection.execute('SELECT * FROM probe', params.whereValues, function(err, result) {
+  console.log('result:' + result);
+})
 
         if (!this._keepAlive) {
          //   disconnect();
@@ -98,7 +122,7 @@ DB_BASE : 'predictabledata',
             this.connect();
         }
 
-        this.connection.query(request, params.values, params.callback);
+        this.connection.execute(request, params.values, params.callback);
 
         // if (!keepAlive) {
         //   //  disconnect();
@@ -134,8 +158,8 @@ DB_BASE : 'predictabledata',
         if (!this.connection) {
             this.connect();
         }
-
-        this.connection.query(request, params.values, params.callback);
+        console.log(request)
+        this.connection.execute(request, params.values, params.callback);
         //
         // if (!keepAlive) {
         //  //   disconnect();
@@ -158,7 +182,7 @@ DB_BASE : 'predictabledata',
             this.connect();
         }
 
-        this.connection.query(request, params.whereValues, params.callback);
+        this.connection.execute(request, params.whereValues, params.callback);
 
         // if (!keepAlive) {
         //   //  disconnect();

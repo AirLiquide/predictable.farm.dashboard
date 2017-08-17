@@ -24,6 +24,8 @@ module.exports = function() {
 	};
 
 	var indexById = function(rows, identifier) {
+		console.log(rows)
+		console.log(identifier)
 		var result = {};
 		for (var i=0; i < rows.length; i++) {
 			result[rows[i][identifier]] = rows[i];
@@ -45,10 +47,11 @@ module.exports = function() {
 		dbZone.select({
 			callback : function(err, rows) {
 				// For each zone we parse the 'dashboards' field which contains JSON
+				console.log('hi load zone');
 				for (var i=0; i < rows.length; i++) {
 					rows[i].dashboards = JSON.parse(rows[i].dashboards);
 				}
-
+				console.log('hi rows :' + rows);
 				zoneCache = indexById(rows, 'id_zone');
 				zoneTime = Date.now();
 			}
@@ -56,8 +59,11 @@ module.exports = function() {
 	};
 
 	this.loadProbes = function() {
+		console.log('hi load probe');
+
 		dbProbe.select({
 			callback : function(err, rows) {
+				console.log('hi rows :' + rows);
 				probeCache = indexById(rows, 'id_probe');
 				probeTime = Date.now();
 			}
@@ -65,9 +71,10 @@ module.exports = function() {
 	};
 
 	this.loadSensors = function() {
+		console.log('hi load sensor');
 		dbSensor.select({
-			callback : function(err, rows) {
-				sensorCache = indexById(rows, 'id_sensor');
+			callback : function(err, result) {
+				sensorCache = indexById(result, 'id_sensor');
 				sensorTime = Date.now();
 			}
 		});

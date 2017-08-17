@@ -1,12 +1,11 @@
 # Source docker
 FROM node
 
-RUN npm install pm2 -g
 
-# Install cassandra
+
+
 RUN apt-get update
 RUN apt-get -y install vim
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y cassandra-driver
 
 
 # Create app directory
@@ -21,3 +20,10 @@ WORKDIR /usr/src/app/server
 
 #install node modules
 RUN rm -rf ./node_modules && npm install
+
+#install locale zone
+RUN bash -c 'echo "Europe/Berlin" > /etc/timezone'
+RUN bash -c 'dpkg-reconfigure -f noninteractive tzdata'
+
+CMD node server.js
+EXPOSE 80
