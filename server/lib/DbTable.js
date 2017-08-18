@@ -90,10 +90,23 @@ DB_BASE : 'predictabledata',
             this.connect();
         }
 
+
         this.lastRequest = request;
         console.log(request)
-        this.connection.execute('SELECT * FROM probe', params.whereValues, function(err, result) {
-  console.log('result:' + result);
+        var t = this
+        this.connection.execute("select * from sensor where id_sensor = 1", params.whereValues, function(err, result) {
+            if (err){
+              console.log('bug reload');
+              setTimeout(function(){tableWrapper.select(params); }, 5000)
+              console.log('bug not reload ><');
+
+            } else  {
+              console.log('done ')
+              console.log(result)
+              console.log(request)
+
+              t.connection.execute(request, params.whereValues, params.callback);
+            };
 })
 
         if (!this._keepAlive) {
@@ -139,28 +152,23 @@ DB_BASE : 'predictabledata',
         var request = 'UPDATE ' + this._table;
 
         if (typeof params.values === 'object') {
-            var separator = ' SET ';
-            for (var field in params.values) {
-                request += separator + field + '=:' + field;
-                separator = ' , ';
-            }
-            if (typeof params.where !== 'undefined') {
-                request += ' WHERE ' + params.where;
+            var separator = ' SET + dashboards = ?';
+            // for (var field in params.values) {
+            //     request += separator + 'dashboards = ?' ;
+            //     separator = ' , ';
+            // }
+          }
 
-                if (typeof params.whereValues === 'object') {
-                    for (var field in params.whereValues) {
-                        params.values[field] = params.whereValues[field];
-                    }
-                }
-            }
-        }
+            request += ' WHERE ' + params.where;
+
 
         if (!this.connection) {
             this.connect();
         }
-        console.log(request)
-        this.connection.execute(request, params.values, params.callback);
-        //
+        console.log('///////////// REQUEST ////////////////////////////////' + request);
+        console.log('////' + JSON.stringify(params.values.dashboards))
+        this.connection.execute(request, JSON.stringify(params.values.dashboards), params.callback);
+
         // if (!keepAlive) {
         //  //   disconnect();
         // }

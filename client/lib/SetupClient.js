@@ -37,6 +37,9 @@ var SetupClient = function(_data, _config) {
 	var _updateLinks = function() {
 		for (var id_sensor in _data.sensors) {
 			var sensor = _data.sensors[id_sensor];
+			console.log('sensors :' + sensor)
+			console.log('probes :' + _data.probes[sensor.id_probe])
+
 			var probe = _data.probes[sensor.id_probe];
 
 			// add probe.uuid to sensors
@@ -93,44 +96,54 @@ var SetupClient = function(_data, _config) {
 	};
 
 	var _prepareDashboardList = function() {
+		console.log(_data)
+
 		for (var id_zone in _data.zones) {
 			var zone = _data.zones[id_zone];
-
-
+			console.log(zone.dashboards)
+			if (zone.dashboards.includes("\\")){
+				var finalData = zone.dashboards.replace(/\\/g, "");
+				console.log(finalData)
+				zone.dashboards = JSON.parse(finalData)
+			}
+			console.log(zone.dashboards)
 			for (var dash_i=0; dash_i < zone.dashboards.length; dash_i++) {
 				var dash = _data.zones[id_zone].dashboards[dash_i];
 				dash.id_zone = id_zone;
 				dash.index = dash_i;
 
-				for (var block_i=0; block_i < dash.blocks.length; block_i++) {
-					var block = dash.blocks[block_i];
-					block.id_zone = id_zone;
-					block.dashboard_index = dash_i;
-					block.block_index = block_i;
+				if (dash.blocks){
+					for (var block_i=0; block_i < dash.blocks.length; block_i++) {
+						var block = dash.blocks[block_i];
+						block.id_zone = id_zone;
+						block.dashboard_index = dash_i;
+						block.block_index = block_i;
 
-					var sensor_ids = '';
+						var sensor_ids = '';
 
-					if (block.sensors != null){
-						for (var sensor_i=0; sensor_i < block.sensors.length; sensor_i++) {
+						if (block.sensors != null){
+							for (var sensor_i=0; sensor_i < block.sensors.length; sensor_i++) {
 
 
-								if (_data.sensors[block.sensors[sensor_i].id_sensor]) {
+									if (_data.sensors[block.sensors[sensor_i].id_sensor]) {
 
-									var cloneSensor = JSON.parse(JSON.stringify(_data.sensors[block.sensors[sensor_i].id_sensor]));
-									cloneSensor.color = block.sensors[sensor_i].color;
-									cloneSensor.sensor_index = sensor_i;
-									block.sensors[sensor_i] = cloneSensor;
+										var cloneSensor = JSON.parse(JSON.stringify(_data.sensors[block.sensors[sensor_i].id_sensor]));
+										cloneSensor.color = block.sensors[sensor_i].color;
+										cloneSensor.sensor_index = sensor_i;
+										block.sensors[sensor_i] = cloneSensor;
 
-									sensor_ids += (sensor_ids == '' ? '' : ',');
-									sensor_ids += cloneSensor.id_sensor;
+										sensor_ids += (sensor_ids == '' ? '' : ',');
+										sensor_ids += cloneSensor.id_sensor;
 
+								}
 							}
 						}
-					}
+
 
 
 					block.sensor_ids = sensor_ids;
 				}
+			}
 			}
 		}
 	};
@@ -166,6 +179,7 @@ var SetupClient = function(_data, _config) {
 
 	this.getZone = function(id_zone) {
 		return _data.zones[id_zone];
+
 	};
 
 	this.hasProbe = function(id_probe) {
@@ -684,7 +698,7 @@ var SetupClient = function(_data, _config) {
 						}
 			}
 		}
-		
+
 		var zoneUpdate = zone //-probe
 		var xhr = new XMLHttpRequest();
 

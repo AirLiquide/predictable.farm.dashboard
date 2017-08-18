@@ -24,14 +24,16 @@ module.exports = function() {
 	};
 
 	var indexById = function(rows, identifier) {
-		console.log(rows)
-		console.log(identifier)
+		console.log('result: ' + rows)
 		var result = {};
 		for (var i=0; i < rows.length; i++) {
+			console.log('on result loop')
 			result[rows[i][identifier]] = rows[i];
 		}
+		console.log('retun result ' + result)
 		return result;
 	};
+
 
 	// TODO Get values from the database
 	this.get = function() {
@@ -42,18 +44,29 @@ module.exports = function() {
 
 		return result;
 	};
-
+	var t = this;
 	this.loadZones = function() {
 		dbZone.select({
-			callback : function(err, rows) {
+			callback : function(err, result) {
 				// For each zone we parse the 'dashboards' field which contains JSON
 				console.log('hi load zone');
-				for (var i=0; i < rows.length; i++) {
-					rows[i].dashboards = JSON.parse(rows[i].dashboards);
+				console.log('result 55' + result);
+				if (result){
+					console.log('we have result !');
+					for (var i=0; i < result.length; i++) {
+						console.log('result nb: ' + i);
+						result[i].dashboards = JSON.parse(result[i].dashboards);
+					}
+				} else {
+					console.log('loadzone needed');
+					t.loadZones();
 				}
-				console.log('hi rows :' + rows);
-				zoneCache = indexById(rows, 'id_zone');
+				console.log('hi result :' + result);
+				if (result){
+				zoneCache = indexById(result.rows, 'id_zone');
+			} else {zoneCache  = []}
 				zoneTime = Date.now();
+				console.log(zoneTime)
 			}
 		});
 	};
@@ -62,10 +75,16 @@ module.exports = function() {
 		console.log('hi load probe');
 
 		dbProbe.select({
-			callback : function(err, rows) {
-				console.log('hi rows :' + rows);
-				probeCache = indexById(rows, 'id_probe');
+			callback : function(err, result) {
+				console.log(result);
+				console.log('hi result :' + result);
+					console.log('we have result ! probe');
+					if (result){
+				probeCache = indexById(result.rows, 'id_probe');
+				} else {probeCache  = []}
+				console.log('probe in cache'  + probeCache);
 				probeTime = Date.now();
+				console.log(probeTime);
 			}
 		});
 	};
@@ -74,7 +93,11 @@ module.exports = function() {
 		console.log('hi load sensor');
 		dbSensor.select({
 			callback : function(err, result) {
-				sensorCache = indexById(result, 'id_sensor');
+				console.log('sensor result: ' + result);
+				if (result){
+				sensorCache = indexById(result.rows, 'id_sensor');
+			} else {sensorCache = []}
+				console.log('sensorcache' + sensorCache );
 				sensorTime = Date.now();
 			}
 		});
@@ -185,7 +208,7 @@ module.exports = function() {
 
 		// forcing id_zone to number
 		zone.id_zone = parseInt(zone.id_zone);
-
+console.log('where are you ?')
 		// removing unnecessary dashboard fields
 		if (typeof zone.dashboards === 'object' && typeof zone.dashboards.length === 'number') {
 			for (var i=0; i < zone.dashboards.length; i++) {
@@ -295,7 +318,7 @@ module.exports = function() {
 			}
 		});
 	};
-
+console.log('lol 2')
 	refresh();
 	setInterval(refresh, 1000);
 };

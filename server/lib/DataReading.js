@@ -55,7 +55,7 @@ module.exports = function() {
 		else {
 			where += ' AND time >= :from AND time <= :to';
 		}
-		
+
 		where += ' ORDER BY id_sensor, time';
 
 		dbReading.select({
@@ -65,18 +65,18 @@ module.exports = function() {
 				from : from,
 				to : to
 			},
-			callback : function(err, rows) {
+			callback : function(err, result) {
 				if (err) {
 					console.log(err);
 					console.log(dbReading.lastRequest);
 				}
 				else {
 					if (typeof callback === 'function') {
-						callback(digestResultToJSON(rows, date_format));
+						callback(digestResultToJSON(result.rows, date_format));
 					}
 				}
 
-				
+
 			}
 		});
 	};

@@ -18,22 +18,13 @@ var DataSending = function() {
 	};
 
 	this.send = function(device_id, sensor_type, sensor_value, id_sensor, callback) {
-		console.log('hi send function')
-		var MariaSql = require('mariasql');
-		this.connection = new MariaSql({
-				host : 'localhost',
-				user : 'predictableuser',
-				password : 'predictable',
-				db : 'predictabledata'
+		console.log('hi send function new')
+		this.connection = new Cassandra.Client({
+			contactPoints: 'db',
+				keyspace: "predictablefarm"
 		});
-		console.log(_sockets)
-		console.log(device_id)
-		console.log(_sockets[device_id])
-		console.log(_sockets[id_sensor])
-		this.connection.query("UPDATE sensor SET last_value= :sensor_value WHERE id_sensor = :id_sensor",
-								          {sensor_value: sensor_value},
-													{id_sensor: id_sensor})
-													console.log('hi send function 3')
+
+		this.connection.execute("UPDATE sensor SET last_value= ? WHERE id_sensor = ?", {sensor_value: sensor_value , id_sensor: id_sensor}, console.log('hi send function'));
 		if (typeof _sockets[device_id] !== 'object') {
 		callback('error socket.io')
 		console.log('error socket.io')

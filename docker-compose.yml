@@ -3,6 +3,8 @@ version: '3'
 
 services:
   web:
+    depends_on:
+      - "db"
     environment:
       - "TZ=Europe/Berlin"
     build:
@@ -17,7 +19,7 @@ services:
   db:
     environment:
     - "TZ=Europe/Berlin"
-    image: cassandra-brice
+    image: cassandra-brice2
     container_name: local-test-ecf-berlin_predictable-cassandra
 
     volumes:

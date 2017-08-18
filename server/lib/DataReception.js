@@ -46,7 +46,7 @@ module.exports = function() {
 				callback : function(err, rows) {
 					id_sensor = rows.info.insertId;
 
-					moveToCreateReading();					
+					moveToCreateReading();
 				}
 			});
 		};
@@ -62,7 +62,7 @@ module.exports = function() {
 			notFound : moveToCreateProbe,
 			found : function(err, rows) {
 				id_probe = rows[0].id_probe;
-				
+
 				searchSensor({
 					id_probe : id_probe,
 					type : data.sensor_type,
@@ -108,11 +108,12 @@ module.exports = function() {
 			dbProbe.select({
 				where : 'uuid=:uuid',
 				whereValues : { uuid : params.uuid },
-				callback : function(err, rows) {
+				callback : function(err, result) {
+					var rows = result
 					if (err) {
 						return;
 					}
-				
+				console.log('on probe callback' + result + 'hi:' + err)
 					if (rows.length === 0) {
 						if (typeof params.notFound === 'function') {
 							params.notFound();
@@ -160,7 +161,8 @@ module.exports = function() {
 			dbSensor.select({
 				where : 'id_probe=:id_probe AND type=:type',
 				whereValues : { id_probe : params.id_probe, type : params.type },
-				callback : function(err, rows) {
+				callback : function(err, result) {
+					var rows = result
 					if (err) {
 						return;
 					}
@@ -202,7 +204,7 @@ module.exports = function() {
 				if (err) {
 					return;
 				}
-				
+
 				if (typeof params.callback === 'function') {
 					params.callback(err, rows);
 				}
@@ -226,7 +228,7 @@ module.exports = function() {
 				if (err) {
 					return;
 				}
-				
+
 				if (typeof params.callback === 'function') {
 					params.callback(err, rows);
 				}
@@ -260,7 +262,7 @@ module.exports = function() {
 				if (err) {
 					return;
 				}
-				
+
 				if (typeof params.callback === 'function') {
 					params.callback(err, rows);
 				}
