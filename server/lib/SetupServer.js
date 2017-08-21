@@ -208,7 +208,7 @@ module.exports = function() {
 
 		// forcing id_zone to number
 		zone.id_zone = parseInt(zone.id_zone);
-console.log('where are you ?')
+
 		// removing unnecessary dashboard fields
 		if (typeof zone.dashboards === 'object' && typeof zone.dashboards.length === 'number') {
 			for (var i=0; i < zone.dashboards.length; i++) {
@@ -289,10 +289,12 @@ console.log('where are you ?')
 		delete values.id_probe;
 
 		var whereValues = { id_probe : probe.id_probe };
+		var whereWhere = 'id_probe=' + probe.id_probe
 
 		dbProbe.update({
+			what : 'saveProbe',
 			values : values,
-			where : 'id_probe=:id_probe',
+			where : whereWhere,
 			whereValues : whereValues,
 			callback : function() {
 				// Refresh probes cache

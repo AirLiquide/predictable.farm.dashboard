@@ -89,26 +89,15 @@ DB_BASE : 'predictabledata',
         if (!this.connection) {
             this.connect();
         }
-
-
         this.lastRequest = request;
-        console.log(request)
         var t = this
         this.connection.execute("select * from sensor where id_sensor = 1", params.whereValues, function(err, result) {
             if (err){
-              console.log('bug reload');
               setTimeout(function(){tableWrapper.select(params); }, 5000)
-              console.log('bug not reload ><');
-
             } else  {
-              console.log('done ')
-              console.log(result)
-              console.log(request)
-
               t.connection.execute(request, params.whereValues, params.callback);
             };
-})
-
+          })
         if (!this._keepAlive) {
          //   disconnect();
         }
@@ -137,9 +126,6 @@ DB_BASE : 'predictabledata',
 
         this.connection.execute(request, params.values, params.callback);
 
-        // if (!keepAlive) {
-        //   //  disconnect();
-        // }
     },
 
 // params : values, where, whereValues, callback
@@ -154,21 +140,23 @@ DB_BASE : 'predictabledata',
         if (typeof params.values === 'object') {
             var separator = ' SET ';
             // for (var field in params.values) {
-                 request += separator + 'dashboards = ?' ;
+                 request += separator + "dashboards = '" + params.values.dashboards + "'" ;
             //     separator = ' , ';
             // }
           }
 
-            request += ' WHERE id_zone= ?' ;
-
-
+        request += ' WHERE id_zone= ' +  params.zoneId;
+        if (params.what == 'saveProbe'){
+          request = 'UPDATE ' + this._table ;
+          request += separator + "name= '" + params.values.name + "' ";
+          request +=  'WHERE ' + params.where;
+        };
         if (!this.connection) {
             this.connect();
         }
-        console.log('///////////// REQUEST ///////////////////' + params.zoneId + '/////////////' + request);
-        console.log('////' + JSON.stringify(params.values.dashboards))
-        paramsList = [params.values.dashboards , params.zoneId]
-        console.log( '*******************' +  JSON.stringify(paramsList ) )
+
+        paramsList = []
+
         this.connection.execute(request, paramsList, params.callback);
 
         // if (!keepAlive) {

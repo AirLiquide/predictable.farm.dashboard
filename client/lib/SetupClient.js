@@ -102,9 +102,12 @@ var SetupClient = function(_data, _config) {
 			var zone = _data.zones[id_zone];
 			console.log(zone.dashboards)
 			if (typeof zone.dashboards !== 'object' ) {
+				zone.dashboards = zone.dashboards.replace(/\\/g, '');
+				console.log(zone.dashboards)
 				zone.dashboards = JSON.parse(zone.dashboards)
 			}
-			console.log(zone.dashboards)
+
+
 			for (var dash_i=0; dash_i < zone.dashboards.length; dash_i++) {
 				var dash = _data.zones[id_zone].dashboards[dash_i];
 				dash.id_zone = id_zone;
