@@ -101,10 +101,8 @@ var SetupClient = function(_data, _config) {
 		for (var id_zone in _data.zones) {
 			var zone = _data.zones[id_zone];
 			console.log(zone.dashboards)
-			if (zone.dashboards.includes("\\")){
-				var finalData = zone.dashboards.replace(/\\/g, "");
-				console.log(finalData)
-				zone.dashboards = JSON.parse(finalData)
+			if (typeof zone.dashboards !== 'object' ) {
+				zone.dashboards = JSON.parse(zone.dashboards)
 			}
 			console.log(zone.dashboards)
 			for (var dash_i=0; dash_i < zone.dashboards.length; dash_i++) {
@@ -206,6 +204,9 @@ var SetupClient = function(_data, _config) {
 	};
 
 	this.getDashboard = function(id_zone, index) {
+		console.log(index)
+		console.log(id_zone)
+		console.log(_data)
 		return _data.zones[id_zone].dashboards[index];
 	};
 

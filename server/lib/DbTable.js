@@ -152,22 +152,24 @@ DB_BASE : 'predictabledata',
         var request = 'UPDATE ' + this._table;
 
         if (typeof params.values === 'object') {
-            var separator = ' SET + dashboards = ?';
+            var separator = ' SET ';
             // for (var field in params.values) {
-            //     request += separator + 'dashboards = ?' ;
+                 request += separator + 'dashboards = ?' ;
             //     separator = ' , ';
             // }
           }
 
-            request += ' WHERE ' + params.where;
+            request += ' WHERE id_zone= ?' ;
 
 
         if (!this.connection) {
             this.connect();
         }
-        console.log('///////////// REQUEST ////////////////////////////////' + request);
+        console.log('///////////// REQUEST ///////////////////' + params.zoneId + '/////////////' + request);
         console.log('////' + JSON.stringify(params.values.dashboards))
-        this.connection.execute(request, JSON.stringify(params.values.dashboards), params.callback);
+        paramsList = [params.values.dashboards , params.zoneId]
+        console.log( '*******************' +  JSON.stringify(paramsList ) )
+        this.connection.execute(request, paramsList, params.callback);
 
         // if (!keepAlive) {
         //  //   disconnect();

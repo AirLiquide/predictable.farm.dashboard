@@ -233,14 +233,16 @@ console.log('where are you ?')
 		var values = JSON.parse(JSON.stringify(zone));
 		delete values.id_zone;
 
-		var whereValues = { id_zone : zone.id_zone };
+
 
 		dbZone.update({
 			values : values,
-			where : 'id_zone=:id_zone',
-			whereValues : whereValues,
-			callback : function() {
+			where : 'id_zone= ?',
+			zoneId : zone.id_zone,
+			callback : function(err, result) {
 				// Refresh zones cache
+				console.log('error: ' + err)
+				console.log('result: ' + result)
 				self.loadZones();
 
 				if (typeof callback === 'function') {
