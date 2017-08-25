@@ -418,7 +418,7 @@ var SetupClient = function(_data, _config) {
 
 	this.addDashboard = function(id_zone, callback) {
 		var newDashboard = {
-			name : 'Nouveau tableau',
+			name : 'New Dashboard',
 			blocks : []
 		};
 

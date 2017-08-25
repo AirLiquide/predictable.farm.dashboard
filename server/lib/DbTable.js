@@ -80,7 +80,7 @@ DB_BASE : 'predictabledata',
             params.columns = '*';
         }
 
-        var request = 'SELECT ' + params.columns + ' FROM ' + this._table;
+        var request = 'SELECT ' + params.columns + ' FROM ' + params.table;
 
         if (typeof params.where !== 'undefined') {
             request += ' WHERE ' + params.where;
@@ -91,10 +91,12 @@ DB_BASE : 'predictabledata',
         }
         this.lastRequest = request;
         var t = this
-        this.connection.execute("select * from sensor where id_sensor = 1", params.whereValues, function(err, result) {
+         console.log('****$$$$ SELECT REQUEST $$$$******  ' + request)
+        this.connection.execute('select * from zone ', params.whereValues, function(err, result) {
             if (err){
               setTimeout(function(){tableWrapper.select(params); }, 5000)
             } else  {
+
               t.connection.execute(request, params.whereValues, params.callback);
             };
           })
@@ -113,16 +115,15 @@ DB_BASE : 'predictabledata',
         var request = 'INSERT INTO ' + this._table;
 
         if (typeof params.values === 'object') {
-            var separator = ' SET ';
-            for (var field in params.values) {
-                request += separator + field + '=:' + field;
-                separator = ' , ';
-            }
+            var separator = ' VALUES (';
+            request += params.listValue + separator + params.set + ")";
+
         }
 
         if (!this.connection) {
             this.connect();
         }
+        console.log('////****$$$$ INSERT REQUEST $$$$******////  ' + request)
 
         this.connection.execute(request, params.values, params.callback);
 
@@ -140,17 +141,13 @@ DB_BASE : 'predictabledata',
         if (typeof params.values === 'object') {
             var separator = ' SET ';
             // for (var field in params.values) {
-                 request += separator + "dashboards = '" + params.values.dashboards + "'" ;
+                 request += separator + params.set ;
             //     separator = ' , ';
             // }
           }
 
-        request += ' WHERE id_zone= ' +  params.zoneId;
-        if (params.what == 'saveProbe'){
-          request = 'UPDATE ' + this._table ;
-          request += separator + "name= '" + params.values.name + "' ";
-          request +=  'WHERE ' + params.where;
-        };
+        request += ' WHERE ' +  params.where;
+        console.log("++++++++++++++++ UPDATE REQUEST: " + request)
         if (!this.connection) {
             this.connect();
         }
@@ -179,7 +176,7 @@ DB_BASE : 'predictabledata',
         if (!this.connection) {
             this.connect();
         }
-
+        console.log('////****$$$$ DELETE REQUEST $$$$******////  ' + request)
         this.connection.execute(request, params.whereValues, params.callback);
 
         // if (!keepAlive) {

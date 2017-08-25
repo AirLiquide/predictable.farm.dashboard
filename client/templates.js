@@ -142,14 +142,14 @@ var greenhouse_templates = {
 		</div>\
 	{{/dashboard.blocks}}',
 	dashboard_empty : '<div class="row text-center">\
-		<div class="lead text-center"><br />Ce tableau est vide pour l\'instant</div>\
+		<div class="lead text-center"><br />Empty dashboard</div>\
 	</div>',
 	dashboard_create_block : '<div class="row text-center"><br>\
 		<button class="btn btn-default" onclick="setup.addDashboardBlock({{dashboard.id_zone}}, {{dashboard.index}}, urlChangeHandler)">Add a block</button>\
 	</div>',
 
 	not_found : '<div class="row text-center">\
-		<div class="lead">Contenu introuvable</div>\
+		<div class="lead">Content not found</div>\
 	</div>'
 	/*
 	greenhouse : '\

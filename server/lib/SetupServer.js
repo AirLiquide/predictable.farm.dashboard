@@ -47,6 +47,7 @@ module.exports = function() {
 	var t = this;
 	this.loadZones = function() {
 		dbZone.select({
+			table : "zone",
 			callback : function(err, result) {
 				// For each zone we parse the 'dashboards' field which contains JSON
 				console.log('hi load zone');
@@ -75,6 +76,7 @@ module.exports = function() {
 		console.log('hi load probe');
 
 		dbProbe.select({
+			table : "probe",
 			callback : function(err, result) {
 				console.log(result);
 				console.log('hi result :' + result);
@@ -92,6 +94,7 @@ module.exports = function() {
 	this.loadSensors = function() {
 		console.log('hi load sensor');
 		dbSensor.select({
+			table : "sensor",
 			callback : function(err, result) {
 				console.log('sensor result: ' + result);
 				if (result){
@@ -236,8 +239,9 @@ module.exports = function() {
 
 
 		dbZone.update({
+			set : "dashboards = '" + values.dashboards + "'" ,
 			values : values,
-			where : 'id_zone= ?',
+			where : 'id_zone= ' + zone.id_zone,
 			zoneId : zone.id_zone,
 			callback : function(err, result) {
 				// Refresh zones cache
@@ -289,9 +293,10 @@ module.exports = function() {
 		delete values.id_probe;
 
 		var whereValues = { id_probe : probe.id_probe };
-		var whereWhere = 'id_probe=' + probe.id_probe
+		var whereWhere = 'id_probe= ' + "'" + probe.id_probe + "' AND "  + 'uuid= ' + "'" + probe.id_probe + "'"
 
 		dbProbe.update({
+			set :  "name= '" + values.name + "' ",
 			what : 'saveProbe',
 			values : values,
 			where : whereWhere,

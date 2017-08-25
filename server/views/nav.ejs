@@ -217,7 +217,8 @@
 									}
 									else {
 										disabled = '';
-										onclick = ' onclick="setup.addSensorToDashboardBlock(' + dashboardBlock.id_zone + ', ' + dashboardBlock.dashboard_index + ', ' + dashboardBlock.block_index + ', ' + sensors[j].id_sensor + ', urlChangeHandler)"';
+										onclick = ' onclick="setup.addSensorToDashboardBlock(' + dashboardBlock.id_zone + ', ' + dashboardBlock.dashboard_index + ', ' + dashboardBlock.block_index + ', ' + "'" + sensors[j].id_sensor  + "'";
+										onclick += ', urlChangeHandler)"';
 									}
 
 									html += '<li class="btn btn-add btn-' + sensors[j].class   + disabled + '"' +  '>';
