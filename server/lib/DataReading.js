@@ -19,7 +19,11 @@ module.exports = function() {
 
 	this.getListReading = function(sensors, from, to, date_format, callback) {
 //SELECT * FROM sensorlog WHERE ts >= '2013-01-01 00:00:00+0200' AND  ts <= '2013-08-13 23:59:00+0200' AND token(user_id) > previous_token LIMIT 100 ALLOW FILTERING;
-		var columns = 'device_id, value';
+		console.log('from reading: ******' + from)
+		console.log('to reading: ******' + to)
+		console.log('from reading: ******' + sensors)
+		console.log('from reading: ******' + date_format)
+		var columns = 'device_id, sensor_value, created_at';
 		// switch (date_format) {
 		// 	case 'utc':
 		// 		columns += ', CONCAT("Date.UTC(", YEAR(time), ",", MONTH(time)-1, ",", DAY(time), ",", HOUR(time), ",", MINUTE(time), ",", SECOND(time), ")") AS time';
@@ -42,24 +46,31 @@ module.exports = function() {
 		// 		columns += ', time';
 		// 	break;
 		// }
-		var timeBegin =;
-		var timeEnd =;
-		var where = 'created_at >=  ' + ;
-		if (date_format === 'timestamp' || date_format === 'microtime') {
-			where += ' AND UNIX_TIMESTAMP(time) >= :from AND UNIX_TIMESTAMP(time) <= :to';
+		var timeBegin ="";
+		var timeEnd ="";
+
 
 			if (date_format === 'microtime') {
-				from /= 1000;
-				to /= 1000;
+				var from1 = new Date(from *1000 );
+				var to1 = new Date(to *1000);
+				var from2 = new Date(from1 / 1000).toISOString();
+				var to2 = new Date(to1 / 1000).toISOString();
 			}
-		}
-		else {
-			where += ' AND time >= :from AND time <= :to';
-		}
+			console.log('from reading: ******' + from1 )
+			console.log('to reading: ******' + to1 )
+			console.log('from2 reading: ******' + from2 )
+			console.log('to2 reading: ******' + to2 )
+			var sensorList = "AND device_id in ("
 
-		where += ' ORDER BY device_id, time';
- console.log('/////////where: ' + where +  'columns : ' + columns )
+			sensorList += "'" + "10" + "'"
+
+			sensorList += ")"
+			var where = "created_at >=  '" + from2 + "' AND  created_at <= '" + to2  + "' " + sensorList  + " LIMIT 100 ALLOW FILTERING ";
+
+			columns = 'device_id, sensor_value, created_at';
+ console.log('/////////where: ' + where )
 		dbReading.select({
+			table : 'sensorlog',
 			columns : columns,
 			where : where,
 			whereValues : {
@@ -72,6 +83,7 @@ module.exports = function() {
 					console.log(dbReading.lastRequest);
 				}
 				else {
+					console.log('result : ' + JSON.stringify(result.rows))
 					if (typeof callback === 'function') {
 						callback(digestResultToJSON(result.rows, date_format));
 					}
@@ -118,8 +130,10 @@ module.exports = function() {
 		var row;
 		var lastSensor = -1;
 		var firstRecord = true;
+		console.log(rows)
 		for (var i=0; i < rows.length; i++) {
 			row = rows[i];
+			console.log(row)
 
 			if (row.device_id != lastSensor) {
 				firstRecord = true;
@@ -136,13 +150,13 @@ module.exports = function() {
 			}
 			json += '[';
 			if (date_format == 'utc' || date_format == 'microtime') {
-				json += row.time;
+				json += '"' + row.created_at.toISOString() + '"';
 			}
 			else {
-				json += '"' + row.time + '"';
+				json += '"' + row.created_at.toISOString() + '"';
 			}
 			json += ',';
-			json += row.value;
+			json += row.sensor_value;
 			json += ']';
 
 			firstRecord = false;
@@ -153,7 +167,7 @@ module.exports = function() {
 		}
 
 		json += '}';
-
+ console.log(json);
 		return json;
 	};
 };

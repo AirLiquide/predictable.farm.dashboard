@@ -19,8 +19,8 @@ services:
   db:
     environment:
     - "TZ=Europe/Berlin"
-    image: cassandra-brice2
-    container_name: local-test-ecf-berlin_predictable-cassandra
+    image: cassandra-brice3
+    container_name: local-test-ecf-berlin_predictable-cassandra2
 
     volumes:
     #- ./dashboard-predictable-farm/:/usr/src/app/
