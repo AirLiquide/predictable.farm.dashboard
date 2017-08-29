@@ -81,7 +81,7 @@ var greenhouse_templates = {
 	<script>alert("tamer")</script>',
 
 	sensor_group : '\
-	<div class="row row-chart" data-type="probe-block" data-id_probe="{{probe.id_probe}}" data-sensor_ids="{{probe.sensor_ids}}""></div>\
+	<div class="row row-chart" data-type="probe-block" data-id_probe="{{probe.id_probe}}" data-id_probes="{{probe.id_probes}}" data-sensor_ids="{{probe.sensor_ids}}""></div>\
 	<div class="row row-content gutter-20" id="sensor-list" data-id_probe="{{probe.id_probe}}" >\
 		{{#sensors}}\
 			<div class="sensor-block col-md-3 col-xs-6" data-id_sensor="{{id_sensor}}" style="max-width: 300px!important;">\

@@ -195,11 +195,20 @@ var SetupClient = function(_data, _config) {
 	};
 
 	this.hasSensor = function(id_sensor) {
-		return (typeof _data.sensors[id_sensor] === 'object');
+		return (typeof _data.sensors["'" + id_sensor + "'"] === 'object');
 	};
 
 	this.getSensor = function(id_sensor) {
+		console.log(_data.sensors)
+		return _data.sensors[  id_sensor ];
+	};
+	this.getSensorChart = function(id_sensor) {
+		console.log(_data.sensors)
 		return _data.sensors[id_sensor];
+	};
+	this.getSensorCharty = function(id_sensor) {
+		console.log(_data.sensors)
+		return _data.sensors["'" + id_sensor + "'"];
 	};
 
 	this.hasDashboard = function(id_zone, index) {

@@ -73,6 +73,7 @@ app.get('/get-list-reading', function(req, res) {
 
 	dataReading.getListReading(
 		req.query.sensors,
+		req.query.sensorsList,
 		req.query.from,
 		req.query.to,
 		date_format,

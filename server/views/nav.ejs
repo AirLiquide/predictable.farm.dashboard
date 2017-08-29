@@ -708,34 +708,55 @@
 			// get all the charts in the page
 			var chartTags = document.getElementsByClassName('row-chart');
 			var allNeededSensors = {};
+			var sensorList = [];
 
 			for (var i=0; i < chartTags.length; i++) {
 				var sensor_ids = chartTags[i].getAttribute('data-sensor_ids')
+				var sensor_device_ids = chartTags[i].getAttribute('data-device_ids')
+				var sensor_types = chartTags[i].getAttribute('data-types')
 				var chartNeededSensors = sensor_ids.split(',');
 
 				for (var j=0; j < chartNeededSensors.length; j++) {
 					var id_sensor = chartNeededSensors[j];
-
+					console.log(chartNeededSensors[j] + typeof chartNeededSensors[j])
+					var tempSensorCyril = setup.getSensorChart(id_sensor)
+					console.log(tempSensorCyril);
+					delete tempSensorCyril.class;
+					delete tempSensorCyril.id_zone;
+					delete tempSensorCyril.label;
+					delete tempSensorCyril.last_time;
+					delete tempSensorCyril.last_value;
+					delete tempSensorCyril.probe_name;
+					delete tempSensorCyril.sort_order;
+					delete tempSensorCyril.style;
+					delete tempSensorCyril.probe_uuid;
+					sensorList.push(JSON.stringify(tempSensorCyril))
 					// add the id_sensor to those wanted
-					allNeededSensors[id_sensor] = true;
+					allNeededSensors["'"+ id_sensor + "'"] = true;
 				}
 			}
 
 			// we check if we already have data for what is asked
-			var isCacheEnough = true;
+
 			var neededSensors = [];
+
 			for (var id_sensor in allNeededSensors) {
+				// var sensor_type =
 				var missing = cache.checkMissingCache(id_sensor, chartStart, (chartStart + chartPeriod));
 
-				allNeededSensors[id_sensor] = missing;
+				allNeededSensors["'"+id_sensor+ "'"] = missing;
 
 				if (missing !== false) {
 					isCacheEnough = false;
 					neededSensors.push(id_sensor);
+
+					// neededSensorsType.push(sensor_type);
+					// neededSensorsDevice.push(device_id);
 				}
 			}
 
 			var displayChart = function() {
+				console.log('displayChart BEGIN')
 				charts = [];
 				for (var i=0; i < chartTags.length; i++) {
 					// TODO highcharts from cache
@@ -748,17 +769,23 @@
 
 					for (var j=0; j < chartSensors.length && j < 4; j++) {
 						var optiIndex = 0
+						console.log('displayChart BEGIN 1' + chartSensors)
 						var sensor = setup.getSensor(chartSensors[j]);
-
+						// var sensor = setup.getSensorCharty(chartSensors[j]);
+						console.log('displayChart 1' + JSON.stringify(sensor))
+						console.log('displayChart 2' + sensor.type)
+						console.log('displayChart BEGIN 2')
 						// create a new axis if needed
 						var yAxisId;
+						var ChartDataX = {};
 						if (typeof yAxisIndex[sensor.type] === 'undefined') {
+							console.log('push Y' + sensor.type)
 							yAxisId = yAxis.length;
 							yAxis.push({
 								//labels : { format : '{value}°C', style : { color : 'red' }},
 								showEmpty : false,
 								title : {
-									text : sensor.label
+									text : sensor.type
 									//style : { color : 'red' }
 								}
 							});
@@ -767,11 +794,11 @@
 						else {
 							yAxisId = yAxisIndex[sensor.type];
 						}
-
+						console.log('ready to push to series')
 							series.push({
 								type : 'spline',
-								name : sensor.label,
-								data : cache.getCache(sensor.id_sensor, chartStart, (chartStart + chartPeriod), false),
+								name : sensor.type,
+								data : ChartDataX,
 								yAxis : yAxisId
 							});
 
@@ -786,7 +813,7 @@
 							series[j].data = temp
 					}
 
-
+console.log('ready to push to chart' + series)
 
 					charts.push(Highcharts.chart(chartTags[i], {
 						chart : {
@@ -813,19 +840,34 @@
 			}
 			else {
 				//console.debug('GETTING NEW DATA');
+				console.log(sensorList)
 				var url = '/get-list-reading'
 				url += '?date_format=microtime';
 				url += '&sensors=' + neededSensors.join(',');
+				url += '&sensorsList=' + sensorList.join(',');
 				url += '&from=' + (chartStart - chartPeriod);
 				url += '&to=' + ((chartStart + chartPeriod) + chartPeriod);
 				url += '&format=jsonp';
 				url += '&callback=?';
 
 				$.getJSON(url, function(data) {
-					for (var id_probe in data) {
-						cache.setCache(id_probe, data[id_probe]);
-					}
-
+					// for (var id_probe in data) {
+					// 	console.log('id probe:'+id_probe +'url :'+ url + 'data : ' + JSON.stringify(data))
+					// 	cache.setCache(id_probe, data[id_probe]);
+					//new Date().getTime()
+					// }
+					ChartDataX = data
+					console.log('pret a display chart')
+					ChartDateX =  [
+				    ["a", Date.UTC(2013,5,26), 21.2022222222222222],
+				    ["a", Date.UTC(2013,5,26), 53.3066666666666667],
+				    ["a", Date.UTC(2013,5,26), 0.04694444444444444444],
+				    ["a", Date.UTC(2013,5,26), 5.1425000000000000],
+				    ["b", Date.UTC(2013,5,26), 334.7358333333333333],
+				    ["b", Date.UTC(2013,5,26), 212.6386111111111111],
+				    ["b", Date.UTC(2013,5,26), 26.2955555555555556],
+				    ["4air_humidity", Date.UTC(2013,5,26), 0.00444444444444444444]
+					];
 					displayChart();
 				}, 'json');
 			}

@@ -17,13 +17,39 @@ module.exports = function() {
 		// TODO
 	};
 
-	this.getListReading = function(sensors, from, to, date_format, callback) {
+	this.getListReading = function(sensors, sensorsList, from, to, date_format, callback) {
 //SELECT * FROM sensorlog WHERE ts >= '2013-01-01 00:00:00+0200' AND  ts <= '2013-08-13 23:59:00+0200' AND token(user_id) > previous_token LIMIT 100 ALLOW FILTERING;
 		console.log('from reading: ******' + from)
 		console.log('to reading: ******' + to)
 		console.log('from reading: ******' + sensors)
 		console.log('from reading: ******' + date_format)
-		var columns = 'device_id, sensor_value, created_at';
+		console.log('sensorList : //////' + sensorsList)
+		console.log(typeof sensorList)
+		console.log('sensorList : //////' + JSON.stringify(sensorsList))
+		var objetSensors = {}
+		objetSensors = JSON.parse( '[' +sensorsList + ']');
+		console.log(objetSensors + typeof objetSensors)
+
+		sensorsList = objetSensors;
+		console.log('sensorList : //////' + sensorsList)
+		console.log('sensorList type : //////' + typeof sensorsList)
+		var sensorHash = {}
+		//
+		// var listSensor = dbReading.select({
+		// 	table : 'sensor',
+		// 	callback : function(err, result) {
+		// 		if (err) {
+		// 			console.log(err);
+		// 		}
+		// 		console.log(result);
+		// 		console.log(result.rows);
+		// 		return result.rows
+		// 	}});
+		// 	console.log(listSensor)
+		// for (var i=0; i < sensors.length; i++) {
+		// 	console.log(i)
+		// 	sensorHash[i] = sensors.id_sensor[sensors[i]];
+		// }
 		// switch (date_format) {
 		// 	case 'utc':
 		// 		columns += ', CONCAT("Date.UTC(", YEAR(time), ",", MONTH(time)-1, ",", DAY(time), ",", HOUR(time), ",", MINUTE(time), ",", SECOND(time), ")") AS time';
@@ -60,15 +86,22 @@ module.exports = function() {
 			console.log('to reading: ******' + to1 )
 			console.log('from2 reading: ******' + from2 )
 			console.log('to2 reading: ******' + to2 )
-			var sensorList = "AND device_id in ("
+			var whereDevice_ids = Array();
+			var whereSensor_types = Array();
+			for (var i=0; i < sensorsList.length; i++) {
+				whereDevice_ids.push( "'" + sensorsList[i].id_probe + "'");
+				whereSensor_types.push( "'" + sensorsList[i].type + "'");
+			}
+			var WhereDevices = "AND device_id in (" + whereDevice_ids.join(',') + ")"
+			var WhereTypes = "AND sensor_type in (" + whereSensor_types.join(',') + ")"
+			console.log(WhereTypes);
+			console.log(WhereDevices);
 
-			sensorList += "'" + "10" + "'"
 
-			sensorList += ")"
-			var where = "created_at >=  '" + from2 + "' AND  created_at <= '" + to2  + "' " + sensorList  + " LIMIT 100 ALLOW FILTERING ";
+			var where = "created_at >=  '" + from2 + "' AND  created_at <= '" + to2  + "' " + WhereDevices + WhereTypes  + "  ALLOW FILTERING ";
 
-			columns = 'device_id, sensor_value, created_at';
- console.log('/////////where: ' + where )
+			columns = 'device_id, sensor_type, sensor_value, created_at';
+ 		console.log('/////////where: ' + where )
 		dbReading.select({
 			table : 'sensorlog',
 			columns : columns,
@@ -80,7 +113,7 @@ module.exports = function() {
 			callback : function(err, result) {
 				if (err) {
 					console.log(err);
-					console.log(dbReading.lastRequest);
+
 				}
 				else {
 					console.log('result : ' + JSON.stringify(result.rows))
@@ -124,25 +157,32 @@ module.exports = function() {
 	};
 
 	var digestResultToJSON = function(rows, date_format) {
+		var tempRows =  {};
+		// for (var i=0; i < rows.length; i++) {
+		// 	 tempRows['4air'].push(rows[i]);
+		//
+		// }
+
+
 		var result = {};
 		var json = '{';
 
 		var row;
 		var lastSensor = -1;
 		var firstRecord = true;
-		console.log(rows)
+		console.log( rows.length)
 		for (var i=0; i < rows.length; i++) {
 			row = rows[i];
-			console.log(row)
+
 
 			if (row.device_id != lastSensor) {
 				firstRecord = true;
 				if (lastSensor != -1) {
 					json += '],';
 				}
-				json += '"' + row.device_id + '":[';
+				json += '"' + row.device_id + row.sensor_type + '":[';
 
-				lastSensor = row.device_id;
+				lastSensor = row.device_id + row.sensor_type;
 			}
 
 			if (!firstRecord) {

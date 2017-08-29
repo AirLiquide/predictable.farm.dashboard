@@ -24,7 +24,7 @@ module.exports = function() {
 	};
 
 	var indexById = function(rows, identifier) {
-		console.log('result: ' + rows)
+		console.log('result: ' + rows + identifier)
 		var result = {};
 		for (var i=0; i < rows.length; i++) {
 			console.log('on result loop')
@@ -92,13 +92,15 @@ module.exports = function() {
 	};
 
 	this.loadSensors = function() {
-		console.log('hi load sensor');
+		console.log('hi load sensor bug ?');
 		dbSensor.select({
 			table : "sensor",
 			callback : function(err, result) {
 				console.log('sensor result: ' + result);
 				if (result){
+
 				sensorCache = indexById(result.rows, 'id_sensor');
+				console.log(sensorCache)
 			} else {sensorCache = []}
 				console.log('sensorcache' + sensorCache );
 				sensorTime = Date.now();

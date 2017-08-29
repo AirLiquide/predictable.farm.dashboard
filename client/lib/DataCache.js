@@ -23,7 +23,7 @@ var DataCache = function() {
 	};
 
 	this.setCache = function(item, data) {
-		//console.log('DataCache.setCache( ' + item + ', ' + data.length + ' items )');
+		console.log('DataCache.setCache( ' + item + ', ' + data.length + ' items )');
 
 		_sortSerie(data);
 		data = _insertMissingPoint(data);

@@ -46,7 +46,7 @@ module.exports = function() {
 					last_value : data.sensor_value
 				},
 				callback : function(err, result) {
-					id_sensor = result.rows[0].id_sensor;
+					id_sensor = data.device_id + data.sensor_type;
 					console.log('create sensor');
 					moveToCreateReading();
 				}
@@ -174,7 +174,7 @@ module.exports = function() {
 			// search sensor in db
 			dbSensor.select({
 				table : 'sensor',
-				where : "id_probe=" + "'" +  params.id_probe + "'" +  "AND type='" + params.type + "' " + "ALLOW FILTERING" ,
+				where : "id_probe=" + "'" + params.id_probe + "'" +  " AND type='" + params.type + "' " + "ALLOW FILTERING" ,
 				whereValues : { id_probe : params.id_probe, type : params.type },
 				callback : function(err, result) {
 					var rows = result
@@ -248,7 +248,7 @@ module.exports = function() {
 		}
 
 		dbSensor.insert({
-			set :   "uuid()"  + ", '" + params.values.id_probe + "', " + "'" + params.values.type + "', " + "'" + params.values.last_value + "', " + "toTimestamp(now())",
+			set :   "'" + params.values.id_probe + params.values.type + "'"  + ", '" + params.values.id_probe + "', " + "'" + params.values.type + "', " + "'" + params.values.last_value + "', " + "toTimestamp(now())",
 			listValue : "(id_sensor, id_probe, type, last_value, last_time)",
 			values : {
 				id_probe : params.values.id_probe,
@@ -286,7 +286,7 @@ module.exports = function() {
 			values : {
 				last_value : params.values.last_value,
 			},
-			where : 'id_sensor =' + params.values.id_sensor ,
+			where : "id_sensor =" + "'" + params.values.id_sensor + "'" ,
 			whereValues : { id_sensor : params.values.id_sensor }
 		});
 	};
