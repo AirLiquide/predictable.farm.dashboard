@@ -195,7 +195,7 @@ var SetupClient = function(_data, _config) {
 	};
 
 	this.hasSensor = function(id_sensor) {
-		return (typeof _data.sensors["'" + id_sensor + "'"] === 'object');
+		return (typeof _data.sensors[id_sensor ] === 'object');
 	};
 
 	this.getSensor = function(id_sensor) {

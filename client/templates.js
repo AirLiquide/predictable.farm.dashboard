@@ -20,33 +20,34 @@ var greenhouse_templates = {
 	period_selector : '\
 	<div class="row row-period">\
 	<div class="ten-marging-top">\
-			<div class="col-md-1 col-xs-2"><button type="button" class="btn btn-default btn-block invisible-btn" id="period_navigation_previous">\
+			<div class="col-md-1 col-xs-2"><button type="button" class="btn btn-default btn-block invisible-btn" id="period_navigation_previous" onclick="newLoadWait()">\
 			<img src="/images/left.svg" id="period_navigation_previous" />\
 			</button></div>\
 			<div class="col-md-4 col-xs-8 text-center" id="period_navigation_label">{{{periodLabel}}}</div>\
-			<div class="col-md-1 col-xs-2"><button type="button" class="btn btn-default btn-block invisible-btn" id="period_navigation_next">\
+			<div class="col-md-1 col-xs-2"><button type="button" class="btn btn-default btn-block invisible-btn" id="period_navigation_next" onclick="newLoadWait()">\
 			<img src="/images/right.svg" id="period_navigation_next"/>\
 			</button></div>\
 		</div>\
 		<div class="block-cal">\
 			<div class="btn-group btn-group-justified" role="group">\
 				<div class="btn-group" role="group">\
-					<button type="button" class="btn btn-default invisible-btn-text" id="period_selector_day">Day</button>\
+					<button type="button" class="btn btn-default invisible-btn-text" id="period_selector_day" onclick="newLoadWait()">Day</button>\
 					<p style="display:inline-block">|</p>\
 				</div>\
 				<div class="btn-group" role="group">\
-					<button type="button" class="btn btn-default invisible-btn-text" id="period_selector_week">Week </button>\
+					<button type="button" class="btn btn-default invisible-btn-text" id="period_selector_week" onclick="newLoadWait()">Week </button>\
 					<p style="display:inline-block">|</p>\
 				</div>\
 				<div class="btn-group" role="group">\
-					<button type="button" class="btn btn-default invisible-btn-text" id="period_selector_month">Month </button>\
+					<button type="button" class="btn btn-default invisible-btn-text" id="period_selector_month" onclick="newLoadWait()">Month </button>\
 						<p class="last-pip" style="display:inline-block">|</p>\
 				</div>\
 				<div class="year-select" class="btn-group" role="group">\
-					<button type="button" class="btn btn-default invisible-btn-text"  id="period_selector_year">Year</button>\
+					<button type="button" class="btn btn-default invisible-btn-text"  id="period_selector_year" onclick="newLoadWait()">Year</button>\
 				</div>\
 			</div>\
 		</div>\
+		<button type="button" onclick="downloadCSV()" download="example.json" class="btn btn-default btn-sm btn-download-csv"> <span class="glyphicon glyphicon-download" aria-hidden="true"></span> Download .csv</button>\
 	</div>\
 	',
 
@@ -77,14 +78,14 @@ var greenhouse_templates = {
 			</ul>\
 			<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>\
 		</div>\
-	</div>\
-	<script>alert("tamer")</script>',
+	</div>',
 
 	sensor_group : '\
+	<div class="loader"></div>\
 	<div class="row row-chart" data-type="probe-block" data-id_probe="{{probe.id_probe}}" data-id_probes="{{probe.id_probes}}" data-sensor_ids="{{probe.sensor_ids}}""></div>\
 	<div class="row row-content gutter-20" id="sensor-list" data-id_probe="{{probe.id_probe}}" >\
 		{{#sensors}}\
-			<div class="sensor-block col-md-3 col-xs-6" data-id_sensor="{{id_sensor}}" style="max-width: 300px!important;">\
+			<div class="sensor-block col-md-3 col-xs-6" data-id_sensor="{{id_sensor}}" style="max-width: 300px!important;" data-time_sensor="{{last_time}}">\
 				<div class="value-block {{class}}">\
 					<span class="value-label" title="{{label}}" style="padding-top: 12px;">{{label}}</span>\
 					<span class="value-medium live-label" id="valueMedium-{{probe_uuid}}" data-live-label-id="{{probe_uuid}}:{{type}}" data-live-label-style="{{style}}" data-live-label-value="" data-device_id="{{probe_uuid}}" data-sensor_type="{{type}}" data-id_sensor="{{id_sensor}}">--</span>\
@@ -118,7 +119,7 @@ var greenhouse_templates = {
 			</div>\
 			<div onload="hackUnitStyle()" class="row row-content gutter-20 {{^displaySensor}}hidden{{/displaySensor}}" data-id_zone="{{id_zone}}" data-dashboard_index="{{dashboard_index}}" data-block_index="{{block_index}}">\
 				{{#sensors}}\
-					<div class="sensor-block col-md-3 col-xs-6" data-id_sensor="{{id_sensor}}" style="max-width: 300px!important;">\
+					<div class="sensor-block col-md-3 col-xs-6" data-id_sensor="{{id_sensor}}" style="max-width: 300px!important;" data-time_sensor="{{last_time}}">\
 						<div class="value-block {{class}}">\
 							<span class="value-label" title="{{label}} in {{probe_name}}">{{probe_name}}<br />{{label}}</span>\
 							<span class="value-medium live-label" id="{{type}}{{probe_uuid}}" ondblclick="initRelayDoubleClick()" data-sensor_type="{{type}}" data-device_id="{{probe_uuid}}" data-live-label-id="{{probe_uuid}}:{{type}}" data-live-label-style="{{style}}">--</span>\

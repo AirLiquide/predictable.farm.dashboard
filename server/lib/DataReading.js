@@ -158,11 +158,24 @@ module.exports = function() {
 
 	var digestResultToJSON = function(rows, date_format) {
 		var tempRows =  {};
-		// for (var i=0; i < rows.length; i++) {
-		// 	 tempRows['4air'].push(rows[i]);
-		//
-		// }
+		var tempRows2 =  {};
+		var row;
+		 for (var i=0; i < rows.length; i++) {
+			 //  tempRows[rows.device_id + rows.sensor_type].push(rows[i])
+			//  console.log(tempRows);
+			row = rows[i];
+			var tempRowsTemp =  {};
+			tempRowsTemp = [row.created_at.getTime(), Number(row.sensor_value)]
 
+				if (tempRows2[row.device_id + row.sensor_type ] ){
+					tempRows2[row.device_id + row.sensor_type ].push(tempRowsTemp)
+				}else{
+				 tempRows2[ row.device_id + row.sensor_type] = []
+			 }
+		 }
+
+	console.log(" temps 2 %%%%%%" + JSON.stringify(tempRows2));
+	console.log(" temps 2 %%%%%%" + JSON.parse(JSON.stringify(tempRows2)));
 
 		var result = {};
 		var json = '{';
@@ -170,7 +183,7 @@ module.exports = function() {
 		var row;
 		var lastSensor = -1;
 		var firstRecord = true;
-		console.log( rows.length)
+
 		for (var i=0; i < rows.length; i++) {
 			row = rows[i];
 
@@ -207,7 +220,7 @@ module.exports = function() {
 		}
 
 		json += '}';
- console.log(json);
-		return json;
+
+		return JSON.stringify(tempRows2);
 	};
 };

@@ -278,6 +278,7 @@ overflow: auto;
 
 }
 
+
 .probe-selector .glyphicon-chevron-right{
   color:gray;
   opacity: 0.5;
@@ -433,3 +434,47 @@ display: block;
     left: 5px;
 bottom: 5px;
 }
+.btn-download-csv{
+    display: none;
+  }
+  .hidden{
+  display:hidden;
+}
+
+@media (orientation: portrait) and (max-width : 600px) {
+  .row-period, .row-chart {
+    display: none!important;
+  }
+}
+
+.btn-download-csv{
+  float: right;
+    margin-top: 2px;
+    transition: all 0.2s ease-in-out;
+}
+.btn-download-csv:hover{
+
+  color:#46025e;
+  border: 1px solid #46025e;
+  transition: all 0.2s ease-in-out;
+}
+.loader {
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #46025e; /* purple */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+        position: absolute;
+        left:0;
+        right: 0;
+        margin: 30px auto;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+/*.highcharts-no-data{
+  display: none;
+}*/
