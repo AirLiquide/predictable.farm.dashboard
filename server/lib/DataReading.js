@@ -19,20 +19,20 @@ module.exports = function() {
 
 	this.getListReading = function(sensors, sensorsList, from, to, date_format, callback) {
 //SELECT * FROM sensorlog WHERE ts >= '2013-01-01 00:00:00+0200' AND  ts <= '2013-08-13 23:59:00+0200' AND token(user_id) > previous_token LIMIT 100 ALLOW FILTERING;
-		console.log('from reading: ******' + from)
-		console.log('to reading: ******' + to)
-		console.log('from reading: ******' + sensors)
-		console.log('from reading: ******' + date_format)
-		console.log('sensorList : //////' + sensorsList)
-		console.log(typeof sensorList)
-		console.log('sensorList : //////' + JSON.stringify(sensorsList))
+		// console.log('from reading: ******' + from)
+		// console.log('to reading: ******' + to)
+		// console.log('from reading: ******' + sensors)
+		// console.log('from reading: ******' + date_format)
+		// console.log('sensorList : //////' + sensorsList)
+		// console.log(typeof sensorList)
+		// console.log('sensorList : //////' + JSON.stringify(sensorsList))
 		var objetSensors = {}
 		objetSensors = JSON.parse( '[' +sensorsList + ']');
-		console.log(objetSensors + typeof objetSensors)
+		// console.log(objetSensors + typeof objetSensors)
 
 		sensorsList = objetSensors;
-		console.log('sensorList : //////' + sensorsList)
-		console.log('sensorList type : //////' + typeof sensorsList)
+		// console.log('sensorList : //////' + sensorsList)
+		// console.log('sensorList type : //////' + typeof sensorsList)
 		var sensorHash = {}
 		//
 		// var listSensor = dbReading.select({
@@ -82,10 +82,10 @@ module.exports = function() {
 				var from2 = new Date(from1 / 1000).toISOString();
 				var to2 = new Date(to1 / 1000).toISOString();
 			}
-			console.log('from reading: ******' + from1 )
-			console.log('to reading: ******' + to1 )
-			console.log('from2 reading: ******' + from2 )
-			console.log('to2 reading: ******' + to2 )
+			// console.log('from reading: ******' + from1 )
+			// console.log('to reading: ******' + to1 )
+			// console.log('from2 reading: ******' + from2 )
+			// console.log('to2 reading: ******' + to2 )
 			var whereDevice_ids = Array();
 			var whereSensor_types = Array();
 			for (var i=0; i < sensorsList.length; i++) {
@@ -94,14 +94,14 @@ module.exports = function() {
 			}
 			var WhereDevices = "AND device_id in (" + whereDevice_ids.join(',') + ")"
 			var WhereTypes = "AND sensor_type in (" + whereSensor_types.join(',') + ")"
-			console.log(WhereTypes);
-			console.log(WhereDevices);
+			// console.log(WhereTypes);
+			// console.log(WhereDevices);
 
 
 			var where = "created_at >=  '" + from2 + "' AND  created_at <= '" + to2  + "' " + WhereDevices + WhereTypes  + "  ALLOW FILTERING ";
 
 			columns = 'device_id, sensor_type, sensor_value, created_at';
- 		console.log('/////////where: ' + where )
+ 	// 	console.log('/////////where: ' + where )
 		dbReading.select({
 			table : 'sensorlog',
 			columns : columns,
@@ -112,11 +112,11 @@ module.exports = function() {
 			},
 			callback : function(err, result) {
 				if (err) {
-					console.log(err);
+					// console.log(err);
 
 				}
 				else {
-					console.log('result : ' + JSON.stringify(result.rows))
+					// console.log('result : ' + JSON.stringify(result.rows))
 					if (typeof callback === 'function') {
 						callback(digestResultToJSON(result.rows, date_format));
 					}
@@ -174,8 +174,8 @@ module.exports = function() {
 			 }
 		 }
 
-	console.log(" temps 2 %%%%%%" + JSON.stringify(tempRows2));
-	console.log(" temps 2 %%%%%%" + JSON.parse(JSON.stringify(tempRows2)));
+	// console.log(" temps 2 %%%%%%" + JSON.stringify(tempRows2));
+	// console.log(" temps 2 %%%%%%" + JSON.parse(JSON.stringify(tempRows2)));
 
 		var result = {};
 		var json = '{';

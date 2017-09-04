@@ -146,7 +146,8 @@
 		// Live connection to the server
 		var socket = io.connect('/');
 		socket.on('connect', function() {
-			socket.emit('hello');
+			socket.emit('hello c est le dash');
+			console.log('dash command')
 		});
 
 		// New data arrival
@@ -726,19 +727,19 @@
 
 					for (var i=0; i < chartTags.length; i++) {
 						var sensor_ids = chartTags[i].getAttribute('data-sensor_ids')
-						console.log("sensors idssss : " +sensor_ids)
+						// console.log("sensors idssss : " +sensor_ids)
 						var sensor_device_ids = chartTags[i].getAttribute('data-device_ids')
 						var sensor_types = chartTags[i].getAttribute('data-types')
 						var chartNeededSensors = sensor_ids.split(',');
 
 						for (var j=0; j < chartNeededSensors.length; j++) {
 							var id_sensor = chartNeededSensors[j];
-							console.log(id_sensor + typeof id_sensor)
+							// console.log(id_sensor + typeof id_sensor)
 							var tempSensorCyril = {};
-							console.log(setup.getSensor(id_sensor))
+							// console.log(setup.getSensor(id_sensor))
 							 tempSensorCyril = JSON.parse(JSON.stringify(setup.getSensor(id_sensor)));
 
-							console.log(tempSensorCyril);
+							// console.log(tempSensorCyril);
 							delete tempSensorCyril.class;
 							delete tempSensorCyril.id_zone;
 							delete tempSensorCyril.label;
@@ -774,7 +775,7 @@
 					}
 					var ChartDataX = {};
 					var displayChart = function() {
-						console.log('displayChart BEGIN')
+						// console.log('displayChart BEGIN')
 						charts = [];
 
 						for (var i=0; i < chartTags.length; i++) {
@@ -1052,7 +1053,7 @@
 					var last_time = sensor.getAttribute('data-time_sensor');
 					var date = new Date(new Date().getTime() - 24 * 60 * 60 * 1000);
 					var last_date = new Date(last_time)
-					last_date.setHours(last_date.getHours() + 72)
+					last_date.setHours(last_date.getHours() + 400)
 					console.log('last data : '  + last_date)
 					console.log('vs  data : ' + date)
 					if (last_date < date){
@@ -1117,18 +1118,18 @@
 
 					} )
 
-						console.log('socket begin')
 
-					socket.on('sensor-receive', function() {
-					 socket.emit( JSON.stringify({
-						 device_id : device_id,
-						 sensor_id : '-',
-						 sensor_type : e.getAttribute('data-sensor_type'),
-						 sensor_value : (currentValue == 1 ? 0 : 1),
-						 sensor_mode : 1
-					 }));
-					 console.log('socket end')
-				 })
+				 console.log('socket begin 2')
+				 var sensor_type = e.getAttribute('data-sensor_type')
+				 io.connect('/').send('sensor-receive', {
+					device_id : device_id,
+					sensor_id : '-',
+					sensor_type : sensor_type,
+					sensor_value : (currentValue == 1 ? "0" : "1"),
+					sensor_mode : "1"
+
+			});
+			
 				 console.log('socket end')
 
 				//	UPDATE sensor SET last_value: sensor_value WHERE device_id = :device_id;

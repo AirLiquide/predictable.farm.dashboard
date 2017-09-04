@@ -1,7 +1,9 @@
 // This class in a Singleton
 var DataSending = function() {
 
-	var _sockets = "";
+	var _sockets = {
+			 //uuid : socket
+		};
 
 	this.register = function(device_id, socket) {
 		// register the socket
@@ -11,7 +13,7 @@ var DataSending = function() {
 	};
 
 	this.know = function(device_id) {
-		console.log('hi')
+		// console.log('hi')
 		return (typeof _sockets[device_id] === 'object');
 
 	};
@@ -38,7 +40,7 @@ var DataSending = function() {
 	// 	};
 	}
 	this.test = function() {
-		console.log(_sockets);
+		// console.log(_sockets);
 	};
 };
 

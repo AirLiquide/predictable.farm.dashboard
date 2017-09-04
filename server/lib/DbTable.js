@@ -29,7 +29,7 @@ DB_BASE : 'predictabledata',
         if (typeof _keepAlive === 'undefined') {
             this._keepAlive = false;
         }
-		console.log('Openning table', table);
+		// console.log('Openning table', table);
         this._table = table;
         if (!this.connection) {
             this.connect();
@@ -51,11 +51,11 @@ DB_BASE : 'predictabledata',
 
            if (err) {
 
-               console.log(err);
+              //  console.log(err);
            } else {
                this.connected = true;
 
-               console.log("Connection to cassandra database done")
+              //  console.log("Connection to cassandra database done")
            }
        });
 
@@ -91,7 +91,7 @@ DB_BASE : 'predictabledata',
         }
         this.lastRequest = request;
         var t = this
-         console.log('****$$$$ SELECT REQUEST $$$$******  ' + request)
+        //  console.log('****$$$$ SELECT REQUEST $$$$******  ' + request)
         this.connection.execute('select * from zone ', params.whereValues, function(err, result) {
             if (err){
               setTimeout(function(){tableWrapper.select(params); }, 5000)
@@ -123,7 +123,7 @@ DB_BASE : 'predictabledata',
         if (!this.connection) {
             this.connect();
         }
-        console.log('////****$$$$ INSERT REQUEST $$$$******////  ' + request)
+        // console.log('////****$$$$ INSERT REQUEST $$$$******////  ' + request)
 
         this.connection.execute(request, params.values, params.callback);
 
@@ -147,7 +147,7 @@ DB_BASE : 'predictabledata',
           }
 
         request += ' WHERE ' +  params.where;
-        console.log("++++++++++++++++ UPDATE REQUEST: " + request)
+        // console.log("++++++++++++++++ UPDATE REQUEST: " + request)
         if (!this.connection) {
             this.connect();
         }
@@ -176,7 +176,7 @@ DB_BASE : 'predictabledata',
         if (!this.connection) {
             this.connect();
         }
-        console.log('////****$$$$ DELETE REQUEST $$$$******////  ' + request)
+        // console.log('////****$$$$ DELETE REQUEST $$$$******////  ' + request)
         this.connection.execute(request, params.whereValues, params.callback);
 
         // if (!keepAlive) {

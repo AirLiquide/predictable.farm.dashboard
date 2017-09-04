@@ -24,13 +24,13 @@ module.exports = function() {
 	};
 
 	var indexById = function(rows, identifier) {
-		console.log('result: ' + rows + identifier)
+		// console.log('result: ' + rows + identifier)
 		var result = {};
 		for (var i=0; i < rows.length; i++) {
-			console.log('on result loop')
+			// console.log('on result loop')
 			result[rows[i][identifier]] = rows[i];
 		}
-		console.log('retun result ' + result)
+		// console.log('retun result ' + result)
 		return result;
 	};
 
@@ -50,59 +50,59 @@ module.exports = function() {
 			table : "zone",
 			callback : function(err, result) {
 				// For each zone we parse the 'dashboards' field which contains JSON
-				console.log('hi load zone');
-				console.log('result 55' + result);
+				// console.log('hi load zone');
+				// console.log('result 55' + result);
 				if (result){
-					console.log('we have result !');
+					// console.log('we have result !');
 					for (var i=0; i < result.length; i++) {
-						console.log('result nb: ' + i);
+						// console.log('result nb: ' + i);
 						result[i].dashboards = JSON.parse(result[i].dashboards);
 					}
 				} else {
-					console.log('loadzone needed');
+					// console.log('loadzone needed');
 					t.loadZones();
 				}
-				console.log('hi result :' + result);
+				// console.log('hi result :' + result);
 				if (result){
 				zoneCache = indexById(result.rows, 'id_zone');
 			} else {zoneCache  = []}
 				zoneTime = Date.now();
-				console.log(zoneTime)
+				// console.log(zoneTime)
 			}
 		});
 	};
 
 	this.loadProbes = function() {
-		console.log('hi load probe');
+		// console.log('hi load probe');
 
 		dbProbe.select({
 			table : "probe",
 			callback : function(err, result) {
-				console.log(result);
-				console.log('hi result :' + result);
-					console.log('we have result ! probe');
+				// console.log(result);
+				// console.log('hi result :' + result);
+				// 	console.log('we have result ! probe');
 					if (result){
 				probeCache = indexById(result.rows, 'id_probe');
 				} else {probeCache  = []}
-				console.log('probe in cache'  + probeCache);
+				// console.log('probe in cache'  + probeCache);
 				probeTime = Date.now();
-				console.log(probeTime);
+				// console.log(probeTime);
 			}
 		});
 	};
 
 	this.loadSensors = function() {
-		console.log('hi load sensor bug ?');
+		// console.log('hi load sensor bug ?');
 		dbSensor.select({
 			table : "sensor",
 			callback : function(err, result) {
-				console.log('sensor result: ' + result);
+				// console.log('sensor result: ' + result);
 				if (result){
 
 				sensorCache = indexById(result.rows, 'id_sensor');
-				console.log(sensorCache)
+				// console.log(sensorCache)
 			} else {sensorCache = []}
-				console.log('sensorcache' + sensorCache );
+				// console.log('sensorcache' + sensorCache );
 				sensorTime = Date.now();
 			}
 		});
@@ -166,7 +166,7 @@ module.exports = function() {
 
 	this.updateZone = function(zone, callback) {
 		zone = _cleanZone(zone);
-		console.log('lol')
+
 
 		if (_checkZone(zone)) {
 			_saveZone(zone, callback);
@@ -247,8 +247,8 @@ module.exports = function() {
 			zoneId : zone.id_zone,
 			callback : function(err, result) {
 				// Refresh zones cache
-				console.log('error: ' + err)
-				console.log('result: ' + result)
+				// console.log('error: ' + err)
+				// console.log('result: ' + result)
 				self.loadZones();
 
 				if (typeof callback === 'function') {
@@ -329,7 +329,7 @@ module.exports = function() {
 			}
 		});
 	};
-console.log('lol 2')
+
 	refresh();
 	setInterval(refresh, 1000);
 };
