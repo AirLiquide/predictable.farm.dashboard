@@ -160,7 +160,7 @@
 			// Publish new data to the kiosk
 			kiosk.write([data]);
 			kiosk.publish();
-			updateChart();
+			updateChart( data.id , data.sensor_value);
 
 		});
 
@@ -479,7 +479,7 @@
 				}
 			}
 		};
-   //cscscsqcq
+
 		var initDashboardBlockNameLongpress = function(longpressCallback) {
 			var blockSelector = document.getElementsByClassName('dashboard-block');
 			if (blockSelector.length > 0) {
@@ -552,13 +552,13 @@
 				}
 			}
 		};
-		updateChart(sensor_id, value){
+		var updateChart = function(sensor_id, value){
 			console.log( '##########################@@@@@@@@@@@@', ChartDataX[sensor_id], '##########################@@@@@@@@@@@@')
 			var d = new Date();
 			var n = d.getTime()
 			ChartDataX[sensor_id].push(n , value)
 			console.log(ChartDataX[sensor_id])
-		}
+		};
 		var initRelayDoubleClick = function() {
 			var _dblclickHandler = function(e) {
 				var currentValue = e.target.getAttribute('data-live-label-value');
