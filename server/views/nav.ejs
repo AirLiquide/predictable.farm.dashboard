@@ -553,10 +553,10 @@
 			}
 		};
 		updateChart(sensor_id, value){
-			console.log(ChartDataX[sensor_id])
+			console.log( '##########################@@@@@@@@@@@@', ChartDataX[sensor_id], '##########################@@@@@@@@@@@@')
 			var d = new Date();
 			var n = d.getTime()
-			ChartDataX[sensor_id].push(n , value).redraw();
+			ChartDataX[sensor_id].push(n , value)
 			console.log(ChartDataX[sensor_id])
 		}
 		var initRelayDoubleClick = function() {
