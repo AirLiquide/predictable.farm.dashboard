@@ -1,5 +1,12 @@
 var SetupClient = function(_data, _config) {
 	var self = this;
+	function wait(ms){
+		 var start = new Date().getTime();
+		 var end = start;
+		 while(end < start + ms) {
+			 end = new Date().getTime();
+		}
+	}
 
 	var convertIndexedObjectToArray = function(indexObject, sortBy) {
 		var array = [];
@@ -594,7 +601,25 @@ var SetupClient = function(_data, _config) {
 
 		_deleteProbe(probe_index, callback);
 	};
+	this.deleteSensor = function(id_zone, probe_index, sensor_index, callback) {
+		// Check zone
 
+		if (typeof _data.zones[id_zone] !== 'object') {
+			return false;
+		}
+
+		// Check probe
+		if (typeof _data.probes[probe_index] !== 'object') {
+			return false;
+		}
+		if (typeof _data.sensors[sensor_index] !== 'object') {
+			return false;
+		}
+
+		// Delete probe
+		delete _data.sensors[sensor_index];
+		_deleteSensor(sensor_index, probe_index, callback)
+	};
 	this.renameProbe = function(id_probe, name, callback) {
 		// Check probe
 		if (typeof _data.probes[id_probe] !== 'object') {
@@ -692,6 +717,7 @@ var SetupClient = function(_data, _config) {
 
 
 		var zone = setup.getZone(0)
+		console.log('zone init:' + JSON.stringify(zone))
 
 		for (i = 0; i < zone.dashboards.length; i++) {
 			for (j = 0; j < zone.dashboards[i].blocks.length; j++) {
@@ -724,13 +750,20 @@ var SetupClient = function(_data, _config) {
 				callback();
 			};
 		}
+		console.log('zone : ' + JSON.stringify(zoneUpdate))
 		xhr.open('POST', '/update-zone', true);
 		xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 		xhr.send('zone=' + encodeURIComponent(JSON.stringify(zoneUpdate)));
+
+		_deleteProbeXHR(id_probe);
+	};
+	var _deleteProbeXHR = function(id_probe, callback) {
+		var xhr = new XMLHttpRequest();
 		xhr.open('POST', '/delete-probe', true);
 		xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-		xhr.send('probe_id=' + encodeURIComponent(JSON.stringify(id_probe)));
-	};
+		xhr.send('probe_id=' + encodeURIComponent(id_probe));
+	}
+
 
 	var _updateSensorsOrder = function(sensorsOrder, callback) {
 		var xhr = new XMLHttpRequest();
@@ -749,6 +782,51 @@ var SetupClient = function(_data, _config) {
 		xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 		xhr.send('sensors_order=' + encodeURIComponent(JSON.stringify(sensorsOrder)));
 	};
+	var _deleteSensor = function(id_sensor, id_probe, callback) {
+			var zone = setup.getZone(0)
+			console.log('zone init:' + JSON.stringify(zone))
+
+			for (i = 0; i < zone.dashboards.length; i++) {
+				for (j = 0; j < zone.dashboards[i].blocks.length; j++) {
+							//zone.dashboards[i].blocks.splice(j, 1);
+							if (zone.dashboards[i].blocks[j].sensors.length > 0){
+								for (k = 0; k < zone.dashboards[i].blocks[j].sensors.length  ; k++) {
+									if (zone.dashboards[i].blocks[j].sensors[k].id_sensor == id_sensor ){
+									zone.dashboards[i].blocks[j].sensors.splice(k, 1);
+									}
+								}
+								for (k = 0; k < zone.dashboards[i].blocks[j].sensors.length  ; k++) {
+									if (zone.dashboards[i].blocks[j].sensors[k].id_sensor == id_sensor ){
+									zone.dashboards[i].blocks[j].sensors.splice(k, 1);
+									//index_splice = index_splice + 1;
+									}
+								}
+							}
+				}
+			}
+
+			var zoneUpdate = zone //-probe
+			var xhr = new XMLHttpRequest();
+
+			if (typeof callback === 'function') {
+				xhr.onreadystatechange = function() {
+					if (xhr.readyState != 4 || xhr.status != 200) {
+						return;
+					}
+
+					callback();
+				};
+			}
+			console.log('zone : ' + JSON.stringify(zoneUpdate))
+			xhr.open('POST', '/update-zone', true);
+			xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+			xhr.send('zone=' + encodeURIComponent(JSON.stringify(zoneUpdate)));
+			wait(5000);
+			var actualHash = $(location).attr('hash')
+			console.log(actualHash)
+			window.location.replace("/");
+console.log('reload...')
+		}
 
 	_init();
 };

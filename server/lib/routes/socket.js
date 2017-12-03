@@ -11,7 +11,8 @@ module.exports = function (socket) {
 	});
 
 	socket.on('sensor-emit', function(data) {
-		//console.log(data.device_id + ':' + data.sensor_type + " = "+data.sensor_value);
+
+
 		if (typeof data !== 'object') {
 			if (data.length < 50) {
 				return;
@@ -25,7 +26,9 @@ module.exports = function (socket) {
 		}
 
 		// register the probe's uuid
+		
 		dataSender.register(data.device_id, socket);
+
 
 		// saves the data in db
 		dataReceiver.processData(data);

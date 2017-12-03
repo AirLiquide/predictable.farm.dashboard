@@ -42,7 +42,7 @@ DB_BASE : 'predictabledata',
     },
 
     connect: function() {
-        console.warn('Connecting');
+        console.warn('Connecting to cassandra (dash)');
         this.connection = new Cassandra.Client({
           contactPoints: dbConfig.defaults.hosts.value.replace(/ /g, "").split(","),
             keyspace: dbConfig.defaults.keyspace.value
@@ -83,13 +83,14 @@ DB_BASE : 'predictabledata',
         var request = 'SELECT ' + params.columns + ' FROM ' + params.table;
 
         if (typeof params.where !== 'undefined') {
-            request += ' WHERE ' + params.where;
+            request += ' WHERE ' + params.where ;
         }
 
         if (!this.connection) {
             this.connect();
         }
         this.lastRequest = request;
+        console.log('select request :' + request)
         var t = this
         //  console.log('****$$$$ SELECT REQUEST $$$$******  ' + request)
         this.connection.execute('select * from zone ', params.whereValues, function(err, result) {
@@ -97,7 +98,7 @@ DB_BASE : 'predictabledata',
               setTimeout(function(){tableWrapper.select(params); }, 5000)
             } else  {
 
-              t.connection.execute(request, params.whereValues, params.callback);
+              t.connection.execute(request, params.whereValues,{ prepare: true, fetchSize: 100000 },  params.callback);
             };
           })
         if (!this._keepAlive) {
@@ -124,7 +125,7 @@ DB_BASE : 'predictabledata',
             this.connect();
         }
         // console.log('////****$$$$ INSERT REQUEST $$$$******////  ' + request)
-
+        console.log('insert request :' + request)
         this.connection.execute(request, params.values, params.callback);
 
     },
@@ -153,7 +154,7 @@ DB_BASE : 'predictabledata',
         }
 
         paramsList = []
-
+        console.log('update request :' + request)
         this.connection.execute(request, paramsList, params.callback);
 
         // if (!keepAlive) {
@@ -167,7 +168,7 @@ DB_BASE : 'predictabledata',
         if (typeof params.keepAlive !== 'undefined') {
             keepAlive = params.keepAlive;
         }
-
+        console.log('delete request :' + request)
         var request = 'DELETE FROM ' + this._table;
         if (typeof params.where !== 'undefined') {
             request += ' WHERE ' + params.where;
@@ -176,6 +177,7 @@ DB_BASE : 'predictabledata',
         if (!this.connection) {
             this.connect();
         }
+        console.log('delete request :' + request)
         // console.log('////****$$$$ DELETE REQUEST $$$$******////  ' + request)
         this.connection.execute(request, params.whereValues, params.callback);
 

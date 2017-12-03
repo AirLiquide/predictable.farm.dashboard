@@ -19,10 +19,10 @@ module.exports = function() {
 		var id_probe;
 		var id_sensor;
 
-		//console.log(data);
+		// console.log(data);
 
 		var moveToCreateProbe = function () {
-			// console.log('move probe :' + data.device_id);
+			//  console.log('move probe :' + data.device_id);
 			createProbe({
 				values : {
 					uuid : data.device_id,
@@ -39,27 +39,29 @@ module.exports = function() {
 		};
 
 		var moveToCreateSensor = function() {
+			// console.log('create sensor')
 			createSensor({
 				values : {
 					id_probe : id_probe,
 					type : data.sensor_type,
-					last_value : data.sensor_value
+					last_value : data.sensor_value,
+					sensor_mode : data.sensor_mode
 				},
 				callback : function(err, result) {
 					id_sensor = data.device_id + data.sensor_type;
-					// console.log('create sensor');
+					//  console.log('create sensor');
 					moveToCreateReading();
 				}
 			});
 		};
 
 		var moveToCreateReading = function() {
-			// console.log('move reading');
+
 			createReading({
 				values : { id_sensor : id_sensor, value : data.sensor_value }
 			});
 		};
-		// console.log('**********************************Start Reading probe socket');
+		//  console.log('**********************************Start Reading probe socket');
 		searchProbe({
 			uuid : data.device_id,
 			notFound : moveToCreateProbe,
@@ -74,13 +76,26 @@ module.exports = function() {
 					found : function(err, result) {
 						// console.log('******sensor found result : ' + JSON.stringify(result) + result.rows + JSON.stringify(result.rows));
 						id_sensor = result[0].id_sensor;
-						// console.log('sensor found');
-						refreshSensor({
-							values : {
-								id_sensor : id_sensor,
-								last_value : data.sensor_value
-							}
-						});
+
+						//  console.log('sensor found');
+						if  (data.sensor_mode){
+							refreshSensor({
+								values : {
+									id_sensor : id_sensor,
+									last_value : data.sensor_value,
+									sensor_mode : data.sensor_mode
+								}
+							});
+						}else {
+							refreshSensor({
+								values : {
+									id_sensor : id_sensor,
+									last_value : data.sensor_value
+								}
+							});
+
+						}
+
 
 						moveToCreateReading();
 					}
@@ -246,6 +261,7 @@ module.exports = function() {
 			// console.log('createSensor not object *************')
 			return;
 		}
+		console.log('create sensor' + params)
 
 		dbSensor.insert({
 			set :   "'" + params.values.id_probe + params.values.type + "'"  + ", '" + params.values.id_probe + "', " + "'" + params.values.type + "', " + "'" + params.values.last_value + "', " + "toTimestamp(now())",
@@ -279,15 +295,28 @@ module.exports = function() {
 		if (typeof params !== 'object') {
 			return;
 		}
+		// console.log('sensor_mode :' + params.values.sensor_mode)
+		if (params.values.sensor_mode){
+			dbSensor.update({
+				//UPDATE cycling.popular_count SET popularity = popularity + 2 WHERE id = 6ab09bec-e68e-48d9-a5f8-97e6fb4c9b47;
+				set : "last_value = " + "'" + params.values.last_value + "', " + "sensor_mode = "  + params.values.sensor_mode + ", last_time = " + "toTimestamp(now())" ,
+				values : {
+					last_value : params.values.last_value,
+				},
+				where : "id_sensor =" + "'" + params.values.id_sensor + "'" ,
+				whereValues : { id_sensor : params.values.id_sensor }
+			});
+		} else{
+			dbSensor.update({
+				//UPDATE cycling.popular_count SET popularity = popularity + 2 WHERE id = 6ab09bec-e68e-48d9-a5f8-97e6fb4c9b47;
+				set : "last_value = " + "'" + params.values.last_value + "', " + " last_time = " + "toTimestamp(now())" ,
+				values : {
+					last_value : params.values.last_value,
+				},
+				where : "id_sensor =" + "'" + params.values.id_sensor + "'" ,
+				whereValues : { id_sensor : params.values.id_sensor }
+			});
+		}
 
-		dbSensor.update({
-			//UPDATE cycling.popular_count SET popularity = popularity + 2 WHERE id = 6ab09bec-e68e-48d9-a5f8-97e6fb4c9b47;
-			set : "last_value = " + "'" + params.values.last_value + "'",
-			values : {
-				last_value : params.values.last_value,
-			},
-			where : "id_sensor =" + "'" + params.values.id_sensor + "'" ,
-			whereValues : { id_sensor : params.values.id_sensor }
-		});
 	};
 };

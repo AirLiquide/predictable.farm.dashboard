@@ -85,19 +85,19 @@
 
 
 		var configLabelStyle = {
-			'lux' : [{ format : '[value] <span class="unit highlight">lux</span>' }],
-			'ppm' : [{ format : '[value] <span class="unit highlight">ppm</span>' }],
+			'lux' : [{ format : '[value] <span class="inline-unit highlight">lux</span>' }],
+			'ppm' : [{ format : '[value] <span class="inline-unit highlight">ppm</span>' }],
 			//'celcius-degrees' : [{ format : '[value]°C' }],
-			'celcius-degrees' : [{ format : function(value, element) { element.innerHTML = (value/1).toFixed(1) + '°C' }}],
-			'percent' : [{ format : '[value]%' }],
-			'pascal' : [{ format : '[value] <span class="unit highlight">Pa</span>' }],
-			'hectopascal' : [{ format : '[value] <span class="unit highlight">hPa</span>' }],
-			'pascal-to-hectopascal' : [{ format : function(value, element) { element.innerHTML = (value/100).toFixed(2) + ' <span class="unit">hPa</span>'; } }],
-			'ohm' : [{ format : '[value] <span class="unit highlight">Ohm</span>' }],
-			'volt' : [{ format : '[value] <span class="unit highlight">V</span>' }],
-			'co2' : [{ format : '[value] <span class="unit highlight">V</span>' }],
-      'do' : [{ format : '[value] <span class="unit highlight">mg/l</span>' }],
-      'mVolt' : [{ format : '[value] <span class="unit highlight">mV</span>' }],
+			'celcius-degrees' : [{ format : function(value, element) { element.innerHTML = (value/1).toFixed(1) + '<span class="inline-unit highlight">°C</span>' }}],
+			'percent' : [{ format : '[value]<span class="inline-unit highlight">%</span>' }],
+			'pascal' : [{ format : '[value] <span class="inline-unit highlight">Pa</span>' }],
+			'hectopascal' : [{ format : '[value] <span class="inline-unit highlight">hPa</span>' }],
+			'pascal-to-hectopascal' : [{ format : function(value, element) { element.innerHTML = (value/100).toFixed(2) + ' <span class="inline-unit highlight">hPa</span>'; } }],
+			'ohm' : [{ format : '[value] <span class="inline-unit highlight">Ohm</span>' }],
+			'volt' : [{ format : '[value] <span class="inline-unit highlight">V</span>' }],
+			'co2' : [{ format : '[value] <span class="inline-unit highlight">V</span>' }],
+      'do' : [{ format : '[value] <span class="inline-unit highlight">mg/l</span>' }],
+      'mVolt' : [{ format : '[value] <span class="inline-unit highlight">mV</span>' }],
       'ec' : [{ format : '[value] <span class="unit highlight">µS/cm</span>' }],
       'par' : [{ format : '[value] <span class="unit highlight">mol/m²/sec</span>' }],
       'dli' : [{ format : '[value] <span class="unit highlight">mol/m²/day</span>' }],
@@ -112,6 +112,10 @@
 			],
 			'just-refresh' : [{ format : function() { return; }}],
 			'relay' : [{ minValue : 0, format : 'off' }, { minValue : 1, format : 'on' }]
+			// 'relay' : [{ format : function(value, element) {
+			// 	element.innerHTML = (value == 1 ? 'on' : 'off');
+			//
+			// } }]
 		};
 
 		var setup = new SetupClient(<%- JSON.stringify(setup) %>, configSensorType);
@@ -119,6 +123,7 @@
 		// Component that handle new data arrival
 		var kiosk = new DataKiosk();
 		var seriesGlobal = [];
+		var ChartDataXCSV = [];
 		// Component that handle data cache
 		var cache = new DataCache();
 
@@ -133,15 +138,218 @@
 			$(".innerWrapper").animate({scrollLeft: newScrooll}, 100);
 			console.log('hi scroll' + newScrooll )
 		}
+		var checkProbe = function(id_probe){
+			var probeList = setup.getListProbeByZone(setup.getSelectedZone().id_zone);
+			exitingProbe = false;
+			for (var i=0; i <  probeList.length; i++) {
+							if ( probeList[i].id_probe == id_probe) {
+								exitingProbe = true;
+								console.log('hi probe find');
+							}
+						}
+			if (exitingProbe == true){
+				return true
+			}else{
+				return false
+			}
+		}
+		var checkDash = function(id_dash){
+			var dashList = setup.getListZone()
+			console.log(JSON.stringify(dashList))
+			var exitingDash = false;
+			for (var i=0; i <  dashList.length; i++) {
+							if ( id_dash == i) {
+								exitingDash = true
+							}
+			}
+			if (exitingDash == true){
+				return true
+			}else{
+				return false
+			}
 
+		}
 		var actualHash = $(location).attr('hash');
 		var tempHash = localStorage.getItem("tempTab");
-		if (tempHash === null){
-			window.location.replace("/#dashboard-0-0" );
-		} else if ( tempHash != actualHash){
-			window.location.replace("/" + tempHash);
-			setTimeout(newScrollFunction, 1000);
+		var exitingProbe = false;
+		// check format
+		if (tempHash){
+			var tempHashSplit = tempHash.split("-");
+			if(tempHashSplit[0] && tempHashSplit[1] && tempHashSplit[2]){
+			}else{
+				window.location.replace("/" + actualHash);
+				setTimeout(newScrollFunction, 1000);
+			}
 		}
+		if (actualHash){
+			var actualHashSplit = actualHash.split("-");
+			if(actualHashSplit[0] && actualHashSplit[1] && actualHashSplit[2]){
+			}else{
+				window.location.replace("/" + actualHash);
+				setTimeout(newScrollFunction, 1000);
+			}
+		}
+
+
+
+		if(actualHash){
+			if (actualHashSplit[0] == '#dashboard'){
+
+				if(checkDash(actualHashSplit[2]) == true){
+					window.location.replace("/" + actualHash);
+					setTimeout(newScrollFunction, 1000);
+				}else{
+					window.location.replace("/#dashboard-0-0" );
+					setTimeout(newScrollFunction, 1000);
+				}
+			}
+			if (actualHashSplit[0] == '#probe'){
+				if(checkProbe(actualHashSplit[2]) == true){
+
+				}else{
+					window.location.replace("/#dashboard-0-0" );
+					setTimeout(newScrollFunction, 1000);
+				}
+			}
+		} else {
+			if (tempHash){
+				if (tempHashSplit[0] == '#dashboard'){
+					if(checkDash(tempHashSplit[2]) == true){
+
+					}else{
+						window.location.replace("/#dashboard-0-0" );
+						setTimeout(newScrollFunction, 1000);
+					}
+				}
+				if (tempHashSplit[0] == '#probe'){
+					if(checkProbe(tempHashSplit[2]) == true){
+						window.location.replace("/" + tempHash);
+						setTimeout(newScrollFunction, 1000);
+					}else{
+						window.location.replace("/#dashboard-0-0" );
+					}
+				}
+			} else{
+				window.location.replace("/#dashboard-0-0" );
+			}
+		}
+
+		// var actualHash = $(location).attr('hash');
+		// var tempHash = localStorage.getItem("tempTab");
+		// var exitingProbe = false;
+		// if (tempHash ){
+		// 	var tempHashSplit = tempHash.split("-");
+		// 	console.log(tempHashSplit)
+		// 	var probeList = setup.getListProbeByZone(setup.getSelectedZone().id_zone)
+		// 	console.log(probeList);
+		// 	console.log(JSON.stringify(probeList));
+		// 	var dashList = setup.getListZone()
+		//
+		// 	console.log(dashList);
+		// 	console.log(JSON.stringify(dashList));
+		// 	if (tempHashSplit[0] == '#probe'){
+		// 		for (var i=0; i <  probeList.length; i++) {
+		// 			console.log(probeList[i].id_probe)
+		// 			console.log(tempHashSplit[2])
+		// 			if ( probeList[i].id_probe == tempHashSplit[2]) {
+		// 				exitingProbe = true
+		// 				console.log('hi probe find')
+		// 			}
+		// 		}
+		// 	}
+		// 	if (tempHashSplit[0] == '#dashboard' && actualHashSplit){
+		// 		for (var i=0; i <  dashList.length; i++) {
+		// 			if ( actualHashSplit[2] == i) {
+		// 				exitingProbe = true
+		// 			}
+		// 		}
+		// 	}
+		//
+		// }
+		// if (!actualHash){
+		// 	window.location.replace("/#dashboard-0-0" );
+		// }
+		// if (tempHash === null){
+		// 	window.location.replace("/#dashboard-0-0" );
+		// } else if ( tempHash != actualHash){
+		// 	if (actualHash && tempHashSplit[0] && tempHashSplit[1] && tempHashSplit[2]){
+		// 		var tempHashSplit = tempHash.split("-");
+		// 		console.log(tempHashSplit)
+		// 		var probeList = setup.getListProbeByZone(setup.getSelectedZone().id_zone)
+		// 		console.log(probeList);
+		// 		console.log(JSON.stringify(probeList));
+		// 		var dashList = setup.getSelectedZone()
+		//
+		// 		console.log(dashList);
+		// 		console.log(JSON.stringify(dashList));
+		// 		if (tempHashSplit[0] == '#probe' && tempHashSplit[2]){
+		// 			for (var i=0; i <  probeList.length; i++) {
+		// 				console.log(probeList[i].id_probe)
+		// 				if ( probeList[i].id_probe == tempHashSplit[2]) {
+		// 					exitingProbe = true
+		// 				}
+		// 			}
+		// 		}
+		// 		if (tempHashSplit[0] == '#dashboard' && tempHashSplit[2]){
+		// 			for (var i=0; i <  dashList.length; i++) {
+		// 				if ( tempHashSplit[2] == i) {
+		// 					exitingProbe = true
+		// 				}
+		// 			}
+		// 		}
+		//
+		// 	}
+		// 	if(exitingProbe){
+		// 		window.location.replace("/" + tempHash);
+		// 		setTimeout(newScrollFunction, 1000);
+		//
+		// 	} else{
+		// 		window.location.replace("/#dashboard-0-0" );
+		// 	}
+		//
+		//
+		// } else {
+		//
+		// 	if (tempHash){
+		// 		var tempHashSplit = tempHash.split("-");
+		// 		console.log(tempHashSplit)
+		// 		var probeList = setup.getListProbeByZone(setup.getSelectedZone().id_zone)
+		// 		console.log(probeList);
+		// 		console.log(JSON.stringify(probeList));
+		// 		var dashList = setup.getListZone()
+		//
+		// 		console.log(dashList);
+		// 		console.log(JSON.stringify(dashList));
+		// 		if (tempHashSplit[0] == '#probe'){
+		// 			for (var i=0; i <  probeList.length; i++) {
+		// 				console.log(probeList[i].id_probe)
+		// 				console.log(tempHashSplit[2])
+		// 				if ( probeList[i].id_probe == tempHashSplit[2]) {
+		// 					exitingProbe = true
+		// 					console.log('hi probe find')
+		// 				}
+		// 			}
+		// 		}
+		// 		if (tempHashSplit[0] == '#dashboard' && actualHashSplit[2]){
+		// 			for (var i=0; i <  dashList.length; i++) {
+		// 				if ( actualHashSplit[2] == i) {
+		// 					exitingProbe = true
+		// 				}
+		// 			}
+		// 		}
+		//
+		// 	}
+		// 	if(exitingProbe){
+		// 		window.location.replace("/" + tempHash);
+		// 		setTimeout(newScrollFunction, 1000);
+		// 	} else{
+		// 		window.location.replace("/#dashboard-0-0" );
+		// 	}
+		//}
+
+
+
+
 
 		// Live connection to the server
 		var socket = io.connect('/');
@@ -161,6 +369,9 @@
 			// Publish new data to the kiosk
 			kiosk.write([data]);
 			kiosk.publish();
+
+
+			// chart.series[0].addPoint(point, true, shift);
 		});
 
 		/*************************/
@@ -236,8 +447,8 @@
 										onclick += ', urlChangeHandler)"';
 									}
 
-									html += '<li class="btn btn-add btn-' + sensors[j].class   + disabled + '"' +  '>';
-									html += '<a href="javascript:;"' + onclick + '>';
+									html += '<li class="btn btn-add btn-' + sensors[j].class   + disabled + '"' + onclick + '>';
+									html += '<a href="javascript:;"'  + '>';
 										html += sensors[j].label;
 									html += '</a></li>';
 								}
@@ -741,6 +952,7 @@
 
 							// console.log(tempSensorCyril);
 							delete tempSensorCyril.class;
+							delete tempSensorCyril.sensor_mode;
 							delete tempSensorCyril.id_zone;
 							delete tempSensorCyril.label;
 							delete tempSensorCyril.last_time;
@@ -786,7 +998,7 @@
 							var series = [];
 							var yAxis = [];
 							var yAxisIndex = {};
-
+							console.log('ready to push to series chartDATA' + ChartDataX )
 							for (var j=0; j < chartSensors.length && j < 4; j++) {
 								var optiIndex = 0
 								console.log('displayChart BEGIN 1' + chartSensors)
@@ -814,7 +1026,7 @@
 								else {
 									yAxisId = yAxisIndex[sensor.type];
 								}
-								console.log('ready to push to series'  )
+								console.log('ready to push to series' + ChartDataX )
 		console.log('ready to push to series'  + ChartDataX[sensor.id_sensor])
 									series.push({
 										type : 'spline',
@@ -870,6 +1082,7 @@
 							console.log(JSON.stringify(data))
 							ChartDataX = JSON.parse(JSON.stringify(data))
 							data = JSON.parse(JSON.stringify(data))
+							ChartDataXCSV = ChartDataX
 							displayChart();
 						}, 'json');
 
@@ -978,13 +1191,16 @@
 		urlChangeHandler();
 
 		var openDropDown = function(block_index) {
+var x = document.getElementById('arrow-down-' + block_index);
+			console.log('hi drop' + block_index + x.style.display )
 
-    	var x = document.getElementById('arrow-down-' + block_index);
 	    if (x.style.display === 'none'){
+				console.log('to block')
 				document.getElementById('shadow-dropdown').style.display = 'block';
 				document.getElementById('dropdown-menu-' + block_index).style.display = 'block';
 				  x.style.display = 'block';
 	    } else {
+				console.log('to none')
 				document.getElementById('shadow-dropdown').style.display = 'none';
 				document.getElementById('dropdown-menu-' + block_index).style.display = 'none';
 	        x.style.display = 'none';
@@ -1015,21 +1231,7 @@
 			    });
 			});
 			$(".container-chart").animate({scrollLeft:  180}, 800);
-			$(function(){
-			  $(document).click(function(){
-			  $(".container-chart").animate({scrollLeft:  180}, 800);
-				$("span").highlight("%","highlight");
-				$("span").highlight("°C","highlight");
-				$("span").highlight("lux","highlight");
-				$("span").highlight("hPa","highlight");
-				$("span").highlight("lux","highlight");
-			  });
-			});
-			$("span").highlight("%","highlight");
-			$("span").highlight("°C","highlight");
-			$("span").highlight("lux","highlight");
-			$("span").highlight("hPa","highlight");
-			$("span").highlight("lux","highlight");
+
 
 			document.querySelectorAll('.switch input').forEach( (checkbox) =>{
 				if (checkbox.getAttribute('data-live-label-value') == 1){
@@ -1053,7 +1255,7 @@
 					var last_time = sensor.getAttribute('data-time_sensor');
 					var date = new Date(new Date().getTime() - 24 * 60 * 60 * 1000);
 					var last_date = new Date(last_time)
-					last_date.setHours(last_date.getHours() + 400)
+					last_date.setHours(last_date.getHours() + 48)
 					console.log('last data : '  + last_date)
 					console.log('vs  data : ' + date)
 					if (last_date < date){
@@ -1083,77 +1285,94 @@
 
 			});
 
-			document.querySelectorAll('.glyphicon-remove').forEach( (probe) =>{
-				probe.addEventListener('click', function(){ console.log('hi'); })
-			} )
 
-			var clickToAutomationMode = function() {
-				alert('comming soon');
-			}
+
+
 			function checkAlertRelay(checkboxElem) {
 				switchRelay(checkboxElem);
-				//if (checkboxElem.checked) {
-			   // alert ("hi");
-			  //} else {
-			    //alert ("bye");
-			  //}
+			}
+			function checkModeRelay(checkboxElem) {
+				clickToAutomationMode(checkboxElem);
+			}
+			var clickToAutomationMode = function(e) {
+					console.log(e)
+
+
+				var currentValue = e.previousElementSibling.previousElementSibling.getAttribute('data-live-label-value');
+				console.log('hi previousSibling : ' + currentValue)
+				var sensor_id = e.getAttribute('data-id_sensor')
+				var zone = setup.getZone(0);
+				var device_id = e.getAttribute('data-device_id')
+
+			 var sensor_type = e.getAttribute('data-sensor_type')
+
+			//	UPDATE sensor SET last_value: sensor_value WHERE device_id = :device_id;
+
+				var url = '/change-relay';
+				url += '?device_id=' + device_id;
+				url += '&sensor_type=' + e.getAttribute('data-sensor_type');
+				url += '&sensor_value=' + (currentValue == 0 ? '0' : '1');
+				url += '&id_sensor=' + e.getAttribute('data-id_sensor');
+				url += '&sensor_mode=' + "0"
+
+
+				$.get(url);
+
+
+					e.setAttribute('data-live-label-mode', '0');
 			}
 			var switchRelay = function(e) {
-
-
+				var sensor_id = e.getAttribute('data-id_sensor');
+				document.getElementById('patience-filter-' + sensor_id ).style.display = 'block';
 					var currentValue = e.getAttribute('data-live-label-value');
 					var sensor_id = e.getAttribute('data-id_sensor')
-
-
-					//io.connect('/')[e.getAttribute('data-device_id')].emit('sensor-receive', JSON.stringify({
-					//	device_id : e.getAttribute('data-device_id'),
-					//	sensor_id : '-',
-					//	sensor_type : e.getAttribute('data-sensor_type'),
-					//	sensor_value : (currentValue == 1 ? '0' : '1')
-					//}));
 					var zone = setup.getZone(0);
 					var device_id = e.getAttribute('data-device_id')
 					document.querySelectorAll('.automation-btn-' + sensor_id ).forEach( (automationBtn) =>{
 						automationBtn.className += " automation-btn-show";
 
 					} )
-
-
-				 console.log('socket begin 2')
 				 var sensor_type = e.getAttribute('data-sensor_type')
-				 io.connect('/').send('sensor-receive', {
-					device_id : device_id,
-					sensor_id : '-',
-					sensor_type : sensor_type,
-					sensor_value : (currentValue == 1 ? "0" : "1"),
-					sensor_mode : "1"
-
-			});
-			
-				 console.log('socket end')
 
 				//	UPDATE sensor SET last_value: sensor_value WHERE device_id = :device_id;
 
-					// var url = '/change-relay';
-					// url += '?device_id=' + device_id;
-					// url += '&sensor_type=' + e.getAttribute('data-sensor_type');
-					// url += '&sensor_value=' + (currentValue == 1 ? '0' : '1');
-					// url += '&id_sensor=' + e.getAttribute('data-id_sensor');
-					//
-					// document.getElementById("checkbox-" + e.getAttribute('data-device_id')).setAttribute("data-live-label-value", "1");
-					// document.getElementById("valueMedium-" + e.getAttribute('data-device_id')).setAttribute("data-live-label-value", "1");
-					// $.get(url);
+					var url = '/change-relay';
+					url += '?device_id=' + device_id;
+					url += '&sensor_type=' + e.getAttribute('data-sensor_type');
+					url += '&sensor_value=' + (currentValue == 1 ? '0' : '1');
+					url += '&id_sensor=' + e.getAttribute('data-id_sensor');
+					url += '&sensor_mode=' + "1"
+
+					document.getElementById("checkbox-" + e.getAttribute('data-device_id')).setAttribute("data-live-label-value", "1");
+					document.getElementById("valueMedium-" + e.getAttribute('data-device_id')).setAttribute("data-live-label-value", "1");
+					$.get(url , function(){
+						switchRelayCloseFilter(sensor_id);
+					});
+
+					e.setAttribute('data-live-label-value', (currentValue == 1 ? '0' : '1'));
+					e.parentNode.nextElementSibling.setAttribute('data-live-label-mode', '1');
 					//show automation-btn
+					// document.getElementById('patience-filter-' + sensor_id ).style.display = 'none';
 
 				};
-
+				var switchRelayCloseFilter = function(sensor_id) {
+					wait(5000);
+					document.getElementById('patience-filter-' + sensor_id ).style.display = 'none';
+				}
+				function wait(ms){
+				   var start = new Date().getTime();
+				   var end = start;
+				   while(end < start + ms) {
+				     end = new Date().getTime();
+				  }
+				}
 				newScrooll = localStorage.getItem("tempScrollLeft");
 				$(".innerWrapper").animate({scrollLeft: newScrooll}, 100);
-				console.log(newScrooll)
+
 
 				var downloadCSV = function(){
 					var csvContent = "data:text/csv;charset=utf-8,";
-					var data = seriesGlobal;
+					var data = ChartDataXCSV;
 
 					var encodedUri = csvContent + JSON.stringify(data);
 					encodedUri = encodeURI(encodedUri)
@@ -1164,7 +1383,45 @@
 				}
 
 
+				window.setInterval(function(){
 
+					document.querySelectorAll('.switch input').forEach( (checkbox) =>{
+
+						if (checkbox.getAttribute('data-live-label-value') == 1){
+
+							checkbox.setAttribute("checked", "checked");
+							checkbox.checked = true;
+						} else {
+							checkbox.setAttribute("checked", "false");
+							checkbox.checked =false;
+						}
+
+					} );
+					document.querySelectorAll('.automation-btn').forEach( (automationBtn) =>{
+
+						if (automationBtn.getAttribute('data-live-label-mode') == '1'){
+
+							automationBtn.className += " automation-btn-show";
+						}else{
+
+							automationBtn.className = "automation-btn automation-btn-" + automationBtn.getAttribute('data-id_sensor')
+						}
+					} )
+				}, 3000);
+
+				var deleteSensor = function(id_sensor, id_probe){
+					console.log('hi deleteSensor' + id_sensor);
+					var url = '/delete-sensor';
+					url += '?probe_id=' + id_probe;
+					url += '&sensor_id=' + id_sensor;
+
+					console.log(url)
+					$.get(url, function() {
+						console.log('end deleteSensor');
+					});
+					setup.deleteSensor(0, id_probe, id_sensor)
+					console.log('done url')
+				};
 
 
 

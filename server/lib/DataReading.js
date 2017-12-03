@@ -3,7 +3,7 @@ var DbTable = require('./DbTable');
 module.exports = function() {
 	var dbReading = new DbTable('sensorlog', false);
 
-	//var self = this;
+	//var self = this;cddddd
 
 	var checkDatetime = function(datetime) {
 		// TODO
@@ -28,6 +28,7 @@ module.exports = function() {
 		// console.log('sensorList : //////' + JSON.stringify(sensorsList))
 		var objetSensors = {}
 		objetSensors = JSON.parse( '[' +sensorsList + ']');
+		console.log(objetSensors)
 		// console.log(objetSensors + typeof objetSensors)
 
 		sensorsList = objetSensors;
@@ -118,6 +119,7 @@ module.exports = function() {
 				else {
 					// console.log('result : ' + JSON.stringify(result.rows))
 					if (typeof callback === 'function') {
+						console.log(result)
 						callback(digestResultToJSON(result.rows, date_format));
 					}
 				}
@@ -157,22 +159,25 @@ module.exports = function() {
 	};
 
 	var digestResultToJSON = function(rows, date_format) {
+		// console.log(rows)
 		var tempRows =  {};
 		var tempRows2 =  {};
 		var row;
+		console.log('lenght :' + rows.length)
 		 for (var i=0; i < rows.length; i++) {
 			 //  tempRows[rows.device_id + rows.sensor_type].push(rows[i])
 			//  console.log(tempRows);
 			row = rows[i];
 			var tempRowsTemp =  {};
 			tempRowsTemp = [row.created_at.getTime(), Number(row.sensor_value)]
-
+			
 				if (tempRows2[row.device_id + row.sensor_type ] ){
 					tempRows2[row.device_id + row.sensor_type ].push(tempRowsTemp)
 				}else{
 				 tempRows2[ row.device_id + row.sensor_type] = []
 			 }
 		 }
+
 
 	// console.log(" temps 2 %%%%%%" + JSON.stringify(tempRows2));
 	// console.log(" temps 2 %%%%%%" + JSON.parse(JSON.stringify(tempRows2)));
@@ -220,7 +225,7 @@ module.exports = function() {
 		}
 
 		json += '}';
-
+		console.log('JSON' + JSON.stringify(tempRows2))
 		return JSON.stringify(tempRows2);
 	};
 };

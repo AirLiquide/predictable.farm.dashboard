@@ -20,6 +20,8 @@ module.exports = function() {
 	var sensorLife = 10000;
 
 	var getCurrentTimestamp = function() {
+		console.log(Math.floor(Date.now()/1000))
+		console.log(Date.now())
 		return Math.floor(Date.now()/1000);
 	};
 
@@ -92,7 +94,7 @@ module.exports = function() {
 	};
 
 	this.loadSensors = function() {
-		// console.log('hi load sensor bug ?');
+		 console.log('hi load sensor bug ?');
 		dbSensor.select({
 			table : "sensor",
 			callback : function(err, result) {
@@ -176,18 +178,40 @@ module.exports = function() {
 		}
 	};
 	this.deleteProbe = function(probe_id, callback) {
-		var MariaSql = require('mariasql');
-		this.connection = new MariaSql({
-				host : 'localhost',
-				user : 'predictableuser',
-				password : 'predictable',
-				db : 'predictabledata'
+		console.log('delete func')
+		dbProbe.delete({
+			table : 'probe',
+			where :  'id_probe =' + "'" + probe_id + "'",
+
+			callback : function(err, result) {
+				if (err) {
+					// console.log('insert ERREUR*************' + err)
+					return;
+				}
+					// console.log('insert GOOD*************' + result)
+					console.log('delete probe done !')
+
+			}
 		});
 
-		this.connection.query("DELETE FROM probe WHERE id_probe = :ProbeID",
-                     			{ProbeID: probe_id})
-		this.connection.query("DELETE FROM sensor WHERE id_probe = :ProbeID",
-								          {ProbeID: probe_id})
+
+
+	};
+	this.deleteSensor = function(sensor_id, callback) {
+		console.log('delete sensor func' + sensor_id)
+		dbSensor.delete({
+			table : 'sensor',
+			where :  'id_sensor =' + "'" + sensor_id + "'",
+			callback : function(err, result) {
+				if (err) {
+					// console.log('insert ERREUR*************' + err)
+					return;
+				}
+					// console.log('insert GOOD*************' + result)
+					console.log('delete sensor done !')
+			}
+		});
+
 
 
 	};
@@ -241,7 +265,7 @@ module.exports = function() {
 
 
 		dbZone.update({
-			set : "dashboards = '" + values.dashboards + "'" ,
+			set : "dashboards = '" + zone.dashboards + "'" ,
 			values : values,
 			where : 'id_zone= ' + zone.id_zone,
 			zoneId : zone.id_zone,
@@ -257,7 +281,22 @@ module.exports = function() {
 			}
 		});
 	};
+	this.updateSensorRelay = function(device_id, sensor_type, sensor_value, id_sensor, sensor_mode, callback) {
 
+
+
+
+		dbSensor.update({
+			set : "last_value = " + "'" + sensor_value + "', " + "sensor_mode = "  + sensor_mode + ", last_time = " + "toTimestamp(now())" ,
+			values : {
+				last_value : sensor_value,
+			},
+			where : "id_sensor =" + "'" + id_sensor + "'" ,
+			whereValues : { id_sensor : id_sensor }
+		});
+		callback();
+
+	};
 	this.updateProbe = function(probe, callback) {
 		probe = _cleanProbe(probe);
 
@@ -292,10 +331,10 @@ module.exports = function() {
 
 	var _saveProbe = function(probe, callback) {
 		var values = JSON.parse(JSON.stringify(probe));
-		delete values.id_probe;
+
 
 		var whereValues = { id_probe : probe.id_probe };
-		var whereWhere = 'id_probe= ' + "'" + probe.id_probe + "' AND "  + 'uuid= ' + "'" + probe.id_probe + "'"
+		var whereWhere = 'id_probe= ' + "'" + probe.id_probe + "' "
 
 		dbProbe.update({
 			set :  "name= '" + values.name + "' ",
@@ -315,9 +354,12 @@ module.exports = function() {
 	};
 
 	this.updateSensorSortOrder = function(id_sensor, sort_order, callback) {
+		console.log('*********************** hi *******************************')
 		dbSensor.update({
+			table : 'sensor',
+			set : "sort_order = " + sort_order  ,
 			values : { sort_order : sort_order },
-			where : 'id_sensor=:id_sensor',
+			where : 'id_sensor=' + " '"+ id_sensor + "'",
 			whereValues : { id_sensor : id_sensor },
 			callback : function() {
 				// Refresh probes cache
