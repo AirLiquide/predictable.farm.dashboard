@@ -92,7 +92,7 @@ font-family: Roboto;
 	display:block;
 	position:relative;
 	padding:12px 24px 8px;
-	
+
 }
 .probe-editor i {
 	margin-right:4px;
@@ -197,6 +197,7 @@ margin: auto;
 
 .value-label {
 	display:block;
+	white-space: nowrap;
 	position:absolute;
 	top:0px;
 	width: 100%;
@@ -229,11 +230,24 @@ background:#ADC169;
 	font-size:48px;
 	flex:1;
 	color:#424242;
+	width: 100%;
+	position: absolute;
+	top:40%;
 }
 .value-medium .unit {
 	display:block;
 	font-size:0.75em;
 	line-height:0.75em;
+	-webkit-transition: display 1s; /* Safari */
+    transition: display 1s;
+}
+.value-medium .inline-unit {
+	position: absolute;
+	display:inline-block;
+	font-size:0.5em;
+	line-height:0.75em;
+	-webkit-transition: display 1s; /* Safari */
+    transition: display 1s;
 }
 @media (max-width:480px) {
 	.value-medium {

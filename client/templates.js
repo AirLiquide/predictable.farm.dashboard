@@ -86,15 +86,19 @@ var greenhouse_templates = {
 	<div class="row row-content gutter-20" id="sensor-list" data-id_probe="{{probe.id_probe}}" >\
 		{{#sensors}}\
 			<div class="sensor-block col-md-3 col-xs-6" data-id_sensor="{{id_sensor}}" style="max-width: 300px!important;" data-time_sensor="{{last_time}}">\
-				<div class="value-block {{class}}">\
+				<div class="value-block {{class}} color-{{ sort_order  }}">\
+				<div class="delete-sensor" id="delete-sensor-{{id_sensor}}" onclick="deleteSensor(\'{{id_sensor}}\', \'{{id_probe}}\')"> <span class="glyphicon glyphicon-remove remove-sensor-close" aria-hidden="true"></span></div>\
 					<span class="value-label" title="{{label}}" style="padding-top: 12px;">{{label}}</span>\
 					<span class="value-medium live-label" id="valueMedium-{{probe_uuid}}" data-live-label-id="{{probe_uuid}}:{{type}}" data-live-label-style="{{style}}" data-live-label-value="" data-device_id="{{probe_uuid}}" data-sensor_type="{{type}}" data-id_sensor="{{id_sensor}}">--</span>\
-					<label class="switch"  onload="alert("{{sensors}}")">\
-					  <input type="checkbox" class="live-label" id="checkbox-{{probe_uuid}}" onchange=" checkAlertRelay(this) " data-relay="{{sensors}}" data-id_sensor="{{id_sensor}}" data-live-label-id="{{probe_uuid}}:{{type}}" data-live-label-style="{{style}}" data-live-label-value="" data-device_id="{{probe_uuid}}" data-sensor_type="{{type}}" data-last-value="{{last_value}}" data-block_index="{{block_index}}" data-dashboard_index="{{dashboard_index}}" data-sensor_index={{sensor_index}}>\
+					<label class="switch live-label"  onload="alert("{{sensors}}")">\
+					  <input type="checkbox" class="live-label" id="checkbox-{{probe_uuid}}" onchange=" checkAlertRelay(this) " data-relay="{{sensors}}" data-id_sensor="{{id_sensor}}" data-live-label-id="{{probe_uuid}}:{{type}}" data-live-label-style="{{style}}" data-live-label-value="" data-device_id="{{probe_uuid}}" data-sensor_type="{{type}}" data-last-value="{{last_value}}" data-block_index="{{block_index}}" data-dashboard_index="{{dashboard_index}}" data-sensor_index="{{sensor_index}}">\
 					  <span class="slider round"></span>\
 					</label>\
-					<button class="automation-btn automation-btn-{{id_sensor}}" onclick="clickToAutomationMode()" id="automation-btn" data-text-swap="Automatic mode active">back to automatic mode</button>\
+					<button class="automation-btn automation-btn-{{id_sensor}} " data-live-label-mode="{{sensor_mode}}" onclick="checkModeRelay(this)" id="automation-btn" data-text-swap="Automatic mode active" data-relay="{{sensors}}" data-id_sensor="{{id_sensor}}" data-live-label-id="{{probe_uuid}}:{{type}}" data-live-label-style="{{style}}" data-live-label-value="" data-last-value="{{last_value}}" data-device_id="{{probe_uuid}}" data-sensor_type="{{type}}" data-block_index="{{block_index}}" data-dashboard_index="{{dashboard_index}}" data-sensor_index="{{sensor_index}}" >back to automatic mode</button>\
 					<div class="block-handle"><i class="glyphicon glyphicon-sort block-handle-icon"></i></div>\
+					<div class="patience-filter" id="patience-filter-{{id_sensor}}">\
+						<div class="mini-loader loader"></div>\
+					</div>\
 				</div>\
 			</div>\
 		{{/sensors}}\
@@ -115,12 +119,13 @@ var greenhouse_templates = {
 				</div>\
 			</div>\
 			<div class="container-chart">\
+			<div class="loader"></div>\
 			<div class="row row-chart {{^displayChart}}hidden{{/displayChart}}" data-type="dashboard-block" data-id_zone="{{id_zone}}" data-dashboard_index="{{dashboard_index}}" data-block_index="{{block_index}}" data-sensor_ids="{{sensor_ids}}"></div>\
 			</div>\
 			<div onload="hackUnitStyle()" class="row row-content gutter-20 {{^displaySensor}}hidden{{/displaySensor}}" data-id_zone="{{id_zone}}" data-dashboard_index="{{dashboard_index}}" data-block_index="{{block_index}}">\
 				{{#sensors}}\
 					<div class="sensor-block col-md-3 col-xs-6" data-id_sensor="{{id_sensor}}" style="max-width: 300px!important;" data-time_sensor="{{last_time}}">\
-						<div class="value-block {{class}}">\
+						<div class="value-block {{class}} color-{{sensor_index}}">\
 							<span class="value-label" title="{{label}} in {{probe_name}}">{{probe_name}}<br />{{label}}</span>\
 							<span class="value-medium live-label" id="{{type}}{{probe_uuid}}" ondblclick="initRelayDoubleClick()" data-sensor_type="{{type}}" data-device_id="{{probe_uuid}}" data-live-label-id="{{probe_uuid}}:{{type}}" data-live-label-style="{{style}}">--</span>\
 							<div class="block-handle"><i class="glyphicon glyphicon-sort block-handle-icon"></i></div>\
@@ -136,7 +141,7 @@ var greenhouse_templates = {
 						<h2 class="title-dropdown">PICK ONE ELEMENT</h2>\
 						{{{dashboardBlock_addSensor}}}\
 					</ul>\
-					<div class="arrow-down" id="arrow-down-{{block_index}}"></div>\
+					<div class="arrow-down" style="display:none;" id="arrow-down-{{block_index}}"></div>\
 					<div class="shadow-dropdown" id="shadow-dropdown" onclick="openDropDown({{block_index}})" ></div>\
 				</div>\
 			</div>\

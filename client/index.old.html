@@ -20,7 +20,7 @@
 		<script type="text/javascript" src="/lib/Template.js"></script>
 		<script type="text/javascript" src="/lib/TemplateBlock.js"></script>
 		<script type="text/javascript" src="/templates.js"></script>
-		
+
 		<script type="text/javascript">
 		// Special component that handle new data arrival
 		var kiosk = new DataKiosk();
@@ -89,7 +89,7 @@
 							type : sensor,
 							value : avg
 						}]);
-					}					
+					}
 				};
 			};
 
@@ -139,7 +139,7 @@
 			for (var i=0; i < labels.length; i++) {
 				var label = labels[i];
 				var sensorId = label.getAttribute('data-live-label-id');
-				
+
 				if (!!sensorId) {
 					var live = new LiveLabel();
 					live.addElement(label);
@@ -339,8 +339,8 @@
 
 		var template = new Template();
 		template.setBlocks(greenhouse_templates); // from /templates.js
-		
-		var templateContent = { 
+
+		var templateContent = {
 			greenhouses : [
 				{ id : 1, name : 'Serre Expérimentale', location : 'Molondin, Suisse' },
 				//{ id : 2, name : 'Serre classique' },

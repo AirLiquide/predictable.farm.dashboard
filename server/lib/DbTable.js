@@ -29,7 +29,7 @@ DB_BASE : 'predictabledata',
         if (typeof _keepAlive === 'undefined') {
             this._keepAlive = false;
         }
-		console.log('Openning table', table);
+		// console.log('Openning table', table);
         this._table = table;
         if (!this.connection) {
             this.connect();
@@ -42,7 +42,7 @@ DB_BASE : 'predictabledata',
     },
 
     connect: function() {
-        console.warn('Connecting');
+        console.warn('Connecting to cassandra (dash)');
         this.connection = new Cassandra.Client({
           contactPoints: dbConfig.defaults.hosts.value.replace(/ /g, "").split(","),
             keyspace: dbConfig.defaults.keyspace.value
@@ -51,11 +51,11 @@ DB_BASE : 'predictabledata',
 
            if (err) {
 
-               console.log(err);
+              //  console.log(err);
            } else {
                this.connected = true;
 
-               console.log("Connection to cassandra database done")
+              //  console.log("Connection to cassandra database done")
            }
        });
 
@@ -83,21 +83,22 @@ DB_BASE : 'predictabledata',
         var request = 'SELECT ' + params.columns + ' FROM ' + params.table;
 
         if (typeof params.where !== 'undefined') {
-            request += ' WHERE ' + params.where;
+            request += ' WHERE ' + params.where ;
         }
 
         if (!this.connection) {
             this.connect();
         }
         this.lastRequest = request;
+        console.log('select request :' + request)
         var t = this
-         console.log('****$$$$ SELECT REQUEST $$$$******  ' + request)
+        //  console.log('****$$$$ SELECT REQUEST $$$$******  ' + request)
         this.connection.execute('select * from zone ', params.whereValues, function(err, result) {
             if (err){
               setTimeout(function(){tableWrapper.select(params); }, 5000)
             } else  {
 
-              t.connection.execute(request, params.whereValues, params.callback);
+              t.connection.execute(request, params.whereValues,{ prepare: true, fetchSize: 100000 },  params.callback);
             };
           })
         if (!this._keepAlive) {
@@ -123,8 +124,8 @@ DB_BASE : 'predictabledata',
         if (!this.connection) {
             this.connect();
         }
-        console.log('////****$$$$ INSERT REQUEST $$$$******////  ' + request)
-
+        // console.log('////****$$$$ INSERT REQUEST $$$$******////  ' + request)
+        console.log('insert request :' + request)
         this.connection.execute(request, params.values, params.callback);
 
     },
@@ -147,13 +148,13 @@ DB_BASE : 'predictabledata',
           }
 
         request += ' WHERE ' +  params.where;
-        console.log("++++++++++++++++ UPDATE REQUEST: " + request)
+        // console.log("++++++++++++++++ UPDATE REQUEST: " + request)
         if (!this.connection) {
             this.connect();
         }
 
         paramsList = []
-
+        console.log('update request :' + request)
         this.connection.execute(request, paramsList, params.callback);
 
         // if (!keepAlive) {
@@ -167,7 +168,7 @@ DB_BASE : 'predictabledata',
         if (typeof params.keepAlive !== 'undefined') {
             keepAlive = params.keepAlive;
         }
-
+        console.log('delete request :' + request)
         var request = 'DELETE FROM ' + this._table;
         if (typeof params.where !== 'undefined') {
             request += ' WHERE ' + params.where;
@@ -176,7 +177,8 @@ DB_BASE : 'predictabledata',
         if (!this.connection) {
             this.connect();
         }
-        console.log('////****$$$$ DELETE REQUEST $$$$******////  ' + request)
+        console.log('delete request :' + request)
+        // console.log('////****$$$$ DELETE REQUEST $$$$******////  ' + request)
         this.connection.execute(request, params.whereValues, params.callback);
 
         // if (!keepAlive) {

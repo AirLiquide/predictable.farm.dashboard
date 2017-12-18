@@ -99,6 +99,7 @@ app.post('/update-zone', urlencodedParser, function(req, res) {
 	// TODO check login & user rights
 
 	if (typeof req.body.zone !== 'undefined') {
+		console.log(req.body.zone);
 		setup.updateZone(JSON.parse(req.body.zone), function() {
 			res.end('done');
 		});
@@ -117,6 +118,18 @@ app.post('/update-probe', urlencodedParser, function(req, res) {
 		});
 	}
 });
+app.post('/update-sensor-relay', urlencodedParser, function(req, res) {
+	//console.log('app.post(/update-probe)');
+	//console.log(req.body);
+
+	// TODO check login & user rights
+
+	if (typeof req.body.sensor !== 'undefined') {
+		setup.updateSensorRelay(JSON.parse(req.body.sensor), function() {
+			res.end('done');
+		});
+	}
+});
 app.post('/delete-probe', urlencodedParser, function(req, res) {
 	//console.log('app.post(/update-probe)');
 	//console.log(req.body);
@@ -125,7 +138,7 @@ app.post('/delete-probe', urlencodedParser, function(req, res) {
 
 	if (typeof req.body.probe_id !== 'undefined') {
 		console.log('coucou before if' )
-		setup.deleteProbe(JSON.parse(req.body.probe_id), function() {
+		setup.deleteProbe(req.body.probe_id, function() {
 			res.end('done');
 		})
 
@@ -158,11 +171,12 @@ app.get('/change-relay', urlencodedParser, function(req, res) {
 	// sensor_value
 
 	// check required parameters
-	var params = ['device_id', 'sensor_type', 'sensor_value'];
+	var params = ['device_id', 'sensor_type', 'sensor_value' , 'sensor_mode'];
 
 	for (var i=0; i < params.length; i++) {
 		if (typeof req.query[params[i]] === 'undefined') {
 			res.end('fail');
+
 			return;
 		}
 	}
@@ -172,19 +186,54 @@ app.get('/change-relay', urlencodedParser, function(req, res) {
 			req.query.device_id,
 			req.query.sensor_type,
 			req.query.sensor_value,
-			req.query.id_sensor
+			req.query.id_sensor,
+			req.query.sensor_mode,
+			server, io
 			, function(text) {
 				res.end(text);
+
 			});
-
-
-
-
+			if (typeof req.query.device_id !== 'undefined') {
+				setup.updateSensorRelay(
+					req.query.device_id,
+					req.query.sensor_type,
+					req.query.sensor_value,
+					req.query.id_sensor,
+					req.query.sensor_mode,
+					function() {
+					res.end('done');
+				});
+			}
 
 
 
 });
 
+app.get('/delete-sensor', urlencodedParser, function(req, res) {
+	// device_id
+	// sensor_type
+	// sensor_value
+
+	// check required parameters
+	var params = ['probe_id', 'sensor_id'];
+
+	for (var i=0; i < params.length; i++) {
+		if (typeof req.query[params[i]] === 'undefined') {
+			res.end('fail');
+
+			return;
+		}
+	}
+
+
+		setup.deleteSensor(
+			req.query.sensor_id
+			, function(text) {
+				callback();
+				res.end(text);
+			});
+
+});
 // serve index
 require('./lib/routes').serveIndex(app, configServer.staticFolder);
 
