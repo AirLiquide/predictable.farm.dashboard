@@ -136,7 +136,7 @@
 		var newScrollFunction = function() {
 			newScrooll = localStorage.getItem("tempScrollLeft");
 			$(".innerWrapper").animate({scrollLeft: newScrooll}, 100);
-			console.log('hi scroll' + newScrooll )
+
 		}
 		var checkProbe = function(id_probe){
 			var probeList = setup.getListProbeByZone(setup.getSelectedZone().id_zone);
@@ -144,7 +144,6 @@
 			for (var i=0; i <  probeList.length; i++) {
 							if ( probeList[i].id_probe == id_probe) {
 								exitingProbe = true;
-								console.log('hi probe find');
 							}
 						}
 			if (exitingProbe == true){
@@ -155,7 +154,6 @@
 		}
 		var checkDash = function(id_dash){
 			var dashList = setup.getListZone()
-			console.log(JSON.stringify(dashList))
 			var exitingDash = false;
 			for (var i=0; i <  dashList.length; i++) {
 							if ( id_dash == i) {
@@ -355,7 +353,6 @@
 		var socket = io.connect('/');
 		socket.on('connect', function() {
 			socket.emit('hello c est le dash');
-			console.log('dash command')
 		});
 
 		// New data arrival
@@ -1007,20 +1004,16 @@
 							var series = [];
 							var yAxis = [];
 							var yAxisIndex = {};
-							console.log('ready to push to series chartDATA' + ChartDataX )
+
 							for (var j=0; j < chartSensors.length && j < 4; j++) {
 								var optiIndex = 0
-								console.log('displayChart BEGIN 1' + chartSensors)
+
 								var sensor = setup.getSensor(chartSensors[j]);
 								// var sensor = setup.getSensorCharty(chartSensors[j]);
-								console.log('displayChart 1' + JSON.stringify(sensor))
-								console.log('displayChart 2' + sensor.type)
-								console.log('displayChart BEGIN 2')
 								// create a new axis if needed
 								var yAxisId;
 
 								if (typeof yAxisIndex[sensor.type] === 'undefined') {
-									console.log('push Y' + sensor.type + yAxis.length)
 									yAxisId = yAxis.length;
 									yAxis.push({
 										//labels : { format : '{value}°C', style : { color : 'red' }},
@@ -1035,8 +1028,6 @@
 								else {
 									yAxisId = yAxisIndex[sensor.type];
 								}
-								console.log('ready to push to series' + ChartDataX )
-		console.log('ready to push to series'  + ChartDataX[sensor.id_sensor])
 									series.push({
 										type : 'spline',
 										name : sensor.type,
@@ -1046,8 +1037,6 @@
 
 							}
 
-		console.log( i + 'ready to push to chart 44' )
-		console.log(chartTags[i])
 
 							charts.push(Highcharts.chart(chartTags[i], {
 								chart : {
@@ -1070,7 +1059,6 @@
 
 
 						//console.debug('GETTING NEW DATA');
-						console.log(sensorListCyril)
 						var url = '/get-list-reading'
 						url += '?date_format=microtime';
 						url += '&sensors=' + neededSensors.join(',');
@@ -1088,7 +1076,6 @@
 							// }
 
 							ChartDataX = data
-							console.log(JSON.stringify(data))
 							ChartDataX = JSON.parse(JSON.stringify(data))
 							data = JSON.parse(JSON.stringify(data))
 							ChartDataXCSV = ChartDataX
@@ -1201,15 +1188,12 @@
 
 		var openDropDown = function(block_index) {
 var x = document.getElementById('arrow-down-' + block_index);
-			console.log('hi drop' + block_index + x.style.display )
 
 	    if (x.style.display === 'none'){
-				console.log('to block')
 				document.getElementById('shadow-dropdown').style.display = 'block';
 				document.getElementById('dropdown-menu-' + block_index).style.display = 'block';
 				  x.style.display = 'block';
 	    } else {
-				console.log('to none')
 				document.getElementById('shadow-dropdown').style.display = 'none';
 				document.getElementById('dropdown-menu-' + block_index).style.display = 'none';
 	        x.style.display = 'none';
@@ -1265,8 +1249,7 @@ var x = document.getElementById('arrow-down-' + block_index);
 					var date = new Date(new Date().getTime() - 24 * 60 * 60 * 1000);
 					var last_date = new Date(last_time)
 					last_date.setHours(last_date.getHours() + 48)
-					console.log('last data : '  + last_date)
-					console.log('vs  data : ' + date)
+
 					if (last_date < date){
 						sensor.classList.add('hidden');
 					}
@@ -1304,11 +1287,9 @@ var x = document.getElementById('arrow-down-' + block_index);
 				clickToAutomationMode(checkboxElem);
 			}
 			var clickToAutomationMode = function(e) {
-					console.log(e)
 
 
 				var currentValue = e.previousElementSibling.previousElementSibling.getAttribute('data-live-label-value');
-				console.log('hi previousSibling : ' + currentValue)
 				var sensor_id = e.getAttribute('data-id_sensor')
 				var zone = setup.getZone(0);
 				var device_id = e.getAttribute('data-device_id')
@@ -1386,8 +1367,6 @@ var x = document.getElementById('arrow-down-' + block_index);
 					var encodedUri = csvContent + JSON.stringify(data);
 					encodedUri = encodeURI(encodedUri)
 
-
-					console.log(encodedUri)
 					window.open(encodedUri);
 				}
 
@@ -1419,17 +1398,13 @@ var x = document.getElementById('arrow-down-' + block_index);
 				}, 3000);
 
 				var deleteSensor = function(id_sensor, id_probe){
-					console.log('hi deleteSensor' + id_sensor);
 					var url = '/delete-sensor';
 					url += '?probe_id=' + id_probe;
 					url += '&sensor_id=' + id_sensor;
 
-					console.log(url)
 					$.get(url, function() {
-						console.log('end deleteSensor');
 					});
 					setup.deleteSensor(0, id_probe, id_sensor)
-					console.log('done url')
 				};
 
 
