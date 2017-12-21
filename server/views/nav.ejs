@@ -776,7 +776,7 @@
 			if (ChartDataX[tempId ]){
 				ChartDataX[ tempId].push(n , value);
 				console.log(loadChart)
-				chart.series[0].addPoint([n , value], true, shift);
+				// chart.series[0].addPoint([n , value], true, shift);
 				// loadChart.displayChart();
 				loadChart('justDisplay')
 			}
@@ -1491,9 +1491,11 @@
 				};
 				var relaodChart = function () {
 				  // Do stuff
+					console.log('inside relaodChart' )
 					loadChart('justDisplay');
-				   setTimeout(relaodChart, 30000);
+				   setTimeout(relaodChart, 3000);
 				};
+				console.log('relaodChart' )
 				relaodChart();
 
 
