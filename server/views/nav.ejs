@@ -1489,6 +1489,12 @@
 					});
 					setup.deleteSensor(0, id_probe, id_sensor)
 				};
+				var relaodChart = function () {
+				  // Do stuff
+					loadChart('justDisplay');
+				   setTimeout(relaodChart, 30000);
+				};
+				relaodChart();
 
 
 
