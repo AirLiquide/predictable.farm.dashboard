@@ -776,6 +776,7 @@
 			if (ChartDataX[tempId ]){
 				ChartDataX[ tempId].push(n , value);
 				console.log(loadChart)
+				chart.series[0].addPoint([n , value], true, shift);
 				// loadChart.displayChart();
 				loadChart('justDisplay')
 			}
