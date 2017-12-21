@@ -767,12 +767,13 @@
 		var updateChart = function(sensor_id, value){
 			console.log(sensor_id);
 			console.log(value)
-			console.log( '##########################@@@@@@@@@@@@', ChartDataX["'" + sensor_id +  "'"], '##########################@@@@@@@@@@@@')
+			var tempId = sensor_id.replace(':', '')
+			console.log( '##########################@@@@@@@@@@@@', ChartDataX["'" + tempId +  "'"], '##########################@@@@@@@@@@@@')
 			var d = new Date();
 			var n = d.getTime();
 			console.log(n);
-			if (ChartDataX["'" + sensor_id +  "'"]){
-				ChartDataX["'" + sensor_id +  "'"].push(n , value);
+			if (ChartDataX["'" + tempId +  "'"]){
+				ChartDataX["'" + tempId +  "'"].push(n , value);
 				displayChart()
 			}
 
