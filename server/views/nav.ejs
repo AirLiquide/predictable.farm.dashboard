@@ -769,12 +769,12 @@
 			console.log(value)
 			var tempId = sensor_id.replace(':', '')
 			console.log(tempId)
-			console.log( '##########################@@@@@@@@@@@@', ChartDataX["'" + tempId +  "'"], '##########################@@@@@@@@@@@@', ChartDataX[tempId])
+			console.log( '##########################@@@@@@@@@@@@', ChartDataX[ tempId ], '##########################@@@@@@@@@@@@', ChartDataX[tempId])
 			var d = new Date();
 			var n = d.getTime();
 			console.log(n);
-			if (ChartDataX["'" + tempId +  "'"]){
-				ChartDataX["'" + tempId +  "'"].push(n , value);
+			if (ChartDataX[tempId ]){
+				ChartDataX[ tempId].push(n , value);
 				displayChart()
 			}
 
