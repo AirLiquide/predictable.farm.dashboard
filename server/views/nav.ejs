@@ -772,7 +772,7 @@
 			var n = d.getTime();
 			console.log(n);
 			if (ChartDataX["'" + sensor_id +  "'"]){
-				ChartDataX[sensor_id].push(n , value);
+				ChartDataX["'" + sensor_id +  "'"].push(n , value);
 				displayChart()
 			}
 
