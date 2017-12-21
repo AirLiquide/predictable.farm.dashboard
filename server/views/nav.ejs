@@ -777,7 +777,7 @@
 				ChartDataX[ tempId].push(n , value);
 				console.log(loadChart)
 				// loadChart.displayChart();
-				loadChart()
+				loadChart('justDisplay')
 			}
 
 			console.log(ChartDataX);
@@ -932,169 +932,237 @@
 			document.getElementById(btnNavPrefix + 'next').addEventListener('click', _btnNavClick);
 		};
 
-		var loadChart = function() {
-					var utc2datetime = function(utc, separator) {
-						if (typeof separator === 'undefined') {
-							separator = ' ';
-						}
+		var loadChart = function(action) {
+					if (action == 'justDisplay'){
+						var displayChart = function() {
+							// console.log('displayChart BEGIN')
+							charts = [];
 
-						var date = new Date(utc);
+							for (var i=0; i < chartTags.length; i++) {
+								// TODO highcharts from cache
+								var sensor_ids = chartTags[i].getAttribute('data-sensor_ids');
+								var chartSensors = sensor_ids.split(',');
 
-						var datetime = date.getFullYear() + '-';
-						datetime += (date.getMonth() < 10 ? '0' : '') + (date.getMonth()+1) + '-';
-						datetime += (date.getDate() < 10 ? '0' : '') + date.getDate();
-						datetime += separator;
-						datetime += (date.getHours() < 10 ? '0' : '') + date.getHours() + ':';
-						datetime += (date.getMinutes() < 10 ? '0' : '') + date.getMinutes() + ':';
-						datetime += (date.getSeconds() < 10 ? '0' : '') + date.getSeconds();
+								var series = [];
+								var yAxis = [];
+								var yAxisIndex = {};
 
-						return datetime;
-					};
+								for (var j=0; j < chartSensors.length && j < 4; j++) {
+									var optiIndex = 0
 
-					// get all the charts in the page
-					var chartTags = document.getElementsByClassName('row-chart');
-					var allNeededSensors = {};
-					var sensorListCyril = [];
+									var sensor = setup.getSensor(chartSensors[j]);
+									// var sensor = setup.getSensorCharty(chartSensors[j]);
+									// create a new axis if needed
+									var yAxisId;
 
-					for (var i=0; i < chartTags.length; i++) {
-						var sensor_ids = chartTags[i].getAttribute('data-sensor_ids')
-						// console.log("sensors idssss : " +sensor_ids)
-						var sensor_device_ids = chartTags[i].getAttribute('data-device_ids')
-						var sensor_types = chartTags[i].getAttribute('data-types')
-						var chartNeededSensors = sensor_ids.split(',');
+									if (typeof yAxisIndex[sensor.type] === 'undefined') {
+										yAxisId = yAxis.length;
+										yAxis.push({
+											//labels : { format : '{value}°C', style : { color : 'red' }},
+											showEmpty : false,
+											title : {
+												text : sensor.type
+												//style : { color : 'red' }
+											}
+										});
+										yAxisIndex[sensor.type] = yAxisId;
+									}
+									else {
+										yAxisId = yAxisIndex[sensor.type];
+									}
+										series.push({
+											type : 'spline',
+											name : sensor.type,
+											data : ChartDataX[sensor.id_sensor],
+											yAxis : yAxisId
+										});
 
-						for (var j=0; j < chartNeededSensors.length; j++) {
-							var id_sensor = chartNeededSensors[j];
-							// console.log(id_sensor + typeof id_sensor)
-							var tempSensorCyril = {};
-							// console.log(setup.getSensor(id_sensor))
-							 tempSensorCyril = JSON.parse(JSON.stringify(setup.getSensor(id_sensor)));
-
-							// console.log(tempSensorCyril);
-							delete tempSensorCyril.class;
-							delete tempSensorCyril.sensor_mode;
-							delete tempSensorCyril.id_zone;
-							delete tempSensorCyril.label;
-							delete tempSensorCyril.last_time;
-							delete tempSensorCyril.last_value;
-							delete tempSensorCyril.probe_name;
-							delete tempSensorCyril.sort_order;
-							delete tempSensorCyril.style;
-							delete tempSensorCyril.probe_uuid;
-							sensorListCyril.push(JSON.stringify(tempSensorCyril))
-							// add the id_sensor to those wanted
-							allNeededSensors[id_sensor] = true;
-						}
-					}
-
-					// we check if we already have data for what is asked
-
-					var neededSensors = [];
-
-					for (var id_sensor in allNeededSensors) {
-						// var sensor_type =
-
-
-
-
-
-							isCacheEnough = false;
-							neededSensors.push(id_sensor);
-
-							// neededSensorsType.push(sensor_type);
-							// neededSensorsDevice.push(device_id);
-
-					}
-
-					var displayChart = function() {
-						// console.log('displayChart BEGIN')
-						charts = [];
-
-						for (var i=0; i < chartTags.length; i++) {
-							// TODO highcharts from cache
-							var sensor_ids = chartTags[i].getAttribute('data-sensor_ids');
-							var chartSensors = sensor_ids.split(',');
-
-							var series = [];
-							var yAxis = [];
-							var yAxisIndex = {};
-
-							for (var j=0; j < chartSensors.length && j < 4; j++) {
-								var optiIndex = 0
-
-								var sensor = setup.getSensor(chartSensors[j]);
-								// var sensor = setup.getSensorCharty(chartSensors[j]);
-								// create a new axis if needed
-								var yAxisId;
-
-								if (typeof yAxisIndex[sensor.type] === 'undefined') {
-									yAxisId = yAxis.length;
-									yAxis.push({
-										//labels : { format : '{value}°C', style : { color : 'red' }},
-										showEmpty : false,
-										title : {
-											text : sensor.type
-											//style : { color : 'red' }
-										}
-									});
-									yAxisIndex[sensor.type] = yAxisId;
 								}
-								else {
-									yAxisId = yAxisIndex[sensor.type];
-								}
-									series.push({
-										type : 'spline',
-										name : sensor.type,
-										data : ChartDataX[sensor.id_sensor],
-										yAxis : yAxisId
-									});
 
+
+								charts.push(Highcharts.chart(chartTags[i], {
+									chart : {
+										zoomType : 'x'
+									},
+									title : {
+										text : ''
+									},
+									xAxis : {
+										type : 'datetime'
+									},
+									yAxis : yAxis,
+									legend : {
+										enabled : true
+									},
+									series : series
+								}));
+							}
+						};
+					} else{
+						var utc2datetime = function(utc, separator) {
+							if (typeof separator === 'undefined') {
+								separator = ' ';
 							}
 
+							var date = new Date(utc);
 
-							charts.push(Highcharts.chart(chartTags[i], {
-								chart : {
-									zoomType : 'x'
-								},
-								title : {
-									text : ''
-								},
-								xAxis : {
-									type : 'datetime'
-								},
-								yAxis : yAxis,
-								legend : {
-									enabled : true
-								},
-								series : series
-							}));
+							var datetime = date.getFullYear() + '-';
+							datetime += (date.getMonth() < 10 ? '0' : '') + (date.getMonth()+1) + '-';
+							datetime += (date.getDate() < 10 ? '0' : '') + date.getDate();
+							datetime += separator;
+							datetime += (date.getHours() < 10 ? '0' : '') + date.getHours() + ':';
+							datetime += (date.getMinutes() < 10 ? '0' : '') + date.getMinutes() + ':';
+							datetime += (date.getSeconds() < 10 ? '0' : '') + date.getSeconds();
+
+							return datetime;
+						};
+
+						// get all the charts in the page
+						var chartTags = document.getElementsByClassName('row-chart');
+						var allNeededSensors = {};
+						var sensorListCyril = [];
+
+						for (var i=0; i < chartTags.length; i++) {
+							var sensor_ids = chartTags[i].getAttribute('data-sensor_ids')
+							// console.log("sensors idssss : " +sensor_ids)
+							var sensor_device_ids = chartTags[i].getAttribute('data-device_ids')
+							var sensor_types = chartTags[i].getAttribute('data-types')
+							var chartNeededSensors = sensor_ids.split(',');
+
+							for (var j=0; j < chartNeededSensors.length; j++) {
+								var id_sensor = chartNeededSensors[j];
+								// console.log(id_sensor + typeof id_sensor)
+								var tempSensorCyril = {};
+								// console.log(setup.getSensor(id_sensor))
+								 tempSensorCyril = JSON.parse(JSON.stringify(setup.getSensor(id_sensor)));
+
+								// console.log(tempSensorCyril);
+								delete tempSensorCyril.class;
+								delete tempSensorCyril.sensor_mode;
+								delete tempSensorCyril.id_zone;
+								delete tempSensorCyril.label;
+								delete tempSensorCyril.last_time;
+								delete tempSensorCyril.last_value;
+								delete tempSensorCyril.probe_name;
+								delete tempSensorCyril.sort_order;
+								delete tempSensorCyril.style;
+								delete tempSensorCyril.probe_uuid;
+								sensorListCyril.push(JSON.stringify(tempSensorCyril))
+								// add the id_sensor to those wanted
+								allNeededSensors[id_sensor] = true;
+							}
 						}
-					};
+
+						// we check if we already have data for what is asked
+
+						var neededSensors = [];
+
+						for (var id_sensor in allNeededSensors) {
+							// var sensor_type =
 
 
-						//console.debug('GETTING NEW DATA');
-						var url = '/get-list-reading'
-						url += '?date_format=microtime';
-						url += '&sensors=' + neededSensors.join(',');
-						url += '&sensorsList=' + sensorListCyril.join(',');
-						url += '&from=' + (chartStart - chartPeriod);
-						url += '&to=' + ((chartStart + chartPeriod) + chartPeriod);
-						url += '&format=jsonp';
-						url += '&callback=?';
 
-						$.getJSON(url, function(data) {
-							// for (var id_probe in data) {
-							// 	console.log('id probe:'+id_probe +'url :'+ url + 'data : ' + JSON.stringify(data))
-							// 	cache.setCache(id_probe, data[id_probe]);
-							//new Date().getTime()
-							// }
 
-							ChartDataX = data
-							ChartDataX = JSON.parse(JSON.stringify(data))
-							data = JSON.parse(JSON.stringify(data))
-							ChartDataXCSV = ChartDataX
-							displayChart();
-						}, 'json');
+
+								isCacheEnough = false;
+								neededSensors.push(id_sensor);
+
+								// neededSensorsType.push(sensor_type);
+								// neededSensorsDevice.push(device_id);
+
+						}
+
+						var displayChart = function() {
+							// console.log('displayChart BEGIN')
+							charts = [];
+
+							for (var i=0; i < chartTags.length; i++) {
+								// TODO highcharts from cache
+								var sensor_ids = chartTags[i].getAttribute('data-sensor_ids');
+								var chartSensors = sensor_ids.split(',');
+
+								var series = [];
+								var yAxis = [];
+								var yAxisIndex = {};
+
+								for (var j=0; j < chartSensors.length && j < 4; j++) {
+									var optiIndex = 0
+
+									var sensor = setup.getSensor(chartSensors[j]);
+									// var sensor = setup.getSensorCharty(chartSensors[j]);
+									// create a new axis if needed
+									var yAxisId;
+
+									if (typeof yAxisIndex[sensor.type] === 'undefined') {
+										yAxisId = yAxis.length;
+										yAxis.push({
+											//labels : { format : '{value}°C', style : { color : 'red' }},
+											showEmpty : false,
+											title : {
+												text : sensor.type
+												//style : { color : 'red' }
+											}
+										});
+										yAxisIndex[sensor.type] = yAxisId;
+									}
+									else {
+										yAxisId = yAxisIndex[sensor.type];
+									}
+										series.push({
+											type : 'spline',
+											name : sensor.type,
+											data : ChartDataX[sensor.id_sensor],
+											yAxis : yAxisId
+										});
+
+								}
+
+
+								charts.push(Highcharts.chart(chartTags[i], {
+									chart : {
+										zoomType : 'x'
+									},
+									title : {
+										text : ''
+									},
+									xAxis : {
+										type : 'datetime'
+									},
+									yAxis : yAxis,
+									legend : {
+										enabled : true
+									},
+									series : series
+								}));
+							}
+						};
+
+
+							//console.debug('GETTING NEW DATA');
+							var url = '/get-list-reading'
+							url += '?date_format=microtime';
+							url += '&sensors=' + neededSensors.join(',');
+							url += '&sensorsList=' + sensorListCyril.join(',');
+							url += '&from=' + (chartStart - chartPeriod);
+							url += '&to=' + ((chartStart + chartPeriod) + chartPeriod);
+							url += '&format=jsonp';
+							url += '&callback=?';
+
+							$.getJSON(url, function(data) {
+								// for (var id_probe in data) {
+								// 	console.log('id probe:'+id_probe +'url :'+ url + 'data : ' + JSON.stringify(data))
+								// 	cache.setCache(id_probe, data[id_probe]);
+								//new Date().getTime()
+								// }
+
+								ChartDataX = data
+								ChartDataX = JSON.parse(JSON.stringify(data))
+								data = JSON.parse(JSON.stringify(data))
+								ChartDataXCSV = ChartDataX
+								displayChart();
+							}, 'json');
+
+					}
 
 				};
 
