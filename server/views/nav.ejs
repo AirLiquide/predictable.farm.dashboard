@@ -124,6 +124,7 @@
 		var kiosk = new DataKiosk();
 		var seriesGlobal = [];
 		var ChartDataXCSV = [];
+		var ChartDataX = {};
 		// Component that handle data cache
 		var cache = new DataCache();
 
@@ -167,6 +168,7 @@
 			}
 
 		}
+
 		var actualHash = $(location).attr('hash');
 		var tempHash = localStorage.getItem("tempTab");
 		var exitingProbe = false;
@@ -771,6 +773,7 @@
 			displayChart()
 			console.log(ChartDataX[sensor_id]);
 		};
+
 		var initRelayDoubleClick = function() {
 			var _dblclickHandler = function(e) {
 				var currentValue = e.target.getAttribute('data-live-label-value');
@@ -993,7 +996,7 @@
 							// neededSensorsDevice.push(device_id);
 
 					}
-					var ChartDataX = {};
+
 					var displayChart = function() {
 						// console.log('displayChart BEGIN')
 						charts = [];
@@ -1102,7 +1105,7 @@
 			// Unselect previous selection
 			setup.unselectZone(templateContent.zones[0].id_zone);
 			setup.unselectProbe();
-	setup.unselectDashboard();
+			setup.unselectDashboard();
 			templateContent.zone = templateContent.zones[0];
 			templateContent.probe = {};
 			templateContent.probes = setup.getListProbeByZone(templateContent.zones[0].id_zone);
@@ -1189,7 +1192,7 @@
 		urlChangeHandler();
 
 		var openDropDown = function(block_index) {
-var x = document.getElementById('arrow-down-' + block_index);
+			var x = document.getElementById('arrow-down-' + block_index);
 
 	    if (x.style.display === 'none'){
 				document.getElementById('shadow-dropdown').style.display = 'block';
@@ -1201,13 +1204,13 @@ var x = document.getElementById('arrow-down-' + block_index);
 	        x.style.display = 'none';
 	    }
 		}
-		jQuery.fn.highlight = function (str, className) {
-    var regex = new RegExp(str, "gi");
+			jQuery.fn.highlight = function (str, className) {
+	    var regex = new RegExp(str, "gi");
 
-    return this.each(function () {
-        this.innerHTML = this.innerHTML.replace(regex, function(matched) {return "<span class=\"" + className + "\">" + matched + "</span>";});
-		    });
-		};
+	    return this.each(function () {
+	        this.innerHTML = this.innerHTML.replace(regex, function(matched) {return "<span class=\"" + className + "\">" + matched + "</span>";});
+			    });
+			};
 
 			document.getElementById("period_selector_day").click();
 
