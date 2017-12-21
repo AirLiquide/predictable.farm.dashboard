@@ -775,7 +775,9 @@
 			console.log(n);
 			if (ChartDataX[tempId ]){
 				ChartDataX[ tempId].push(n , value);
-				displayChart()
+				console.log(loadChart)
+				loadChart.displayChart();
+				loadChart().displayChart();
 			}
 
 			console.log(ChartDataX);
