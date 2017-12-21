@@ -765,13 +765,18 @@
 			}
 		};
 		var updateChart = function(sensor_id, value){
+			console.log(sensor_id);
+			console.log(value)
 			console.log( '##########################@@@@@@@@@@@@', ChartDataX[sensor_id], '##########################@@@@@@@@@@@@')
 			var d = new Date();
 			var n = d.getTime();
-			console.log();
-			ChartDataX[sensor_id].push(n , value);
-			displayChart()
-			console.log(ChartDataX[sensor_id]);
+			console.log(n);
+			if (ChartDataX[sensor_id]){
+				ChartDataX[sensor_id].push(n , value);
+				displayChart()
+			}
+
+			console.log(ChartDataX);
 		};
 
 		var initRelayDoubleClick = function() {
