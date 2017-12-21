@@ -765,23 +765,23 @@
 			}
 		};
 		var updateChart = function(sensor_id, value){
-			console.log(sensor_id);
-			console.log(value)
+			// console.log(sensor_id);
+			// console.log(value)
 			var tempId = sensor_id.replace(':', '')
-			console.log(tempId)
-			console.log( '##########################@@@@@@@@@@@@', ChartDataX[ tempId ], '##########################@@@@@@@@@@@@', ChartDataX[tempId])
+			// console.log(tempId)
+			// console.log( '##########################@@@@@@@@@@@@', ChartDataX[ tempId ], '##########################@@@@@@@@@@@@', ChartDataX[tempId])
 			var d = new Date();
 			var n = d.getTime();
-			console.log(n);
+			// console.log(n);
 			if (ChartDataX[tempId ]){
 				ChartDataX[ tempId].push(n , value);
-				console.log(loadChart)
+				// console.log(loadChart)
 				// chart.series[0].addPoint([n , value], true, shift);
 				// loadChart.displayChart();
 				loadChart('justDisplay')
 			}
 
-			console.log(ChartDataX);
+			// console.log(ChartDataX);
 		};
 
 		var initRelayDoubleClick = function() {
@@ -1492,8 +1492,8 @@
 				var relaodChart = function () {
 				  // Do stuff
 					console.log('inside relaodChart' )
-					loadChart('justDisplay');
-				   setTimeout(relaodChart, 3000);
+					loadChart();
+				   setTimeout(relaodChart, 30000);
 				};
 				console.log('relaodChart' )
 				relaodChart();
