@@ -981,7 +981,7 @@
 
 								}
 
-
+								console.log('charts !!!!!!!!!!!!???????????',charts);
 								charts.push(Highcharts.chart(chartTags[i], {
 									chart : {
 										zoomType : 'x',
@@ -991,7 +991,8 @@
 																 var x = (new Date()).getTime(), // current time
 																		 y = Math.random();
 																 series.addPoint([x, y], true, true);
-																 this.series[0].addPoint([x, y], true, true);
+																 console.log(this)
+																 charts.chart.series[0].addPoint([x, y], true, true);
 														 }, 1000);
 												 }
 										 }
