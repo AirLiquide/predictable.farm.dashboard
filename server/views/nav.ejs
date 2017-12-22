@@ -779,6 +779,7 @@
 				// chart.series[0].addPoint([n , value], true, shift);
 				// loadChart.displayChart();
 				loadChart('justDisplay')
+				displayChart();
 			}
 
 			// console.log(ChartDataX);
@@ -1131,7 +1132,19 @@
 
 								charts.push(Highcharts.chart(chartTags[i], {
 									chart : {
-										zoomType : 'x'
+										zoomType : 'x',
+										type: 'spline',
+						        animation: Highcharts.svg, // don't animate in old IE
+						        marginRight: 10,
+										events: {
+												 load: function () {
+														 setInterval(function () {
+																 var x = (new Date()).getTime(), // current time
+																		 y = Math.random();
+																 series.addPoint([x, y], true, true);
+														 }, 1000);
+												 }
+										 }
 									},
 									title : {
 										text : ''
