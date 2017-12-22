@@ -991,6 +991,7 @@
 																 var x = (new Date()).getTime(), // current time
 																		 y = Math.random();
 																 series.addPoint([x, y], true, true);
+																 this.series[0].addPoint([x, y], true, true);
 														 }, 1000);
 												 }
 										 }
@@ -1141,7 +1142,8 @@
 														 setInterval(function () {
 																 var x = (new Date()).getTime(), // current time
 																		 y = Math.random();
-																 series.addPoint([x, y], true, true);
+																 this.series.addPoint([x, y], true, true);
+																 this.series[0].addPoint([x, y], true, true);
 														 }, 1000);
 												 }
 										 }
