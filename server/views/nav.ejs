@@ -773,13 +773,13 @@
 			var d = new Date();
 			var n = d.getTime();
 			// console.log(n);
-			if (ChartDataX[tempId ]){
-				ChartDataX[ tempId].push(n , value);
-				// console.log(loadChart)
+			if (ChartDataX[tempId]){
+				ChartDataX[tempId].push(n , value);
+				 console.log(loadChart)
 				// chart.series[0].addPoint([n , value], true, shift);
 				// loadChart.displayChart();
 				loadChart('justDisplay')
-				displayChart();
+
 			}
 
 			// console.log(ChartDataX);
@@ -936,7 +936,7 @@
 
 		var loadChart = function(action) {
 					if (action == 'justDisplay'){
-						displayChart();
+
 						var displayChart = function() {
 							// console.log('displayChart BEGIN')
 							charts = [];
@@ -1012,6 +1012,7 @@
 								}));
 							}
 						};
+						displayChart();
 					} else{
 						var utc2datetime = function(utc, separator) {
 							if (typeof separator === 'undefined') {
