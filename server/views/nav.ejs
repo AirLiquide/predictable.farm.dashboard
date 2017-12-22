@@ -985,18 +985,7 @@
 								console.log('charts !!!!!!!!!!!!???????????',charts);
 								charts.push(Highcharts.chart(chartTags[i], {
 									chart : {
-										zoomType : 'x',
-										events: {
-												 load: function () {
-														 setInterval(function () {
-																 var x = (new Date()).getTime(), // current time
-																		 y = Math.random();
-																 series.addPoint([x, y], true, true);
-																 console.log(this)
-																 charts.chart.series[0].addPoint([x, y], true, true);
-														 }, 1000);
-												 }
-										 }
+										zoomType : 'x'
 									},
 									title : {
 										text : ''
@@ -1183,20 +1172,7 @@
 								console.log('charts !!!!!!!!!!!!???????????',charts);
 								charts.push(Highcharts.chart(chartTags[i], {
 									chart : {
-										zoomType : 'x',
-										type: 'spline',
-						        animation: Highcharts.svg, // don't animate in old IE
-						        marginRight: 10,
-										events: {
-												 load: function () {
-														 setInterval(function () {
-																 var x = (new Date()).getTime(), // current time
-																		 y = Math.random();
-																		 console.log(this)
-																		 charts.chart.series[0].addPoint([x, y], true, true);
-														 }, 1000);
-												 }
-										 }
+										zoomType : 'x'
 									},
 									title : {
 										text : ''
@@ -1568,7 +1544,7 @@
 				  // Do stuff
 					console.log('inside relaodChart' )
 					if (ChartDataX){
-						loadChart();
+						loadChart('justDisplay');
 					}
 				   setTimeout(relaodChart, 30000);
 				};
