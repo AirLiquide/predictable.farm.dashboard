@@ -1567,7 +1567,9 @@
 				var relaodChart = function () {
 				  // Do stuff
 					console.log('inside relaodChart' )
-					loadChart();
+					if (ChartDataX){
+						loadChart('justDisplay');
+					}
 				   setTimeout(relaodChart, 30000);
 				};
 				console.log('relaodChart' )
