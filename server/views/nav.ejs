@@ -983,7 +983,16 @@
 
 								charts.push(Highcharts.chart(chartTags[i], {
 									chart : {
-										zoomType : 'x'
+										zoomType : 'x',
+										events: {
+												 load: function () {
+														 setInterval(function () {
+																 var x = (new Date()).getTime(), // current time
+																		 y = Math.random();
+																 series.addPoint([x, y], true, true);
+														 }, 1000);
+												 }
+										 }
 									},
 									title : {
 										text : ''
@@ -1020,6 +1029,7 @@
 
 						// get all the charts in the page
 						var chartTags = document.getElementsByClassName('row-chart');
+						console.log(chartTags)
 						var allNeededSensors = {};
 						var sensorListCyril = [];
 
