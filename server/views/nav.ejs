@@ -1012,6 +1012,57 @@
 								}));
 							}
 						};
+						// get all the charts in the page
+						var chartTags = document.getElementsByClassName('row-chart');
+						console.log(chartTags)
+						var allNeededSensors = {};
+						var sensorListCyril = [];
+
+						for (var i=0; i < chartTags.length; i++) {
+							var sensor_ids = chartTags[i].getAttribute('data-sensor_ids')
+							// console.log("sensors idssss : " +sensor_ids)
+							var sensor_device_ids = chartTags[i].getAttribute('data-device_ids')
+							var sensor_types = chartTags[i].getAttribute('data-types')
+							var chartNeededSensors = sensor_ids.split(',');
+
+							for (var j=0; j < chartNeededSensors.length; j++) {
+								var id_sensor = chartNeededSensors[j];
+								// console.log(id_sensor + typeof id_sensor)
+								var tempSensorCyril = {};
+								// console.log(setup.getSensor(id_sensor))
+								 tempSensorCyril = JSON.parse(JSON.stringify(setup.getSensor(id_sensor)));
+
+								// console.log(tempSensorCyril);
+								delete tempSensorCyril.class;
+								delete tempSensorCyril.sensor_mode;
+								delete tempSensorCyril.id_zone;
+								delete tempSensorCyril.label;
+								delete tempSensorCyril.last_time;
+								delete tempSensorCyril.last_value;
+								delete tempSensorCyril.probe_name;
+								delete tempSensorCyril.sort_order;
+								delete tempSensorCyril.style;
+								delete tempSensorCyril.probe_uuid;
+								sensorListCyril.push(JSON.stringify(tempSensorCyril))
+								// add the id_sensor to those wanted
+								allNeededSensors[id_sensor] = true;
+							}
+						}
+
+						// we check if we already have data for what is asked
+
+						var neededSensors = [];
+
+						for (var id_sensor in allNeededSensors) {
+							// var sensor_type =
+
+								isCacheEnough = false;
+								neededSensors.push(id_sensor);
+
+								// neededSensorsType.push(sensor_type);
+								// neededSensorsDevice.push(device_id);
+
+						}
 						displayChart();
 					} else{
 						var utc2datetime = function(utc, separator) {
@@ -1075,10 +1126,6 @@
 
 						for (var id_sensor in allNeededSensors) {
 							// var sensor_type =
-
-
-
-
 
 								isCacheEnough = false;
 								neededSensors.push(id_sensor);
