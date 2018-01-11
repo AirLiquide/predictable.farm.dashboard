@@ -243,12 +243,12 @@ module.exports = function() {
 			listValue : "(id_probe, uuid, id_zone, name)",
 			callback : function(err, result) {
 				if (err) {
-					// console.log('insert ERREUR*************' + err)
+					console.log('insert ERREUR*************' + err)
 					return;
 				}
-					// console.log('insert GOOD*************' + result)
+					console.log('insert GOOD*************' + result)
 				if (typeof params.callback === 'function') {
-					// console.log('insert callback is function *************' + err + result)
+					console.log('insert callback is function *************' + err + result)
 					params.callback(err, result.rows);
 				}
 			}
@@ -258,7 +258,7 @@ module.exports = function() {
 	// params : values.id_probe, values.type, values.last_value, callback
 	var createSensor = function(params) {
 		if (typeof params !== 'object') {
-			// console.log('createSensor not object *************')
+			console.log('createSensor not object *************')
 			return;
 		}
 		console.log('create sensor' + params)
@@ -272,8 +272,8 @@ module.exports = function() {
 				last_value : params.values.last_value
 			},
 			callback : function(err, result) {
-				// console.log('createSensor callback result *************' + result)
-				// console.log('createSensor callback err *************' + err)
+				console.log('createSensor callback result *************' + result)
+				console.log('createSensor callback err *************' + err)
 				if (err) {
 					return;
 				}
