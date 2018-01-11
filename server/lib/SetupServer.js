@@ -271,8 +271,8 @@ module.exports = function() {
 			zoneId : zone.id_zone,
 			callback : function(err, result) {
 				// Refresh zones cache
-				// console.log('error: ' + err)
-				// console.log('result: ' + result)
+				 console.log('error: ' + err)
+				 console.log('result: ' + result)
 				self.loadZones();
 
 				if (typeof callback === 'function') {

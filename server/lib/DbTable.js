@@ -148,7 +148,7 @@ DB_BASE : 'predictabledata',
           }
 
         request += ' WHERE ' +  params.where;
-        // console.log("++++++++++++++++ UPDATE REQUEST: " + request)
+         console.log("++++++++++++++++ UPDATE REQUEST: " + request)
         if (!this.connection) {
             this.connect();
         }
