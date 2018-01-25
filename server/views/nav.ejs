@@ -27,6 +27,7 @@
 		<script type="text/javascript" src="/lib/mustache-2.2.1/mustache.min.js"></script>
 
 		<script type="text/javascript" src="/lib/highcharts-5.0.6/code/highcharts.js"></script>
+		<script type="text/javascript" src="/lib/highcharts-5.0.6/code/boost.js"></script>
 
 		<script type="text/javascript" src="/lib/dragula-3.7.2/dragula.min.js"></script>
 		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
@@ -84,24 +85,32 @@
 		}
 
 
-		var configLabelStyle = {
-			'lux' : [{ format : '[value] <span class="inline-unit highlight">lux</span>' }],
-			'ppm' : [{ format : '[value] <span class="inline-unit highlight">ppm</span>' }],
-			//'celcius-degrees' : [{ format : '[value]°C' }],
-			'celcius-degrees' : [{ format : function(value, element) { element.innerHTML = (value/1).toFixed(1) + '<span class="inline-unit highlight">°C</span>' }}],
-			'percent' : [{ format : '[value]<span class="inline-unit highlight">%</span>' }],
-			'pascal' : [{ format : '[value] <span class="inline-unit highlight">Pa</span>' }],
-			'hectopascal' : [{ format : '[value] <span class="inline-unit highlight">hPa</span>' }],
-			'pascal-to-hectopascal' : [{ format : function(value, element) { element.innerHTML = (value/100).toFixed(2) + ' <span class="inline-unit highlight">hPa</span>'; } }],
-			'ohm' : [{ format : '[value] <span class="inline-unit highlight">Ohm</span>' }],
-			'volt' : [{ format : '[value] <span class="inline-unit highlight">V</span>' }],
-			'co2' : [{ format : '[value] <span class="inline-unit highlight">V</span>' }],
-      'do' : [{ format : '[value] <span class="inline-unit highlight">mg/l</span>' }],
-      'mVolt' : [{ format : '[value] <span class="inline-unit highlight">mV</span>' }],
-      'ec' : [{ format : '[value] <span class="unit highlight">µS/cm</span>' }],
-      'par' : [{ format : '[value] <span class="unit highlight">mol/m²/sec</span>' }],
-      'dli' : [{ format : '[value] <span class="unit highlight">mol/m²/day</span>' }],
-      'ph' : [{ format : '[value]' }],
+        var configLabelStyle = {
+            'lux': [{format: '[value] <span class="inline-unit highlight">lux</span>'}],
+            'ppm': [{format: '[value] <span class="inline-unit highlight">ppm</span>'}],
+            //'celcius-degrees' : [{ format : '[value]°C' }],
+            'celcius-degrees': [{
+                format: function (value, element) {
+                    element.innerHTML = (value / 1).toFixed(1) + '<span class="inline-unit highlight">°C</span>'
+                }
+            }],
+            'percent': [{format: '[value]<span class="inline-unit highlight">%</span>'}],
+            'pascal': [{format: '[value] <span class="inline-unit highlight">Pa</span>'}],
+            'hectopascal': [{format: '[value] <span class="inline-unit highlight">hPa</span>'}],
+            'pascal-to-hectopascal': [{
+                format: function (value, element) {
+                    element.innerHTML = (value / 100).toFixed(2) + ' <span class="inline-unit highlight">hPa</span>';
+                }
+            }],
+            'ohm': [{format: '[value] <span class="inline-unit highlight">Ohm</span>'}],
+            'volt': [{format: '[value] <span class="inline-unit highlight">V</span>'}],
+            'co2': [{format: '[value] <span class="inline-unit highlight">V</span>'}],
+            'do': [{format: '[value] <span class="inline-unit highlight">mg/l</span>'}],
+            'mVolt': [{format: '[value] <span class="inline-unit highlight">mV</span>'}],
+            'ec': [{format: '[value] <span class="unit highlight">µS/cm</span>'}],
+            'par': [{format: '[value] <span class="unit highlight">mol/m²/sec</span>'}],
+            'dli': [{format: '[value] <span class="unit highlight">mol/m²/day</span>'}],
+            'ph': [{format: '[value]'}],
 
 
 			'air-quality' : [
@@ -234,127 +243,12 @@
 			}
 		}
 
-		// var actualHash = $(location).attr('hash');
-		// var tempHash = localStorage.getItem("tempTab");
-		// var exitingProbe = false;
-		// if (tempHash ){
-		// 	var tempHashSplit = tempHash.split("-");
-		// 	console.log(tempHashSplit)
-		// 	var probeList = setup.getListProbeByZone(setup.getSelectedZone().id_zone)
-		// 	console.log(probeList);
-		// 	console.log(JSON.stringify(probeList));
-		// 	var dashList = setup.getListZone()
-		//
-		// 	console.log(dashList);
-		// 	console.log(JSON.stringify(dashList));
-		// 	if (tempHashSplit[0] == '#probe'){
-		// 		for (var i=0; i <  probeList.length; i++) {
-		// 			console.log(probeList[i].id_probe)
-		// 			console.log(tempHashSplit[2])
-		// 			if ( probeList[i].id_probe == tempHashSplit[2]) {
-		// 				exitingProbe = true
-		// 				console.log('hi probe find')
-		// 			}
-		// 		}
-		// 	}
-		// 	if (tempHashSplit[0] == '#dashboard' && actualHashSplit){
-		// 		for (var i=0; i <  dashList.length; i++) {
-		// 			if ( actualHashSplit[2] == i) {
-		// 				exitingProbe = true
-		// 			}
-		// 		}
-		// 	}
-		//
-		// }
-		// if (!actualHash){
-		// 	window.location.replace("/#dashboard-0-0" );
-		// }
-		// if (tempHash === null){
-		// 	window.location.replace("/#dashboard-0-0" );
-		// } else if ( tempHash != actualHash){
-		// 	if (actualHash && tempHashSplit[0] && tempHashSplit[1] && tempHashSplit[2]){
-		// 		var tempHashSplit = tempHash.split("-");
-		// 		console.log(tempHashSplit)
-		// 		var probeList = setup.getListProbeByZone(setup.getSelectedZone().id_zone)
-		// 		console.log(probeList);
-		// 		console.log(JSON.stringify(probeList));
-		// 		var dashList = setup.getSelectedZone()
-		//
-		// 		console.log(dashList);
-		// 		console.log(JSON.stringify(dashList));
-		// 		if (tempHashSplit[0] == '#probe' && tempHashSplit[2]){
-		// 			for (var i=0; i <  probeList.length; i++) {
-		// 				console.log(probeList[i].id_probe)
-		// 				if ( probeList[i].id_probe == tempHashSplit[2]) {
-		// 					exitingProbe = true
-		// 				}
-		// 			}
-		// 		}
-		// 		if (tempHashSplit[0] == '#dashboard' && tempHashSplit[2]){
-		// 			for (var i=0; i <  dashList.length; i++) {
-		// 				if ( tempHashSplit[2] == i) {
-		// 					exitingProbe = true
-		// 				}
-		// 			}
-		// 		}
-		//
-		// 	}
-		// 	if(exitingProbe){
-		// 		window.location.replace("/" + tempHash);
-		// 		setTimeout(newScrollFunction, 1000);
-		//
-		// 	} else{
-		// 		window.location.replace("/#dashboard-0-0" );
-		// 	}
-		//
-		//
-		// } else {
-		//
-		// 	if (tempHash){
-		// 		var tempHashSplit = tempHash.split("-");
-		// 		console.log(tempHashSplit)
-		// 		var probeList = setup.getListProbeByZone(setup.getSelectedZone().id_zone)
-		// 		console.log(probeList);
-		// 		console.log(JSON.stringify(probeList));
-		// 		var dashList = setup.getListZone()
-		//
-		// 		console.log(dashList);
-		// 		console.log(JSON.stringify(dashList));
-		// 		if (tempHashSplit[0] == '#probe'){
-		// 			for (var i=0; i <  probeList.length; i++) {
-		// 				console.log(probeList[i].id_probe)
-		// 				console.log(tempHashSplit[2])
-		// 				if ( probeList[i].id_probe == tempHashSplit[2]) {
-		// 					exitingProbe = true
-		// 					console.log('hi probe find')
-		// 				}
-		// 			}
-		// 		}
-		// 		if (tempHashSplit[0] == '#dashboard' && actualHashSplit[2]){
-		// 			for (var i=0; i <  dashList.length; i++) {
-		// 				if ( actualHashSplit[2] == i) {
-		// 					exitingProbe = true
-		// 				}
-		// 			}
-		// 		}
-		//
-		// 	}
-		// 	if(exitingProbe){
-		// 		window.location.replace("/" + tempHash);
-		// 		setTimeout(newScrollFunction, 1000);
-		// 	} else{
-		// 		window.location.replace("/#dashboard-0-0" );
-		// 	}
-		//}
-
-
-
-
-
 		// Live connection to the server
 		var socket = io.connect('/');
 		socket.on('connect', function() {
 			socket.emit('hello c est le dash');
+
+			console.log("SOCKET_CONNECTED");
 		});
 
 		// New data arrival
@@ -369,11 +263,6 @@
 			kiosk.write([data]);
 			kiosk.publish();
 			updateChart( data.id , data.sensor_value);
-
-
-
-			// chart.series[0].addPoint(point, true, shift);
-
 		});
 
 		/*************************/
@@ -764,25 +653,14 @@
 				}
 			}
 		};
+
 		var updateChart = function(sensor_id, value){
-			// console.log(sensor_id);
-			// console.log(value)
-			var tempId = sensor_id.replace(':', '')
-			// console.log(tempId)
-			// console.log( '##########################@@@@@@@@@@@@', ChartDataX[ tempId ], '##########################@@@@@@@@@@@@', ChartDataX[tempId])
-			var d = new Date();
-			var n = d.getTime();
-			// console.log(n);
-			if (ChartDataX[tempId]){
-				ChartDataX[tempId].push(n , value);
-				 console.log(loadChart)
-				// chart.series[0].addPoint([n , value], true, shift);
-				// loadChart.displayChart();
-				// loadChart('justDisplay')
+            var date = new Date();
+            var id = sensor_id.split(':')[1];
 
+            if(charts[0].series[chartsId[id]] !== undefined) {
+            	charts[0].series[chartsId[id]].addPoint([date.getTime(), parseFloat(value)], true, null);
 			}
-
-			// console.log(ChartDataX);
 		};
 
 		var initRelayDoubleClick = function() {
@@ -862,6 +740,7 @@
 		var chartStart = Math.floor(new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 1).getTime());
 		var chartPeriod = (1000*60*60*24);
 		var charts = [];
+		var chartsId = {};
 
 		var initPeriodSelector = function() {
 			var dayDuration = 1000*60*60*24;
@@ -982,7 +861,6 @@
 
 								}
 
-								console.log('charts !!!!!!!!!!!!???????????',charts);
 								charts.push(Highcharts.chart(chartTags[i], {
 									chart : {
 										zoomType : 'x'
@@ -1003,7 +881,7 @@
 						};
 						// get all the charts in the page
 						var chartTags = document.getElementsByClassName('row-chart');
-						console.log(chartTags)
+						//console.log(chartTags)
 						var allNeededSensors = {};
 						var sensorListCyril = [];
 
@@ -1074,7 +952,7 @@
 
 						// get all the charts in the page
 						var chartTags = document.getElementsByClassName('row-chart');
-						console.log(chartTags)
+						// console.log(chartTags)
 						var allNeededSensors = {};
 						var sensorListCyril = [];
 
@@ -1128,6 +1006,8 @@
 							// console.log('displayChart BEGIN')
 							charts = [];
 
+
+
 							for (var i=0; i < chartTags.length; i++) {
 								// TODO highcharts from cache
 								var sensor_ids = chartTags[i].getAttribute('data-sensor_ids');
@@ -1138,9 +1018,12 @@
 								var yAxisIndex = {};
 
 								for (var j=0; j < chartSensors.length && j < 4; j++) {
+
+
 									var optiIndex = 0
 
 									var sensor = setup.getSensor(chartSensors[j]);
+                                    chartsId[sensor.type] = j;
 									// var sensor = setup.getSensorCharty(chartSensors[j]);
 									// create a new axis if needed
 									var yAxisId;
@@ -1169,8 +1052,10 @@
 
 								}
 
-								console.log('charts !!!!!!!!!!!!???????????',charts);
 								charts.push(Highcharts.chart(chartTags[i], {
+                                    boost: {
+                                        useGPUTranslations: true
+                                    },
 									chart : {
 										zoomType : 'x'
 									},
@@ -1542,14 +1427,14 @@
 				};
 				var relaodChart = function () {
 				  // Do stuff
-					console.log('inside relaodChart' )
+					//console.log('inside relaodChart' )
 					if (ChartDataX){
 						loadChart();
 					}
 				   setTimeout(relaodChart, 30000);
 				};
-				console.log('relaodChart' )
-				relaodChart();
+				//console.log('relaodChart' )
+				//relaodChart();
 
 
 
