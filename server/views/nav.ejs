@@ -654,14 +654,14 @@
 			}
 		};
 
-		var updateChart = function(sensor_id, value){
+        var updateChart = function (sensor_id, value) {
             var date = new Date();
             var id = sensor_id.split(':')[1];
 
-            if(charts[0].series[chartsId[id]] !== undefined) {
-            	charts[0].series[chartsId[id]].addPoint([date.getTime(), parseFloat(value)], true, null);
-			}
-		};
+            if (charts[0].series[chartsId[id]] !== undefined) {
+                charts[0].series[chartsId[id]].addPoint([date.getTime(), parseFloat(value)], true, null);
+            }
+        };
 
 		var initRelayDoubleClick = function() {
 			var _dblclickHandler = function(e) {
