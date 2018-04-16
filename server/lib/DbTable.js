@@ -126,7 +126,7 @@ DB_BASE : 'predictabledata',
         }
         // console.log('////****$$$$ INSERT REQUEST $$$$******////  ' + request)
         console.log('insert request :' + request)
-        this.connection.execute(request, params.values, params.callback);
+        this.connection.execute(request, params.callback);
 
     },
 
