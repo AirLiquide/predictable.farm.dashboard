@@ -12,7 +12,6 @@ module.exports = function (socket) {
 
 	socket.on('sensor-emit', function(data) {
 
-
 		if (typeof data !== 'object') {
 			if (data.length < 50) {
 				return;
@@ -26,7 +25,7 @@ module.exports = function (socket) {
 		}
 
 		// register the probe's uuid
-		
+
 		dataSender.register(data.device_id, socket);
 
 

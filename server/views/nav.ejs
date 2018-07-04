@@ -817,7 +817,7 @@
 					if (action == 'justDisplay'){
 
 						var displayChart = function() {
-							// console.log('displayChart BEGIN')
+
 							charts = [];
 
 							for (var i=0; i < chartTags.length; i++) {
@@ -881,25 +881,20 @@
 						};
 						// get all the charts in the page
 						var chartTags = document.getElementsByClassName('row-chart');
-						//console.log(chartTags)
 						var allNeededSensors = {};
 						var sensorListCyril = [];
 
 						for (var i=0; i < chartTags.length; i++) {
 							var sensor_ids = chartTags[i].getAttribute('data-sensor_ids')
-							// console.log("sensors idssss : " +sensor_ids)
 							var sensor_device_ids = chartTags[i].getAttribute('data-device_ids')
 							var sensor_types = chartTags[i].getAttribute('data-types')
 							var chartNeededSensors = sensor_ids.split(',');
 
 							for (var j=0; j < chartNeededSensors.length; j++) {
 								var id_sensor = chartNeededSensors[j];
-								// console.log(id_sensor + typeof id_sensor)
 								var tempSensorCyril = {};
-								// console.log(setup.getSensor(id_sensor))
-								 tempSensorCyril = JSON.parse(JSON.stringify(setup.getSensor(id_sensor)));
 
-								// console.log(tempSensorCyril);
+								 tempSensorCyril = JSON.parse(JSON.stringify(setup.getSensor(id_sensor)));
 								delete tempSensorCyril.class;
 								delete tempSensorCyril.sensor_mode;
 								delete tempSensorCyril.id_zone;
@@ -952,25 +947,22 @@
 
 						// get all the charts in the page
 						var chartTags = document.getElementsByClassName('row-chart');
-						// console.log(chartTags)
+
 						var allNeededSensors = {};
 						var sensorListCyril = [];
 
 						for (var i=0; i < chartTags.length; i++) {
 							var sensor_ids = chartTags[i].getAttribute('data-sensor_ids')
-							// console.log("sensors idssss : " +sensor_ids)
 							var sensor_device_ids = chartTags[i].getAttribute('data-device_ids')
 							var sensor_types = chartTags[i].getAttribute('data-types')
 							var chartNeededSensors = sensor_ids.split(',');
 
 							for (var j=0; j < chartNeededSensors.length; j++) {
 								var id_sensor = chartNeededSensors[j];
-								// console.log(id_sensor + typeof id_sensor)
 								var tempSensorCyril = {};
-								// console.log(setup.getSensor(id_sensor))
+
 								 tempSensorCyril = JSON.parse(JSON.stringify(setup.getSensor(id_sensor)));
 
-								// console.log(tempSensorCyril);
 								delete tempSensorCyril.class;
 								delete tempSensorCyril.sensor_mode;
 								delete tempSensorCyril.id_zone;
@@ -1003,7 +995,7 @@
 						}
 
 						var displayChart = function() {
-							// console.log('displayChart BEGIN')
+
 							charts = [];
 
 
@@ -1086,11 +1078,6 @@
 							url += '&callback=?';
 
 							$.getJSON(url, function(data) {
-								// for (var id_probe in data) {
-								// 	console.log('id probe:'+id_probe +'url :'+ url + 'data : ' + JSON.stringify(data))
-								// 	cache.setCache(id_probe, data[id_probe]);
-								//new Date().getTime()
-								// }
 
 								ChartDataX = data
 								ChartDataX = JSON.parse(JSON.stringify(data))
@@ -1427,17 +1414,12 @@
 				};
 				var relaodChart = function () {
 				  // Do stuff
-					//console.log('inside relaodChart' )
+
 					if (ChartDataX){
 						loadChart();
 					}
 				   setTimeout(relaodChart, 30000);
 				};
-				//console.log('relaodChart' )
-				//relaodChart();
-
-
-
 		</script>
 	</body>
 

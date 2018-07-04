@@ -29,7 +29,6 @@ DB_BASE : 'predictabledata',
         if (typeof _keepAlive === 'undefined') {
             this._keepAlive = false;
         }
-		// console.log('Openning table', table);
         this._table = table;
         if (!this.connection) {
             this.connect();
@@ -55,7 +54,7 @@ DB_BASE : 'predictabledata',
            } else {
                this.connected = true;
 
-              //  console.log("Connection to cassandra database done")
+               console.log("Connection to cassandra database done")
            }
        });
 
@@ -90,9 +89,7 @@ DB_BASE : 'predictabledata',
             this.connect();
         }
         this.lastRequest = request;
-        console.log('select request :' + request)
         var t = this
-        //  console.log('****$$$$ SELECT REQUEST $$$$******  ' + request)
         this.connection.execute('select * from zone ', params.whereValues, function(err, result) {
             if (err){
               setTimeout(function(){tableWrapper.select(params); }, 5000)
@@ -124,8 +121,6 @@ DB_BASE : 'predictabledata',
         if (!this.connection) {
             this.connect();
         }
-        // console.log('////****$$$$ INSERT REQUEST $$$$******////  ' + request)
-        console.log('insert request :' + request)
         this.connection.execute(request, params.callback);
 
     },
@@ -148,13 +143,11 @@ DB_BASE : 'predictabledata',
           }
 
         request += ' WHERE ' +  params.where;
-         console.log("++++++++++++++++ UPDATE REQUEST: " + request)
         if (!this.connection) {
             this.connect();
         }
 
         paramsList = []
-        console.log('update request :' + request)
         this.connection.execute(request, paramsList, params.callback);
 
         // if (!keepAlive) {
@@ -168,7 +161,6 @@ DB_BASE : 'predictabledata',
         if (typeof params.keepAlive !== 'undefined') {
             keepAlive = params.keepAlive;
         }
-        console.log('delete request :' + request)
         var request = 'DELETE FROM ' + this._table;
         if (typeof params.where !== 'undefined') {
             request += ' WHERE ' + params.where;
@@ -177,8 +169,6 @@ DB_BASE : 'predictabledata',
         if (!this.connection) {
             this.connect();
         }
-        console.log('delete request :' + request)
-        // console.log('////****$$$$ DELETE REQUEST $$$$******////  ' + request)
         this.connection.execute(request, params.whereValues, params.callback);
 
         // if (!keepAlive) {

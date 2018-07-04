@@ -10,13 +10,12 @@ var DataSending = function() {
 		// register the socket
 
 		if (typeof socket === 'object') {
-			// console.log('hi register' + socket)
 			_sockets[device_id] = socket;
 		}
 	};
 
 	this.know = function(device_id) {
-		// console.log('hi')
+
 		return (typeof _sockets[device_id] === 'object');
 
 	};

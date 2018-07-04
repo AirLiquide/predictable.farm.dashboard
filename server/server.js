@@ -78,8 +78,6 @@ app.get('/get-list-reading', function(req, res) {
 		req.query.to,
 		date_format,
 		function(result) {
-			console.log('Res : ' + ((new Date().getTime()) - before) + 'ms');
-
 			if (callback !== false) {
 				res.end(callback + '(' + result + ');');
 			}
@@ -87,19 +85,12 @@ app.get('/get-list-reading', function(req, res) {
 				res.end(result);
 			}
 
-			console.log('End : ' + ((new Date().getTime()) - before) + 'ms');
 		}
 	);
 });
 
 app.post('/update-zone', urlencodedParser, function(req, res) {
-	//console.log('app.post(/update-zone)');
-	//console.log(req.body);
-
-	// TODO check login & user rights
-
 	if (typeof req.body.zone !== 'undefined') {
-		console.log(req.body.zone);
 		setup.updateZone(JSON.parse(req.body.zone), function() {
 			res.end('done');
 		});
@@ -107,11 +98,6 @@ app.post('/update-zone', urlencodedParser, function(req, res) {
 });
 
 app.post('/update-probe', urlencodedParser, function(req, res) {
-	//console.log('app.post(/update-probe)');
-	//console.log(req.body);
-
-	// TODO check login & user rights
-
 	if (typeof req.body.probe !== 'undefined') {
 		setup.updateProbe(JSON.parse(req.body.probe), function() {
 			res.end('done');
@@ -119,11 +105,6 @@ app.post('/update-probe', urlencodedParser, function(req, res) {
 	}
 });
 app.post('/update-sensor-relay', urlencodedParser, function(req, res) {
-	//console.log('app.post(/update-probe)');
-	//console.log(req.body);
-
-	// TODO check login & user rights
-
 	if (typeof req.body.sensor !== 'undefined') {
 		setup.updateSensorRelay(JSON.parse(req.body.sensor), function() {
 			res.end('done');
@@ -131,13 +112,8 @@ app.post('/update-sensor-relay', urlencodedParser, function(req, res) {
 	}
 });
 app.post('/delete-probe', urlencodedParser, function(req, res) {
-	//console.log('app.post(/update-probe)');
-	//console.log(req.body);
-
-	// TODO check login & user rights
 
 	if (typeof req.body.probe_id !== 'undefined') {
-		console.log('coucou before if' )
 		setup.deleteProbe(req.body.probe_id, function() {
 			res.end('done');
 		})
@@ -149,11 +125,6 @@ app.post('/delete-probe', urlencodedParser, function(req, res) {
 });
 
 app.post('/update-sensors-order', urlencodedParser, function(req, res) {
-	//console.log('app.post(/update-sensors-order)');
-	//console.log(req.body);
-	//console.log(JSON.parse(req.body.sensors_order));
-
-	// TODO check login & user rights
 
 	var sensors_order = JSON.parse(req.body.sensors_order);
 	if (typeof sensors_order == 'object') {
@@ -166,9 +137,6 @@ app.post('/update-sensors-order', urlencodedParser, function(req, res) {
 });
 
 app.get('/change-relay', urlencodedParser, function(req, res) {
-	// device_id
-	// sensor_type
-	// sensor_value
 
 	// check required parameters
 	var params = ['device_id', 'sensor_type', 'sensor_value' , 'sensor_mode'];
@@ -176,11 +144,9 @@ app.get('/change-relay', urlencodedParser, function(req, res) {
 	for (var i=0; i < params.length; i++) {
 		if (typeof req.query[params[i]] === 'undefined') {
 			res.end('fail');
-
 			return;
 		}
 	}
-
 
 		dataSender.send(
 			req.query.device_id,
@@ -191,7 +157,6 @@ app.get('/change-relay', urlencodedParser, function(req, res) {
 			server, io
 			, function(text) {
 				res.end(text);
-
 			});
 			if (typeof req.query.device_id !== 'undefined') {
 				setup.updateSensorRelay(
@@ -204,16 +169,9 @@ app.get('/change-relay', urlencodedParser, function(req, res) {
 					res.end('done');
 				});
 			}
-
-
-
 });
 
 app.get('/delete-sensor', urlencodedParser, function(req, res) {
-	// device_id
-	// sensor_type
-	// sensor_value
-
 	// check required parameters
 	var params = ['probe_id', 'sensor_id'];
 
