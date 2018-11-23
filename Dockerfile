@@ -37,14 +37,11 @@ RUN mkdir -p /usr/src/app
 COPY . /usr/src/app
 WORKDIR /usr/src/app/server
 
-
-
-
-#install node modules
+# Install node modules
 RUN rm -rf ./node_modules && npm install
 
-#install locale zone
-RUN bash -c 'echo "Europe/Berlin" > /etc/timezone'
+# Install locale zone
+RUN bash -c 'echo "Europe/Paris" > /etc/timezone'
 RUN bash -c 'dpkg-reconfigure -f noninteractive tzdata'
 
 CMD node server.js

@@ -1,4 +1,3 @@
-
 version: '3'
 
 services:
@@ -6,11 +5,11 @@ services:
     depends_on:
       - "db"
     environment:
-      - "TZ=Europe/Berlin"
+      - "TZ=Europe/Paris"
     build:
       context: .
       dockerfile: ./Dockerfile
-    container_name: predictable-dashboard
+    container_name: predictable.farm.dashboard.web
     ports:
     - 80:80
     volumes:
@@ -18,16 +17,15 @@ services:
     - /usr/src/app/server/node_modules
   db:
     environment:
-    - "TZ=Europe/Berlin"
-    image: cassandra-brice3
-    container_name: local-test-ecf-berlin_predictable-cassandra2
+    - "TZ=Europe/Paris"
+    image: cassandra
+    container_name: predictable.farm.dashboard.db
 
     volumes:
-    #- ./dashboard-predictable-farm/:/usr/src/app/
+    #- ./predictable.farm.dashboard/:/usr/src/app/
     - test-cassandra:/var/lib/cassandra/
     #- ./mysql/:/var/lib/mysql2/
     restart: always
-
 
 volumes:
   test-cassandra:
