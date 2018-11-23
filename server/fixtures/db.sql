@@ -22,11 +22,11 @@ USE predictabledata;
 # Zones
 DROP TABLE IF EXISTS `zone`;
 CREATE TABLE `zone` (
-	`id_zone` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	`name` TINYTEXT,
-	`location` TINYTEXT,
-	`location_gps` TINYTEXT,
-	`dashboards` TEXT
+  `id_zone` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `name` TINYTEXT,
+  `location` TINYTEXT,
+  `location_gps` TINYTEXT,
+  `dashboards` TEXT
 )ENGINE=MyISAM;
 
 CREATE TRIGGER new_insert
