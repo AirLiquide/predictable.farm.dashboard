@@ -41,17 +41,15 @@ var dbConfig = {
     }
 };
 
-
 var tableWrapper = {
 
-DB_HOST : 'localhost:9042',
-DB_USER : 'predictableuser',
-DB_PASS : 'predictable',
-DB_BASE : 'predictabledata',
-
+    DB_HOST : 'localhost:9042',
+    DB_USER : 'predictableuser',
+    DB_PASS : 'predictable',
+    DB_BASE : 'predictabledata',
 
     connection: false,
-	_table: '',
+    _table: '',
 
     open: function(table, _keepAlive) {
         if (typeof _keepAlive === 'undefined') {
@@ -89,14 +87,11 @@ DB_BASE : 'predictabledata',
 
     },
 
-
     disconnect: function() {
         console.warn('disconnecting');
         this.connection.end();
         this.connection = false;
     },
-
-
 
     // params : columns, where, whereValues, callback, keepAlive
     // params : columns, where, whereValues, callback, keepAlive
@@ -208,6 +203,6 @@ DB_BASE : 'predictabledata',
 
 
 module.exports = function(table, keepAlive){
-	var newTableWrapper = Object.assign({},tableWrapper);
-	return newTableWrapper.open(table, keepAlive);
+  var newTableWrapper = Object.assign({},tableWrapper);
+  return newTableWrapper.open(table, keepAlive);
 }

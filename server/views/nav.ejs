@@ -1,89 +1,85 @@
-
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset=utf-8>
-		<meta content="IE=edge" http-equiv=X-UA-Compatible>
-		<meta content="width=device-width,initial-scale=1" name=viewport>
+    <head>
+        <meta charset=utf-8>
+        <meta content="IE=edge" http-equiv=X-UA-Compatible>
+        <meta content="width=device-width,initial-scale=1" name=viewport>
+        <title>Predictable Farm</title>
+        <link rel="stylesheet" type="text/css" href="/lib/bootstrap-3.3.7-dist/css/bootstrap.min.css" />
+        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="/lib/dragula-3.7.2/dragula.min.css" />
+        <link rel="stylesheet" type="text/css" href="/css/gutter.css" />
+        <link rel="stylesheet" type="text/css" href="/css/submenu.css" />
+        <link rel="stylesheet" type="text/css" href="/css/style.css" />
+        <link rel="stylesheet" type="text/css" href="/css/onglet.css" />
+        <link rel="icon" href="/images/logo-min.png">
+    </head>
+    <body>
+        <%- include navbar.ejs %>
 
+        <div class="container-new" id="ui-container"></div>
 
-		<title>Predictable Farm</title>
-		<link rel="stylesheet" type="text/css" href="/lib/bootstrap-3.3.7-dist/css/bootstrap.min.css" />
-		<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-		<link rel="stylesheet" type="text/css" href="/lib/dragula-3.7.2/dragula.min.css" />
-		<link rel="stylesheet" type="text/css" href="/css/gutter.css" />
-		<link rel="stylesheet" type="text/css" href="/css/submenu.css" />
-		<link rel="stylesheet" type="text/css" href="/css/style.css" />
-		<link rel="stylesheet" type="text/css" href="/css/onglet.css" />
-		<link rel="icon" href="/images/logo-min.png">
-	</head>
-	<body>
-		<%- include navbar.ejs %>
+        <script type="text/javascript" src="/lib/jquery-3.1.0/jquery-3.1.0.min.js"></script>
+        <script type="text/javascript" src="/lib/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/lib/mustache-2.2.1/mustache.min.js"></script>
 
-		<div class="container-new" id="ui-container"></div>
+        <script type="text/javascript" src="/lib/highcharts-5.0.6/code/highcharts.js"></script>
+        <script type="text/javascript" src="/lib/highcharts-5.0.6/code/boost.js"></script>
 
-		<script type="text/javascript" src="/lib/jquery-3.1.0/jquery-3.1.0.min.js"></script>
-		<script type="text/javascript" src="/lib/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
-		<script type="text/javascript" src="/lib/mustache-2.2.1/mustache.min.js"></script>
+        <script type="text/javascript" src="/lib/dragula-3.7.2/dragula.min.js"></script>
+        <script type="text/javascript" src="/socket.io/socket.io.js"></script>
 
-		<script type="text/javascript" src="/lib/highcharts-5.0.6/code/highcharts.js"></script>
-		<script type="text/javascript" src="/lib/highcharts-5.0.6/code/boost.js"></script>
+        <script type="text/javascript" src="/lib/Tools.js"></script>
+        <script type="text/javascript" src="/lib/SetupClient.js"></script>
+        <script type="text/javascript" src="/lib/DataCache.js"></script>
+        <script type="text/javascript" src="/lib/DataKiosk.js"></script>
+        <script type="text/javascript" src="/lib/LiveLabel.js"></script>
+        <script type="text/javascript" src="/lib/Template.js"></script>
+        <script type="text/javascript" src="/lib/TemplateBlock.js"></script>
+        <script type="text/javascript" src="/lib/LongPress.js"></script>
+        <script type="text/javascript" src="/lib/ProbeEditor.js"></script>
+        <script type="text/javascript" src="/lib/DashboardBlockEditor.js"></script>
+        <script type="text/javascript" src="/templates.js"></script>
 
-		<script type="text/javascript" src="/lib/dragula-3.7.2/dragula.min.js"></script>
-		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+        <script type="text/javascript">
+        /**********/
+        /* CONFIG */
+        /**********/
+        var configSensorType = {
+            'temperature' : { style : 'celcius-degrees', label : 'Temperature', class : 'air' },
+            'pressure' : { style : 'pascal-to-hectopascal', label : 'Air Pressure', class : 'air' },
+            'lux' : { style : 'lux', label : 'Sunrise', class : 'light' },
+            'sunuvlight' : { label : 'Light UV', class : 'light' },
+            'sunvisiblelight' : { label : 'Visible Light', class : 'light' },
+            'sunirlight' : { label : 'Light IR', class : 'light' },
+            'humidity' : { style : 'percent', label : 'Humidity', class : 'air' },
+            'misttemperature' : { style : 'celcius-degrees', label : 'Mist Temperature', class : 'nutrient' },
+            'airquality' : { style : 'air-quality', label : 'Air Quality', class : 'air' },
+            'redlight' : { label : 'Red Light', class : 'light' },
+            'greenlight' : { label : 'Green Light', class : 'light' },
+            'bluelight' : { label : 'Blue Light', class : 'light' },
+            'dust' : { label : 'Dust', class : 'air' },
+            'air_pressure' : { style : 'pascal-to-hectopascal', label : 'Atmospheric Pressure', class : 'air' },
+            'air_co2' : { style : 'ppm', label : 'Air CO2 ', class : 'air' },
+            'air_co' : { style : 'ppm', label : 'Air CO', class : 'air' },
+            'air_ch4' : { style : 'ppm', label : 'Air CH4', class : 'air' },
+            'air_temperature' : { style : 'celcius-degrees', label : 'Air Temperature', class : 'air' },
+            'air_humidity' : { style : 'percent', label : 'Air Humidity', class : 'air' },
+            'light_lux' : { style : 'lux', label : 'Light Lux', class : 'light' },
+            'light_par' : { style : 'μmol', label : 'Light PAR', class : 'light' },
+            'light_dli' : { style : 'dli', label : 'Light  DLI', class : 'light' },
+            'light_uv' : { label : 'Light UV', class : 'light' },
+            'water_temperature' : { style : 'celcius-degrees', label : 'Water Temperature', class : 'water' },
+            'water_ph' : { label : 'Water PH', class : 'water' },
+            'water_ec' : { style : 'mS/cm', label : 'Water EC', class : 'water' },
+            'water_orp' : { style : 'mVolt', label : 'Water ORP', class : 'water' },
+            'water_do' : { style : 'do', label : 'DO Water', class : 'water' },
+            'moisture' : { style : 'percent', label : 'Soil moisture', class : 'soil' }
+        };
 
-		<script type="text/javascript" src="/lib/Tools.js"></script>
-		<script type="text/javascript" src="/lib/SetupClient.js"></script>
-		<script type="text/javascript" src="/lib/DataCache.js"></script>
-		<script type="text/javascript" src="/lib/DataKiosk.js"></script>
-		<script type="text/javascript" src="/lib/LiveLabel.js"></script>
-		<script type="text/javascript" src="/lib/Template.js"></script>
-		<script type="text/javascript" src="/lib/TemplateBlock.js"></script>
-		<script type="text/javascript" src="/lib/LongPress.js"></script>
-		<script type="text/javascript" src="/lib/ProbeEditor.js"></script>
-		<script type="text/javascript" src="/lib/DashboardBlockEditor.js"></script>
-		<script type="text/javascript" src="/templates.js"></script>
-
-		<script type="text/javascript">
-		/**********/
-		/* CONFIG */
-		/**********/
-		var configSensorType = {
-			'temperature' : { style : 'celcius-degrees', label : 'Temperature', class : 'air' },
-			'pressure' : { style : 'pascal-to-hectopascal', label : 'Air Pressure', class : 'air' },
-			'lux' : { style : 'lux', label : 'Sunrise', class : 'light' },
-			'sunuvlight' : { label : 'Light UV', class : 'light' },
-			'sunvisiblelight' : { label : 'Visible Light', class : 'light' },
-			'sunirlight' : { label : 'Light IR', class : 'light' },
-			'humidity' : { style : 'percent', label : 'Humidity', class : 'air' },
-			'misttemperature' : { style : 'celcius-degrees', label : 'Mist Temperature', class : 'nutrient' },
-			'airquality' : { style : 'air-quality', label : 'Air Quality', class : 'air' },
-			'redlight' : { label : 'Red Light', class : 'light' },
-			'greenlight' : { label : 'Green Light', class : 'light' },
-			'bluelight' : { label : 'Blue Light', class : 'light' },
-			'dust' : { label : 'Dust', class : 'air' },
-      'air_pressure' : { style : 'pascal-to-hectopascal', label : 'Atmospheric Pressure', class : 'air' },
-      'air_co2' : { style : 'ppm', label : 'Air CO2 ', class : 'air' },
-      'air_co' : { style : 'ppm', label : 'Air CO', class : 'air' },
-      'air_ch4' : { style : 'ppm', label : 'Air CH4', class : 'air' },
-      'air_temperature' : { style : 'celcius-degrees', label : 'Air Temperature', class : 'air' },
-      'air_humidity' : { style : 'percent', label : 'Air Humidity', class : 'air' },
-      'light_lux' : { style : 'lux', label : 'Light Lux', class : 'light' },
-      'light_par' : { style : 'μmol', label : 'Light PAR', class : 'light' },
-      'light_dli' : { style : 'dli', label : 'Light  DLI', class : 'light' },
-      'light_uv' : { label : 'Light UV', class : 'light' },
-      'water_temperature' : { style : 'celcius-degrees', label : 'Water Temperature', class : 'water' },
-      'water_ph' : { label : 'Water PH', class : 'water' },
-      'water_ec' : { style : 'mS/cm', label : 'Water EC', class : 'water' },
-      'water_orp' : { style : 'mVolt', label : 'Water ORP', class : 'water' },
-      'water_do' : { style : 'do', label : 'DO Water', class : 'water' },
-      'moisture' : { style : 'percent', label : 'Soil moisture', class : 'soil' }
-
-		};
-		for (var i=1; i <= 12; i++) {
-			configSensorType['relay' + i] = { style : 'relay', label : 'Relay #' + i, class : 'relay' };
-		}
-
+        for (var i=1; i <= 12; i++) {
+            configSensorType['relay' + i] = { style : 'relay', label : 'Relay #' + i, class : 'relay' };
+        }
 
         var configLabelStyle = {
             'lux': [{format: '[value] <span class="inline-unit highlight">lux</span>'}],
@@ -113,546 +109,544 @@
             'ph': [{format: '[value]'}],
 
 
-			'air-quality' : [
-				{ minValue : 0, format : 'Very Bad', className : 'air-quality-very-bad' },
-				{ minValue : 1, format : 'Bad', className : 'air-quality-bad' },
-				{ minValue : 2, format : 'Good', className : 'air-quality-good' },
-				{ minValue : 3, format : 'Very Good', className : 'air-quality-very-good', }
-			],
-			'just-refresh' : [{ format : function() { return; }}],
-			'relay' : [{ minValue : 0, format : 'off' }, { minValue : 1, format : 'on' }]
-			// 'relay' : [{ format : function(value, element) {
-			// 	element.innerHTML = (value == 1 ? 'on' : 'off');
-			//
-			// } }]
-		};
-
-		var setup = new SetupClient(<%- JSON.stringify(setup) %>, configSensorType);
-
-		// Component that handle new data arrival
-		var kiosk = new DataKiosk();
-		var seriesGlobal = [];
-		var ChartDataXCSV = [];
-		var ChartDataX = {};
-		// Component that handle data cache
-		var cache = new DataCache();
-
-		// Add the last sensor data to the kiosk
-		setup.addLastValueToKiosk(kiosk);
-
-		/***************/
-		/* SOCKET DATA */
-		/***************/
-		var newScrollFunction = function() {
-			newScrooll = localStorage.getItem("tempScrollLeft");
-			$(".innerWrapper").animate({scrollLeft: newScrooll}, 100);
-
-		}
-		var checkProbe = function(id_probe){
-			var probeList = setup.getListProbeByZone(setup.getSelectedZone().id_zone);
-			exitingProbe = false;
-			for (var i=0; i <  probeList.length; i++) {
-							if ( probeList[i].id_probe == id_probe) {
-								exitingProbe = true;
-							}
-						}
-			if (exitingProbe == true){
-				return true
-			}else{
-				return false
-			}
-		}
-		var checkDash = function(id_dash){
-			var dashList = setup.getListZone()
-			var exitingDash = false;
-			for (var i=0; i <  dashList.length; i++) {
-							if ( id_dash == i) {
-								exitingDash = true
-							}
-			}
-			if (exitingDash == true){
-				return true
-			}else{
-				return false
-			}
-
-		}
-
-		var actualHash = $(location).attr('hash');
-		var tempHash = localStorage.getItem("tempTab");
-		var exitingProbe = false;
-		// check format
-		if (tempHash){
-			var tempHashSplit = tempHash.split("-");
-			if(tempHashSplit[0] && tempHashSplit[1] && tempHashSplit[2]){
-			}else{
-				window.location.replace("/" + actualHash);
-				setTimeout(newScrollFunction, 1000);
-			}
-		}
-		if (actualHash){
-			var actualHashSplit = actualHash.split("-");
-			if(actualHashSplit[0] && actualHashSplit[1] && actualHashSplit[2]){
-			}else{
-				window.location.replace("/" + actualHash);
-				setTimeout(newScrollFunction, 1000);
-			}
-		}
-
-
-
-		if(actualHash){
-			if (actualHashSplit[0] == '#dashboard'){
-
-				if(checkDash(actualHashSplit[2]) == true){
-					window.location.replace("/" + actualHash);
-					setTimeout(newScrollFunction, 1000);
-				}else{
-					window.location.replace("/#dashboard-0-0" );
-					setTimeout(newScrollFunction, 1000);
-				}
-			}
-			if (actualHashSplit[0] == '#probe'){
-				if(checkProbe(actualHashSplit[2]) == true){
-
-				}else{
-					window.location.replace("/#dashboard-0-0" );
-					setTimeout(newScrollFunction, 1000);
-				}
-			}
-		} else {
-			if (tempHash){
-				if (tempHashSplit[0] == '#dashboard'){
-					if(checkDash(tempHashSplit[2]) == true){
-
-					}else{
-						window.location.replace("/#dashboard-0-0" );
-						setTimeout(newScrollFunction, 1000);
-					}
-				}
-				if (tempHashSplit[0] == '#probe'){
-					if(checkProbe(tempHashSplit[2]) == true){
-						window.location.replace("/" + tempHash);
-						setTimeout(newScrollFunction, 1000);
-					}else{
-						window.location.replace("/#dashboard-0-0" );
-					}
-				}
-			} else{
-				window.location.replace("/#dashboard-0-0" );
-			}
-		}
-
-		// Live connection to the server
-		var socket = io.connect('/');
-		socket.on('connect', function() {
-			socket.emit('hello c est le dash');
-
-			console.log("SOCKET_CONNECTED");
-		});
-
-		// New data arrival
-		socket.on('data-update', function(data) {
-			// Convert data to DataKiosk format
-			data.id = data.device_id + ':' + data.sensor_type;
-			data.type = data.sensor_type;
-			data.value = data.sensor_value;
-			data.time = (new Date().toISOString().slice(0, 19).replace('T', ' '));
-
-			// Publish new data to the kiosk
-			kiosk.write([data]);
-			kiosk.publish();
-			updateChart( data.id , data.sensor_value);
-		});
-
-		/*************************/
-		/* TEMPLATE & NAVIGATION */
-		/*************************/
-
-		var template = new Template();
-		template.setBlocks(greenhouse_templates); // from /templates.js
-
-		setup.selectZone(0);
-
-		var templateContent = {
-			zones : setup.getListZone(),
-			zone : setup.getSelectedZone(),
-			probe : {},
-			probes : setup.getListProbeByZone(setup.getSelectedZone().id_zone),
-			sensors : setup.getListSensorByProbe(1),
-			dashboards : [],
-
-			periodLabel : function() {
-				return 'De ' + (new Date(chartStart).toDateString()) + ' à ' + (new Date(chartStart + chartPeriod).toDateString());
-			},
-
-			// dashboard blocks sensor list renderer
-			dashboardBlock_addSensor : function() {
-				var dashboardBlock = this;
-
-				// Check if a sensor is already in a dashboard block
-				var isSensorInDashboardBlock = function(id_sensor) {
-					for (var i=0; i < dashboardBlock.sensors.length; i++) {
-						if (dashboardBlock.sensors[i].id_sensor == id_sensor) {
-							return true;
-						}
-					}
-
-					return false;
-				};
-
-				// Creates the html for a zone's menu
-				var getZoneMenu = function(id_zone, boldZone) {
-					if (typeof boldZone !== 'boolean') {
-						boldZone = false;
-					}
-
-					var zone = setup.getZone(id_zone);
-					var html = '';
-					html += '<li class="dropdown-header">';
-					if (boldZone) { html += '<strong>'; }
-					html += zone.name;
-					if (boldZone) { html += '</strong>'; }
-					html += '</li>';
-
-					var probes = setup.getListProbeByZone(zone.id_zone);
-					var sensors;
-
-					var disabled = '';
-					var onclick = '';
-					for (var i=0; i < probes.length; i++) {
-						sensors = setup.getListSensorByProbe(probes[i].id_probe);
-
-						html += '<li class="title-sensors">';
-							html += '<a href="javascript:;">' + probes[i].name + '</a>';
-							html += '<ul class="list-btn">';
-								for (var j=0; j < sensors.length; j++) {
-									// Check if the sensor is already in the block
-									if (isSensorInDashboardBlock(sensors[j].id_sensor)) {
-										disabled = ' disabled';
-										onclick = '';
-									}
-									else {
-										disabled = '';
-										onclick = ' onclick="setup.addSensorToDashboardBlock(' + dashboardBlock.id_zone + ', ' + dashboardBlock.dashboard_index + ', ' + dashboardBlock.block_index + ', ' + "'" + sensors[j].id_sensor  + "'";
-										onclick += ', urlChangeHandler)"';
-									}
-
-									html += '<li class="btn btn-add btn-' + sensors[j].class   + disabled + '"' + onclick + '>';
-									html += '<a href="javascript:;"'  + '>';
-										html += sensors[j].label;
-									html += '</a></li>';
-								}
-							html += '</ul> ';
-						html += '</li>';
-					}
-
-					return html;
-				}
-
-				var html = '';
-
-				var zones = setup.getListZone();
-				var zoneSelected = setup.getSelectedZone();
-
-				// Selected zone is first
-				html += getZoneMenu(zoneSelected.id_zone, true);
-				html += '<li class="divider"></li>';
-
-				// Other zones for (var i=0; i < zones.length; i++)
-				for (var i=0; i < 1; i++) {
-					if (zones[i].id_zone == zoneSelected.id_zone) {
-						continue;
-					}
-
-					html += getZoneMenu(zones[i].id_zone);
-				}
-
-				return html;
-			}
-		};
-		template.setContent(templateContent);
-
-		// Editor block that appear when your longpress a probe tab
-		var probeEditor = new ProbeEditor();
-		// Editor block that appear when your longpress a dashboard block title tab
-		var dashboardBlockEditor = new DashboardBlockEditor();
-
-		var uiContainer = document.getElementById('ui-container');
-		var renderUI = function(uiType) {
-			kiosk.unsubscribeAll();
-
-			var blocks = [
-				'zone_selector',
-				'probe_selector',
-				'period_selector'
-			];
-
-			switch (uiType) {
-				case 'dashboard':
-					blocks.push('dashboard_blocks');
-					blocks.push('dashboard_create_block');
-				break;
-				case 'dashboard_empty':
-					blocks.push('dashboard_empty');
-					blocks.push('dashboard_create_block');
-				break;
-
-				case 'probe':
-					blocks.push('sensor_group');
-				break;
-
-				case 'not_found':
-					blocks.push('not_found');
-				break;
-			}
-
-			template.render(uiContainer, blocks);
-
-			// Live labels
-			initLiveLabels();
-
-			// TODO Relay value changing
-			initRelayDoubleClick();
-
-			initDashboardToggles();
-
-			// Probe list : long press handling
-			initProbeListLongpress(function(e) {
-
-				var target = e.target;
-
-
-
-				var type = target.getAttribute('data-type');
-
-				probeEditor.show(target, {
-					renamable : true,
-					deletable : (type === 'dashboard'),
-					movable : false,
-					transferable : false,
-					onrename : function(renameData) {
-						var type = target.getAttribute('data-type');
-
-						if (type === 'probe') {
-							var id_probe = target.getAttribute('data-id-probe');
-
-							// probe object is modified + xhr to change server setup
-							setup.renameProbe(id_probe, renameData.name);
-						}
-						else if (type === 'dashboard') {
-							var id_zone = target.getAttribute('data-id-zone');
-							var dashboard_index = target.getAttribute('data-dashboard_index');
-
-							// dashboard object is modified + xhr to change server setup
-							setup.renameDashboard(id_zone, dashboard_index, renameData.name);
-						}
-					},
-					ondelete : function() {
-						if (type === 'dashboard') {
-							var id_zone = target.getAttribute('data-id-zone');
-							var dashboard_index = target.getAttribute('data-dashboard_index');
-
-
-							// dashboard object is delete + xhr to change server setup
-							setup.deleteDashboard(id_zone, dashboard_index);
-
-							urlChangeHandler();
-						}
-						if (type === 'probe') {
-
-							var probe_index = target.getAttribute('data-id-probe')
-							var id_zone = target.getAttribute('data-id-zone')
-							setup.deleteProbe(id_zone, probe_index)
-								setTimeout(function () {
-						        window.location.replace("/");
-						    }, 7000);
-						}
-					},
-					ondeletePopup : function() {
-
-					}
-				});
-			});
-
-			// Dashboard block name : long press handling
-			initDashboardBlockNameLongpress(function(e) {
-				var target = e.target;
-				if (target.tagName != 'DIV') {
-					target = target.parentNode;
-				}
-
-				dashboardBlockEditor.show(target, {
-					renamable : true,
-					deletable : true,
-					movable : false,
-					transferable : false,
-					onrename : function(renameData) {
-						var id_zone = target.getAttribute('data-id_zone');
-						var dashboard_index = target.getAttribute('data-dashboard_index');
-						var block_index = target.getAttribute('data-block_index');
-
-						// dashboard object is modified + xhr to change server setup
-						setup.renameDashboardBlock(id_zone, dashboard_index, block_index, renameData.name);
-					},
-					ondelete : function(deleteData) {
-						var id_zone = target.getAttribute('data-id_zone');
-						var dashboard_index = target.getAttribute('data-dashboard_index');
-						var block_index = target.getAttribute('data-block_index');
-
-						// dashboard object is modified + xhr to change server setup
-						setup.deleteDashboardBlock(id_zone, dashboard_index, block_index);
-
-						// refresh display
-						urlChangeHandler();
-					}
-				});
-			});
-
-			// Period selector
-			initPeriodSelector();
-
-			// Charts (WILL CHANGE)
-			loadChart();
-
-			// Drag&Drop for tiles
-			var dragSensor = dragula([document.getElementById('sensor-list')], {
-				moves : function(el, container, handle) {
-					return handle.classList.contains('block-handle-icon');
-				}
-			});
-			dragSensor.on('drop', function(el, target, source, sibling) {
-				var listChildren = target.getElementsByClassName('sensor-block');
-				var listSensorId = [];
-				for (var i=0; i < listChildren.length; i++) {
-					listSensorId.push(listChildren[i].getAttribute('data-id_sensor'));
-				}
-
-				// Update locally & on the server
-				setup.sortSensors(listSensorId);
-			});
-
-			var dashboardBlocks = document.getElementsByClassName('dashboard-block');
-			for (var i=0; i < dashboardBlocks.length; i++) {
-				var dragContainers = dashboardBlocks[i].getElementsByClassName('row-content');
-
-				// transform the HTMLCollection to Array for Dragula
-				var dragContainers = [].slice.call(dragContainers);
-
-				var dragDash = dragula(dragContainers, {
-					moves : function(el, container, handle, sibling) {
-						return handle.classList.contains('block-handle-icon');
-					},
-					accepts : function(el, target, source, sibling) {
-						// We cannot move the block to the last position (there's the "add" button already there)
-						return (sibling != null);
-					}
-				});
-
-				dragDash.on('drop', function(el, target, source, sibling) {
-					// listing sensor_ids in the right order
-					var listChildren = target.getElementsByClassName('sensor-block');
-					var	listSensorId = [];
-					for (var i=0; i < listChildren.length; i++) {
-						listSensorId.push(listChildren[i].getAttribute('data-id_sensor'));
-					}
-
-					var id_zone = source.getAttribute('data-id_zone');
-					var dashboard_index = source.getAttribute('data-dashboard_index');
-					var block_index = source.getAttribute('data-block_index');
-
-					// Update locally & on the server
-					setup.sortDashboardBlockSensors(id_zone, dashboard_index, block_index, listSensorId);
-				});
-			};
-
-		};
-
-		var initProbeListLongpress = function(longpressCallback) {
-			var probeSelector = document.getElementsByClassName('probe-selector');
-			if (probeSelector.length > 0) {
-				probeSelector = probeSelector[0];
-
-				var link;
-				var links = probeSelector.getElementsByTagName('a');
-				for (var iLink=0; iLink < links.length; iLink++) {
-					new LongPress(links[iLink], longpressCallback);
-				}
-			}
-		};
-
-		var initDashboardBlockNameLongpress = function(longpressCallback) {
-			var blockSelector = document.getElementsByClassName('dashboard-block');
-			if (blockSelector.length > 0) {
-				for (var i=0; i < blockSelector.length; i++) {
-					var block = blockSelector[i];
-					var titleSelector = block.getElementsByClassName('row-dashboard-title');
-
-					new LongPress(titleSelector[0], longpressCallback);
-				}
-			}
-		};
-
-		var initDashboardToggles = function() {
-			var _toggleClickHandler = function(e) {
-				var toggle = e.target;
-				if (e.target.tagName == 'I') {
-					toggle = toggle.parentNode;
-				}
-				var toggleType = toggle.getAttribute('data-toggle-type');
-
-				// fetching dashboard block identifiers
-				var titleContainer = toggle.parentNode.parentNode;
-				var id_zone = titleContainer.getAttribute('data-id_zone');
-				var dashboard_index = titleContainer.getAttribute('data-dashboard_index');
-				var block_index = titleContainer.getAttribute('data-block_index');
-
-				var dashContainer = titleContainer.parentNode;
-				var blockData = setup.getDashboardBlock(id_zone, dashboard_index, block_index);
-
-				if (toggleType === "sensor") {
-					var toggledBlock = dashContainer.getElementsByClassName('row-content')[0];
-					var toggledProperty = 'displaySensor';
-				}
-				else if (toggleType === "chart") {
-					var toggledBlock = dashContainer.getElementsByClassName('row-chart')[0];
-					var toggledProperty = 'displayChart';
-				}
-
-				// changing visibility in the local data
-				blockData[toggledProperty] = !blockData[toggledProperty];
-
-				// registering changes to the db
-				setup.updateZone(id_zone);
-
-				if (blockData[toggledProperty]) {
-					Tools.addClass(toggle, 'btn-primary');
-					Tools.removeClass(toggle, 'btn-default');
-					Tools.removeClass(toggledBlock, 'hidden');
-
-					if (toggleType === 'chart') {
-						for (var i=0; i < charts.length; i++) {
-							charts[i].redraw();
-						}
-					}
-				}
-				else {
-					Tools.removeClass(toggle, 'btn-primary');
-					Tools.addClass(toggle, 'btn-default');
-					Tools.addClass(toggledBlock, 'hidden');
-				}
-			};
-
-			// Add event handler to the toggles
-			var toggleBlocks = document.getElementsByClassName('dashboard-toggles');
-			for (var i=0; i < toggleBlocks.length; i++) {
-				//var toggleBlock = toggleBlocks[i];
-				var toggles = toggleBlocks[i].getElementsByTagName('button');
-				for (var j=0; j < toggles.length; j++) {
-					toggles[j].addEventListener('click', _toggleClickHandler);
-				}
-			}
-		};
+            'air-quality' : [
+                { minValue : 0, format : 'Very Bad', className : 'air-quality-very-bad' },
+                { minValue : 1, format : 'Bad', className : 'air-quality-bad' },
+                { minValue : 2, format : 'Good', className : 'air-quality-good' },
+                { minValue : 3, format : 'Very Good', className : 'air-quality-very-good', }
+            ],
+            'just-refresh' : [{ format : function() { return; }}],
+            'relay' : [{ minValue : 0, format : 'off' }, { minValue : 1, format : 'on' }]
+            // 'relay' : [{ format : function(value, element) {
+            //  element.innerHTML = (value == 1 ? 'on' : 'off');
+            //
+            // } }]
+        };
+
+        var setup = new SetupClient(<%- JSON.stringify(setup) %>, configSensorType);
+
+        // Component that handle new data arrival
+        var kiosk = new DataKiosk();
+        var seriesGlobal = [];
+        var ChartDataXCSV = [];
+        var ChartDataX = {};
+        // Component that handle data cache
+        var cache = new DataCache();
+
+        // Add the last sensor data to the kiosk
+        setup.addLastValueToKiosk(kiosk);
+
+        /***************/
+        /* SOCKET DATA */
+        /***************/
+        var newScrollFunction = function() {
+            newScrooll = localStorage.getItem("tempScrollLeft");
+            $(".innerWrapper").animate({scrollLeft: newScrooll}, 100);
+
+        }
+        var checkProbe = function(id_probe){
+            var probeList = setup.getListProbeByZone(setup.getSelectedZone().id_zone);
+            exitingProbe = false;
+            for (var i=0; i <  probeList.length; i++) {
+                            if ( probeList[i].id_probe == id_probe) {
+                                exitingProbe = true;
+                            }
+                        }
+            if (exitingProbe == true){
+                return true
+            }else{
+                return false
+            }
+        }
+        var checkDash = function(id_dash){
+            var dashList = setup.getListZone()
+            var exitingDash = false;
+            for (var i=0; i <  dashList.length; i++) {
+                            if ( id_dash == i) {
+                                exitingDash = true
+                            }
+            }
+            if (exitingDash == true){
+                return true
+            }else{
+                return false
+            }
+
+        }
+
+        var actualHash = $(location).attr('hash');
+        var tempHash = localStorage.getItem("tempTab");
+        var exitingProbe = false;
+        // check format
+        if (tempHash){
+            var tempHashSplit = tempHash.split("-");
+            if(tempHashSplit[0] && tempHashSplit[1] && tempHashSplit[2]){
+            }else{
+                window.location.replace("/" + actualHash);
+                setTimeout(newScrollFunction, 1000);
+            }
+        }
+        if (actualHash){
+            var actualHashSplit = actualHash.split("-");
+            if(actualHashSplit[0] && actualHashSplit[1] && actualHashSplit[2]){
+            }else{
+                window.location.replace("/" + actualHash);
+                setTimeout(newScrollFunction, 1000);
+            }
+        }
+
+
+
+        if(actualHash){
+            if (actualHashSplit[0] == '#dashboard'){
+
+                if(checkDash(actualHashSplit[2]) == true){
+                    window.location.replace("/" + actualHash);
+                    setTimeout(newScrollFunction, 1000);
+                }else{
+                    window.location.replace("/#dashboard-0-0" );
+                    setTimeout(newScrollFunction, 1000);
+                }
+            }
+            if (actualHashSplit[0] == '#probe'){
+                if(checkProbe(actualHashSplit[2]) == true){
+
+                }else{
+                    window.location.replace("/#dashboard-0-0" );
+                    setTimeout(newScrollFunction, 1000);
+                }
+            }
+        } else {
+            if (tempHash){
+                if (tempHashSplit[0] == '#dashboard'){
+                    if(checkDash(tempHashSplit[2]) == true){
+
+                    }else{
+                        window.location.replace("/#dashboard-0-0" );
+                        setTimeout(newScrollFunction, 1000);
+                    }
+                }
+                if (tempHashSplit[0] == '#probe'){
+                    if(checkProbe(tempHashSplit[2]) == true){
+                        window.location.replace("/" + tempHash);
+                        setTimeout(newScrollFunction, 1000);
+                    }else{
+                        window.location.replace("/#dashboard-0-0" );
+                    }
+                }
+            } else{
+                window.location.replace("/#dashboard-0-0" );
+            }
+        }
+
+        // Live connection to the server
+        var socket = io.connect('/');
+        socket.on('connect', function() {
+            socket.emit('hello c est le dash');
+
+            console.log("SOCKET_CONNECTED");
+        });
+
+        // New data arrival
+        socket.on('data-update', function(data) {
+            // Convert data to DataKiosk format
+            data.id = data.device_id + ':' + data.sensor_type;
+            data.type = data.sensor_type;
+            data.value = data.sensor_value;
+            data.time = (new Date().toISOString().slice(0, 19).replace('T', ' '));
+
+            // Publish new data to the kiosk
+            kiosk.write([data]);
+            kiosk.publish();
+            updateChart( data.id , data.sensor_value);
+        });
+
+        /*************************/
+        /* TEMPLATE & NAVIGATION */
+        /*************************/
+
+        var template = new Template();
+        template.setBlocks(greenhouse_templates); // from /templates.js
+
+        setup.selectZone(0);
+
+        var templateContent = {
+            zones : setup.getListZone(),
+            zone : setup.getSelectedZone(),
+            probe : {},
+            probes : setup.getListProbeByZone(setup.getSelectedZone().id_zone),
+            sensors : setup.getListSensorByProbe(1),
+            dashboards : [],
+
+            periodLabel : function() {
+                return 'De ' + (new Date(chartStart).toDateString()) + ' à ' + (new Date(chartStart + chartPeriod).toDateString());
+            },
+
+            // dashboard blocks sensor list renderer
+            dashboardBlock_addSensor : function() {
+                var dashboardBlock = this;
+
+                // Check if a sensor is already in a dashboard block
+                var isSensorInDashboardBlock = function(id_sensor) {
+                    for (var i=0; i < dashboardBlock.sensors.length; i++) {
+                        if (dashboardBlock.sensors[i].id_sensor == id_sensor) {
+                            return true;
+                        }
+                    }
+
+                    return false;
+                };
+
+                // Creates the html for a zone's menu
+                var getZoneMenu = function(id_zone, boldZone) {
+                    if (typeof boldZone !== 'boolean') {
+                        boldZone = false;
+                    }
+
+                    var zone = setup.getZone(id_zone);
+                    var html = '';
+                    html += '<li class="dropdown-header">';
+                    if (boldZone) { html += '<strong>'; }
+                    html += zone.name;
+                    if (boldZone) { html += '</strong>'; }
+                    html += '</li>';
+
+                    var probes = setup.getListProbeByZone(zone.id_zone);
+                    var sensors;
+
+                    var disabled = '';
+                    var onclick = '';
+                    for (var i=0; i < probes.length; i++) {
+                        sensors = setup.getListSensorByProbe(probes[i].id_probe);
+
+                        html += '<li class="title-sensors">';
+                            html += '<a href="javascript:;">' + probes[i].name + '</a>';
+                            html += '<ul class="list-btn">';
+                                for (var j=0; j < sensors.length; j++) {
+                                    // Check if the sensor is already in the block
+                                    if (isSensorInDashboardBlock(sensors[j].id_sensor)) {
+                                        disabled = ' disabled';
+                                        onclick = '';
+                                    }
+                                    else {
+                                        disabled = '';
+                                        onclick = ' onclick="setup.addSensorToDashboardBlock(' + dashboardBlock.id_zone + ', ' + dashboardBlock.dashboard_index + ', ' + dashboardBlock.block_index + ', ' + "'" + sensors[j].id_sensor  + "'";
+                                        onclick += ', urlChangeHandler)"';
+                                    }
+
+                                    html += '<li class="btn btn-add btn-' + sensors[j].class   + disabled + '"' + onclick + '>';
+                                    html += '<a href="javascript:;"'  + '>';
+                                        html += sensors[j].label;
+                                    html += '</a></li>';
+                                }
+                            html += '</ul> ';
+                        html += '</li>';
+                    }
+
+                    return html;
+                }
+
+                var html = '';
+
+                var zones = setup.getListZone();
+                var zoneSelected = setup.getSelectedZone();
+
+                // Selected zone is first
+                html += getZoneMenu(zoneSelected.id_zone, true);
+                html += '<li class="divider"></li>';
+
+                // Other zones for (var i=0; i < zones.length; i++)
+                for (var i=0; i < 1; i++) {
+                    if (zones[i].id_zone == zoneSelected.id_zone) {
+                        continue;
+                    }
+
+                    html += getZoneMenu(zones[i].id_zone);
+                }
+
+                return html;
+            }
+        };
+        template.setContent(templateContent);
+
+        // Editor block that appear when your longpress a probe tab
+        var probeEditor = new ProbeEditor();
+        // Editor block that appear when your longpress a dashboard block title tab
+        var dashboardBlockEditor = new DashboardBlockEditor();
+
+        var uiContainer = document.getElementById('ui-container');
+        var renderUI = function(uiType) {
+            kiosk.unsubscribeAll();
+
+            var blocks = [
+                'zone_selector',
+                'probe_selector',
+                'period_selector'
+            ];
+
+            switch (uiType) {
+                case 'dashboard':
+                    blocks.push('dashboard_blocks');
+                    blocks.push('dashboard_create_block');
+                break;
+                case 'dashboard_empty':
+                    blocks.push('dashboard_empty');
+                    blocks.push('dashboard_create_block');
+                break;
+
+                case 'probe':
+                    blocks.push('sensor_group');
+                break;
+
+                case 'not_found':
+                    blocks.push('not_found');
+                break;
+            }
+
+            template.render(uiContainer, blocks);
+
+            // Live labels
+            initLiveLabels();
+
+            // TODO Relay value changing
+            initRelayDoubleClick();
+
+            initDashboardToggles();
+
+            // Probe list : long press handling
+            initProbeListLongpress(function(e) {
+
+                var target = e.target;
+
+                var type = target.getAttribute('data-type');
+
+                probeEditor.show(target, {
+                    renamable : true,
+                    deletable : (type === 'dashboard'),
+                    movable : false,
+                    transferable : false,
+                    onrename : function(renameData) {
+                        var type = target.getAttribute('data-type');
+
+                        if (type === 'probe') {
+                            var id_probe = target.getAttribute('data-id-probe');
+
+                            // probe object is modified + xhr to change server setup
+                            setup.renameProbe(id_probe, renameData.name);
+                        }
+                        else if (type === 'dashboard') {
+                            var id_zone = target.getAttribute('data-id-zone');
+                            var dashboard_index = target.getAttribute('data-dashboard_index');
+
+                            // dashboard object is modified + xhr to change server setup
+                            setup.renameDashboard(id_zone, dashboard_index, renameData.name);
+                        }
+                    },
+                    ondelete : function() {
+                        if (type === 'dashboard') {
+                            var id_zone = target.getAttribute('data-id-zone');
+                            var dashboard_index = target.getAttribute('data-dashboard_index');
+
+
+                            // dashboard object is delete + xhr to change server setup
+                            setup.deleteDashboard(id_zone, dashboard_index);
+
+                            urlChangeHandler();
+                        }
+                        if (type === 'probe') {
+
+                            var probe_index = target.getAttribute('data-id-probe')
+                            var id_zone = target.getAttribute('data-id-zone')
+                            setup.deleteProbe(id_zone, probe_index)
+                                setTimeout(function () {
+                                window.location.replace("/");
+                            }, 7000);
+                        }
+                    },
+                    ondeletePopup : function() {
+
+                    }
+                });
+            });
+
+            // Dashboard block name : long press handling
+            initDashboardBlockNameLongpress(function(e) {
+                var target = e.target;
+                if (target.tagName != 'DIV') {
+                    target = target.parentNode;
+                }
+
+                dashboardBlockEditor.show(target, {
+                    renamable : true,
+                    deletable : true,
+                    movable : false,
+                    transferable : false,
+                    onrename : function(renameData) {
+                        var id_zone = target.getAttribute('data-id_zone');
+                        var dashboard_index = target.getAttribute('data-dashboard_index');
+                        var block_index = target.getAttribute('data-block_index');
+
+                        // dashboard object is modified + xhr to change server setup
+                        setup.renameDashboardBlock(id_zone, dashboard_index, block_index, renameData.name);
+                    },
+                    ondelete : function(deleteData) {
+                        var id_zone = target.getAttribute('data-id_zone');
+                        var dashboard_index = target.getAttribute('data-dashboard_index');
+                        var block_index = target.getAttribute('data-block_index');
+
+                        // dashboard object is modified + xhr to change server setup
+                        setup.deleteDashboardBlock(id_zone, dashboard_index, block_index);
+
+                        // refresh display
+                        urlChangeHandler();
+                    }
+                });
+            });
+
+            // Period selector
+            initPeriodSelector();
+
+            // Charts (WILL CHANGE)
+            loadChart();
+
+            // Drag&Drop for tiles
+            var dragSensor = dragula([document.getElementById('sensor-list')], {
+                moves : function(el, container, handle) {
+                    return handle.classList.contains('block-handle-icon');
+                }
+            });
+            dragSensor.on('drop', function(el, target, source, sibling) {
+                var listChildren = target.getElementsByClassName('sensor-block');
+                var listSensorId = [];
+                for (var i=0; i < listChildren.length; i++) {
+                    listSensorId.push(listChildren[i].getAttribute('data-id_sensor'));
+                }
+
+                // Update locally & on the server
+                setup.sortSensors(listSensorId);
+            });
+
+            var dashboardBlocks = document.getElementsByClassName('dashboard-block');
+            for (var i=0; i < dashboardBlocks.length; i++) {
+                var dragContainers = dashboardBlocks[i].getElementsByClassName('row-content');
+
+                // transform the HTMLCollection to Array for Dragula
+                var dragContainers = [].slice.call(dragContainers);
+
+                var dragDash = dragula(dragContainers, {
+                    moves : function(el, container, handle, sibling) {
+                        return handle.classList.contains('block-handle-icon');
+                    },
+                    accepts : function(el, target, source, sibling) {
+                        // We cannot move the block to the last position (there's the "add" button already there)
+                        return (sibling != null);
+                    }
+                });
+
+                dragDash.on('drop', function(el, target, source, sibling) {
+                    // listing sensor_ids in the right order
+                    var listChildren = target.getElementsByClassName('sensor-block');
+                    var listSensorId = [];
+                    for (var i=0; i < listChildren.length; i++) {
+                        listSensorId.push(listChildren[i].getAttribute('data-id_sensor'));
+                    }
+
+                    var id_zone = source.getAttribute('data-id_zone');
+                    var dashboard_index = source.getAttribute('data-dashboard_index');
+                    var block_index = source.getAttribute('data-block_index');
+
+                    // Update locally & on the server
+                    setup.sortDashboardBlockSensors(id_zone, dashboard_index, block_index, listSensorId);
+                });
+            };
+
+        };
+
+        var initProbeListLongpress = function(longpressCallback) {
+            var probeSelector = document.getElementsByClassName('probe-selector');
+            if (probeSelector.length > 0) {
+                probeSelector = probeSelector[0];
+
+                var link;
+                var links = probeSelector.getElementsByTagName('a');
+                for (var iLink=0; iLink < links.length; iLink++) {
+                    new LongPress(links[iLink], longpressCallback);
+                }
+            }
+        };
+
+        var initDashboardBlockNameLongpress = function(longpressCallback) {
+            var blockSelector = document.getElementsByClassName('dashboard-block');
+            if (blockSelector.length > 0) {
+                for (var i=0; i < blockSelector.length; i++) {
+                    var block = blockSelector[i];
+                    var titleSelector = block.getElementsByClassName('row-dashboard-title');
+
+                    new LongPress(titleSelector[0], longpressCallback);
+                }
+            }
+        };
+
+        var initDashboardToggles = function() {
+            var _toggleClickHandler = function(e) {
+                var toggle = e.target;
+                if (e.target.tagName == 'I') {
+                    toggle = toggle.parentNode;
+                }
+                var toggleType = toggle.getAttribute('data-toggle-type');
+
+                // fetching dashboard block identifiers
+                var titleContainer = toggle.parentNode.parentNode;
+                var id_zone = titleContainer.getAttribute('data-id_zone');
+                var dashboard_index = titleContainer.getAttribute('data-dashboard_index');
+                var block_index = titleContainer.getAttribute('data-block_index');
+
+                var dashContainer = titleContainer.parentNode;
+                var blockData = setup.getDashboardBlock(id_zone, dashboard_index, block_index);
+
+                if (toggleType === "sensor") {
+                    var toggledBlock = dashContainer.getElementsByClassName('row-content')[0];
+                    var toggledProperty = 'displaySensor';
+                }
+                else if (toggleType === "chart") {
+                    var toggledBlock = dashContainer.getElementsByClassName('row-chart')[0];
+                    var toggledProperty = 'displayChart';
+                }
+
+                // changing visibility in the local data
+                blockData[toggledProperty] = !blockData[toggledProperty];
+
+                // registering changes to the db
+                setup.updateZone(id_zone);
+
+                if (blockData[toggledProperty]) {
+                    Tools.addClass(toggle, 'btn-primary');
+                    Tools.removeClass(toggle, 'btn-default');
+                    Tools.removeClass(toggledBlock, 'hidden');
+
+                    if (toggleType === 'chart') {
+                        for (var i=0; i < charts.length; i++) {
+                            charts[i].redraw();
+                        }
+                    }
+                }
+                else {
+                    Tools.removeClass(toggle, 'btn-primary');
+                    Tools.addClass(toggle, 'btn-default');
+                    Tools.addClass(toggledBlock, 'hidden');
+                }
+            };
+
+            // Add event handler to the toggles
+            var toggleBlocks = document.getElementsByClassName('dashboard-toggles');
+            for (var i=0; i < toggleBlocks.length; i++) {
+                //var toggleBlock = toggleBlocks[i];
+                var toggles = toggleBlocks[i].getElementsByTagName('button');
+                for (var j=0; j < toggles.length; j++) {
+                    toggles[j].addEventListener('click', _toggleClickHandler);
+                }
+            }
+        };
 
         var updateChart = function (sensor_id, value) {
             var date = new Date();
@@ -663,764 +657,764 @@
             }
         };
 
-		var initRelayDoubleClick = function() {
-			var _dblclickHandler = function(e) {
-				var currentValue = e.target.getAttribute('data-live-label-value');
-				document.getElementById(e.target.getAttribute('id')).value = 'on'
-
-				var url = '/change-relay';
-				url += '?device_id=' + e.target.getAttribute('data-device_id');
-				url += '&sensor_type=' + e.target.getAttribute('data-sensor_type');
-				url += '&sensor_value=' + (currentValue == 1 ? '0' : '1');
-
-				$.get(url);
-			};
-
-			var relays = document.getElementsByClassName('relay');
-			for (var i=0; i < relays.length; i++) {
-				var labels = relays[i].getElementsByClassName('live-label');
-				if (labels.length === 0) {
-					continue;
-				}
-
-				labels[0].addEventListener('dblclick', _dblclickHandler);
-			}
-		};
-
-		// Prevent context menu on longpress on mobile phones
-		window.oncontextmenu = function(e) {
-			e.preventDefault();
-			e.stopPropagation();
-			return false;
-		};
-
-		/***************/
-		/* LIVE LABELS */
-		/***************/
-		var initLiveLabels = function() {
-			var createSubscribeCallback = function(liveLabel, sensorId) {
-				return function(data, freshData) {
-					if (typeof data[sensorId] !== 'undefined') {
-						liveLabel.setValue(data[sensorId].value);
-					}
-					else {
-						liveLabel.setValue();
-					}
-				};
-			};
-
-			var labels = document.getElementsByClassName('live-label');
-			for (var i=0; i < labels.length; i++) {
-				var label = labels[i];
-				var sensorId = label.getAttribute('data-live-label-id');
-
-				if (!!sensorId) {
-					var live = new LiveLabel();
-					live.addElement(label);
-
-					var styleName = label.getAttribute('data-live-label-style');
-					var styles = [];
-					if (!!styleName && (styles = configLabelStyle[styleName])) {
-						for (var j=0; j < styles.length; j++) {
-							live.addStyle(styles[j]);
-						}
-					}
-
-					kiosk.subscribe(sensorId, createSubscribeCallback(live, sensorId), true);
-				}
-			}
-		};
-
-		/*********/
-		/* CHART */
-		/*********/
-
-		// default chart dates are today
-		var now = new Date();
-		var chartStart = Math.floor(new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 1).getTime());
-		var chartPeriod = (1000*60*60*24);
-		var charts = [];
-		var chartsId = {};
-
-		var initPeriodSelector = function() {
-			var dayDuration = 1000*60*60*24;
-			var chartPeriods = {
-				day : dayDuration,
-				week : (dayDuration * 7),
-				month : (dayDuration * 30),
-				year : (dayDuration * 365)
-			};
-
-			var btnPeriodPrefix = 'period_selector_';
-			var _btnPeriodClick = function(e) {
-				var clicked = e.target;
-				var clickedPeriod = e.target.id.substr(btnPeriodPrefix.length);
-
-				// change period
-				chartPeriod = chartPeriods[clickedPeriod];
-
-				for (var period in chartPeriods) {
-					var btn = document.getElementById(btnPeriodPrefix + period);
-
-					if (chartPeriod === chartPeriods[period]) {
-						btn.className = 'btn btn-default invisible-btn-text invisible-btn-active ';
-					}
-					else {
-						btn.className = 'btn btn-default invisible-btn-text';
-					}
-				}
-
-				urlChangeHandler();
-			};
-
-			for (var period in chartPeriods) {
-				var btn = document.getElementById(btnPeriodPrefix + period);
-
-				// first init with first period (day)
-				if (!chartPeriod) {
-					chartPeriod = chartPeriods[period];
-				}
-
-				if (btn) {
-					if (chartPeriod === chartPeriods[period]) {
-						btn.className = ' invisible-btn-text invisible-btn-active';
-					}
-					else {
-						btn.className = ' invisible-btn-text';
-					}
-
-					btn.addEventListener('click', _btnPeriodClick);
-				}
-			}
-
-			var btnNavPrefix = 'period_navigation_';
-			var _btnNavClick = function(e) {
-
-				var clicked = e.target;
-				var clickedNav = e.target.id.substr(btnNavPrefix.length);
-
-				if (clickedNav === 'next') {
-					chartStart += chartPeriod;
-				}
-				else {
-					chartStart -= chartPeriod;
-				}
-
-				urlChangeHandler();
-			};
-
-			document.getElementById(btnNavPrefix + 'previous').addEventListener('click', _btnNavClick);
-			document.getElementById(btnNavPrefix + 'next').addEventListener('click', _btnNavClick);
-		};
-
-		var loadChart = function(action) {
-					if (action == 'justDisplay'){
-
-						var displayChart = function() {
-
-							charts = [];
-
-							for (var i=0; i < chartTags.length; i++) {
-								// TODO highcharts from cache
-								var sensor_ids = chartTags[i].getAttribute('data-sensor_ids');
-								var chartSensors = sensor_ids.split(',');
-
-								var series = [];
-								var yAxis = [];
-								var yAxisIndex = {};
-
-								for (var j=0; j < chartSensors.length && j < 4; j++) {
-									var optiIndex = 0
-
-									var sensor = setup.getSensor(chartSensors[j]);
-									// var sensor = setup.getSensorCharty(chartSensors[j]);
-									// create a new axis if needed
-									var yAxisId;
-
-									if (typeof yAxisIndex[sensor.type] === 'undefined') {
-										yAxisId = yAxis.length;
-										yAxis.push({
-											//labels : { format : '{value}°C', style : { color : 'red' }},
-											showEmpty : false,
-											title : {
-												text : sensor.type
-												//style : { color : 'red' }
-											}
-										});
-										yAxisIndex[sensor.type] = yAxisId;
-									}
-									else {
-										yAxisId = yAxisIndex[sensor.type];
-									}
-										series.push({
-											type : 'spline',
-											name : sensor.type,
-											data : ChartDataX[sensor.id_sensor],
-											yAxis : yAxisId
-										});
-
-								}
-
-								charts.push(Highcharts.chart(chartTags[i], {
-									chart : {
-										zoomType : 'x'
-									},
-									title : {
-										text : ''
-									},
-									xAxis : {
-										type : 'datetime'
-									},
-									yAxis : yAxis,
-									legend : {
-										enabled : true
-									},
-									series : series
-								}));
-							}
-						};
-						// get all the charts in the page
-						var chartTags = document.getElementsByClassName('row-chart');
-						var allNeededSensors = {};
-						var sensorListCyril = [];
-
-						for (var i=0; i < chartTags.length; i++) {
-							var sensor_ids = chartTags[i].getAttribute('data-sensor_ids')
-							var sensor_device_ids = chartTags[i].getAttribute('data-device_ids')
-							var sensor_types = chartTags[i].getAttribute('data-types')
-							var chartNeededSensors = sensor_ids.split(',');
-
-							for (var j=0; j < chartNeededSensors.length; j++) {
-								var id_sensor = chartNeededSensors[j];
-								var tempSensorCyril = {};
-
-								 tempSensorCyril = JSON.parse(JSON.stringify(setup.getSensor(id_sensor)));
-								delete tempSensorCyril.class;
-								delete tempSensorCyril.sensor_mode;
-								delete tempSensorCyril.id_zone;
-								delete tempSensorCyril.label;
-								delete tempSensorCyril.last_time;
-								delete tempSensorCyril.last_value;
-								delete tempSensorCyril.probe_name;
-								delete tempSensorCyril.sort_order;
-								delete tempSensorCyril.style;
-								delete tempSensorCyril.probe_uuid;
-								sensorListCyril.push(JSON.stringify(tempSensorCyril))
-								// add the id_sensor to those wanted
-								allNeededSensors[id_sensor] = true;
-							}
-						}
-
-						// we check if we already have data for what is asked
-
-						var neededSensors = [];
-
-						for (var id_sensor in allNeededSensors) {
-							// var sensor_type =
-
-								isCacheEnough = false;
-								neededSensors.push(id_sensor);
-
-								// neededSensorsType.push(sensor_type);
-								// neededSensorsDevice.push(device_id);
-
-						}
-						displayChart();
-					} else{
-						var utc2datetime = function(utc, separator) {
-							if (typeof separator === 'undefined') {
-								separator = ' ';
-							}
-
-							var date = new Date(utc);
-
-							var datetime = date.getFullYear() + '-';
-							datetime += (date.getMonth() < 10 ? '0' : '') + (date.getMonth()+1) + '-';
-							datetime += (date.getDate() < 10 ? '0' : '') + date.getDate();
-							datetime += separator;
-							datetime += (date.getHours() < 10 ? '0' : '') + date.getHours() + ':';
-							datetime += (date.getMinutes() < 10 ? '0' : '') + date.getMinutes() + ':';
-							datetime += (date.getSeconds() < 10 ? '0' : '') + date.getSeconds();
-
-							return datetime;
-						};
-
-						// get all the charts in the page
-						var chartTags = document.getElementsByClassName('row-chart');
-
-						var allNeededSensors = {};
-						var sensorListCyril = [];
-
-						for (var i=0; i < chartTags.length; i++) {
-							var sensor_ids = chartTags[i].getAttribute('data-sensor_ids')
-							var sensor_device_ids = chartTags[i].getAttribute('data-device_ids')
-							var sensor_types = chartTags[i].getAttribute('data-types')
-							var chartNeededSensors = sensor_ids.split(',');
-
-							for (var j=0; j < chartNeededSensors.length; j++) {
-								var id_sensor = chartNeededSensors[j];
-								var tempSensorCyril = {};
-
-								 tempSensorCyril = JSON.parse(JSON.stringify(setup.getSensor(id_sensor)));
-
-								delete tempSensorCyril.class;
-								delete tempSensorCyril.sensor_mode;
-								delete tempSensorCyril.id_zone;
-								delete tempSensorCyril.label;
-								delete tempSensorCyril.last_time;
-								delete tempSensorCyril.last_value;
-								delete tempSensorCyril.probe_name;
-								delete tempSensorCyril.sort_order;
-								delete tempSensorCyril.style;
-								delete tempSensorCyril.probe_uuid;
-								sensorListCyril.push(JSON.stringify(tempSensorCyril))
-								// add the id_sensor to those wanted
-								allNeededSensors[id_sensor] = true;
-							}
-						}
-
-						// we check if we already have data for what is asked
-
-						var neededSensors = [];
-
-						for (var id_sensor in allNeededSensors) {
-							// var sensor_type =
-
-								isCacheEnough = false;
-								neededSensors.push(id_sensor);
-
-								// neededSensorsType.push(sensor_type);
-								// neededSensorsDevice.push(device_id);
-
-						}
-
-						var displayChart = function() {
-
-							charts = [];
-
-
-
-							for (var i=0; i < chartTags.length; i++) {
-								// TODO highcharts from cache
-								var sensor_ids = chartTags[i].getAttribute('data-sensor_ids');
-								var chartSensors = sensor_ids.split(',');
-
-								var series = [];
-								var yAxis = [];
-								var yAxisIndex = {};
-
-								for (var j=0; j < chartSensors.length && j < 4; j++) {
-
-
-									var optiIndex = 0
-
-									var sensor = setup.getSensor(chartSensors[j]);
+        var initRelayDoubleClick = function() {
+            var _dblclickHandler = function(e) {
+                var currentValue = e.target.getAttribute('data-live-label-value');
+                document.getElementById(e.target.getAttribute('id')).value = 'on'
+
+                var url = '/change-relay';
+                url += '?device_id=' + e.target.getAttribute('data-device_id');
+                url += '&sensor_type=' + e.target.getAttribute('data-sensor_type');
+                url += '&sensor_value=' + (currentValue == 1 ? '0' : '1');
+
+                $.get(url);
+            };
+
+            var relays = document.getElementsByClassName('relay');
+            for (var i=0; i < relays.length; i++) {
+                var labels = relays[i].getElementsByClassName('live-label');
+                if (labels.length === 0) {
+                    continue;
+                }
+
+                labels[0].addEventListener('dblclick', _dblclickHandler);
+            }
+        };
+
+        // Prevent context menu on longpress on mobile phones
+        window.oncontextmenu = function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        };
+
+        /***************/
+        /* LIVE LABELS */
+        /***************/
+        var initLiveLabels = function() {
+            var createSubscribeCallback = function(liveLabel, sensorId) {
+                return function(data, freshData) {
+                    if (typeof data[sensorId] !== 'undefined') {
+                        liveLabel.setValue(data[sensorId].value);
+                    }
+                    else {
+                        liveLabel.setValue();
+                    }
+                };
+            };
+
+            var labels = document.getElementsByClassName('live-label');
+            for (var i=0; i < labels.length; i++) {
+                var label = labels[i];
+                var sensorId = label.getAttribute('data-live-label-id');
+
+                if (!!sensorId) {
+                    var live = new LiveLabel();
+                    live.addElement(label);
+
+                    var styleName = label.getAttribute('data-live-label-style');
+                    var styles = [];
+                    if (!!styleName && (styles = configLabelStyle[styleName])) {
+                        for (var j=0; j < styles.length; j++) {
+                            live.addStyle(styles[j]);
+                        }
+                    }
+
+                    kiosk.subscribe(sensorId, createSubscribeCallback(live, sensorId), true);
+                }
+            }
+        };
+
+        /*********/
+        /* CHART */
+        /*********/
+
+        // default chart dates are today
+        var now = new Date();
+        var chartStart = Math.floor(new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 1).getTime());
+        var chartPeriod = (1000*60*60*24);
+        var charts = [];
+        var chartsId = {};
+
+        var initPeriodSelector = function() {
+            var dayDuration = 1000*60*60*24;
+            var chartPeriods = {
+                day : dayDuration,
+                week : (dayDuration * 7),
+                month : (dayDuration * 30),
+                year : (dayDuration * 365)
+            };
+
+            var btnPeriodPrefix = 'period_selector_';
+            var _btnPeriodClick = function(e) {
+                var clicked = e.target;
+                var clickedPeriod = e.target.id.substr(btnPeriodPrefix.length);
+
+                // change period
+                chartPeriod = chartPeriods[clickedPeriod];
+
+                for (var period in chartPeriods) {
+                    var btn = document.getElementById(btnPeriodPrefix + period);
+
+                    if (chartPeriod === chartPeriods[period]) {
+                        btn.className = 'btn btn-default invisible-btn-text invisible-btn-active ';
+                    }
+                    else {
+                        btn.className = 'btn btn-default invisible-btn-text';
+                    }
+                }
+
+                urlChangeHandler();
+            };
+
+            for (var period in chartPeriods) {
+                var btn = document.getElementById(btnPeriodPrefix + period);
+
+                // first init with first period (day)
+                if (!chartPeriod) {
+                    chartPeriod = chartPeriods[period];
+                }
+
+                if (btn) {
+                    if (chartPeriod === chartPeriods[period]) {
+                        btn.className = ' invisible-btn-text invisible-btn-active';
+                    }
+                    else {
+                        btn.className = ' invisible-btn-text';
+                    }
+
+                    btn.addEventListener('click', _btnPeriodClick);
+                }
+            }
+
+            var btnNavPrefix = 'period_navigation_';
+            var _btnNavClick = function(e) {
+
+                var clicked = e.target;
+                var clickedNav = e.target.id.substr(btnNavPrefix.length);
+
+                if (clickedNav === 'next') {
+                    chartStart += chartPeriod;
+                }
+                else {
+                    chartStart -= chartPeriod;
+                }
+
+                urlChangeHandler();
+            };
+
+            document.getElementById(btnNavPrefix + 'previous').addEventListener('click', _btnNavClick);
+            document.getElementById(btnNavPrefix + 'next').addEventListener('click', _btnNavClick);
+        };
+
+        var loadChart = function(action) {
+                    if (action == 'justDisplay'){
+
+                        var displayChart = function() {
+
+                            charts = [];
+
+                            for (var i=0; i < chartTags.length; i++) {
+                                // TODO highcharts from cache
+                                var sensor_ids = chartTags[i].getAttribute('data-sensor_ids');
+                                var chartSensors = sensor_ids.split(',');
+
+                                var series = [];
+                                var yAxis = [];
+                                var yAxisIndex = {};
+
+                                for (var j=0; j < chartSensors.length && j < 4; j++) {
+                                    var optiIndex = 0
+
+                                    var sensor = setup.getSensor(chartSensors[j]);
+                                    // var sensor = setup.getSensorCharty(chartSensors[j]);
+                                    // create a new axis if needed
+                                    var yAxisId;
+
+                                    if (typeof yAxisIndex[sensor.type] === 'undefined') {
+                                        yAxisId = yAxis.length;
+                                        yAxis.push({
+                                            //labels : { format : '{value}°C', style : { color : 'red' }},
+                                            showEmpty : false,
+                                            title : {
+                                                text : sensor.type
+                                                //style : { color : 'red' }
+                                            }
+                                        });
+                                        yAxisIndex[sensor.type] = yAxisId;
+                                    }
+                                    else {
+                                        yAxisId = yAxisIndex[sensor.type];
+                                    }
+                                        series.push({
+                                            type : 'spline',
+                                            name : sensor.type,
+                                            data : ChartDataX[sensor.id_sensor],
+                                            yAxis : yAxisId
+                                        });
+
+                                }
+
+                                charts.push(Highcharts.chart(chartTags[i], {
+                                    chart : {
+                                        zoomType : 'x'
+                                    },
+                                    title : {
+                                        text : ''
+                                    },
+                                    xAxis : {
+                                        type : 'datetime'
+                                    },
+                                    yAxis : yAxis,
+                                    legend : {
+                                        enabled : true
+                                    },
+                                    series : series
+                                }));
+                            }
+                        };
+                        // get all the charts in the page
+                        var chartTags = document.getElementsByClassName('row-chart');
+                        var allNeededSensors = {};
+                        var sensorList = [];
+
+                        for (var i=0; i < chartTags.length; i++) {
+                            var sensor_ids = chartTags[i].getAttribute('data-sensor_ids')
+                            var sensor_device_ids = chartTags[i].getAttribute('data-device_ids')
+                            var sensor_types = chartTags[i].getAttribute('data-types')
+                            var chartNeededSensors = sensor_ids.split(',');
+
+                            for (var j=0; j < chartNeededSensors.length; j++) {
+                                var id_sensor = chartNeededSensors[j];
+                                var tempSensor = {};
+
+                                 tempSensor = JSON.parse(JSON.stringify(setup.getSensor(id_sensor)));
+                                delete tempSensor.class;
+                                delete tempSensor.sensor_mode;
+                                delete tempSensor.id_zone;
+                                delete tempSensor.label;
+                                delete tempSensor.last_time;
+                                delete tempSensor.last_value;
+                                delete tempSensor.probe_name;
+                                delete tempSensor.sort_order;
+                                delete tempSensor.style;
+                                delete tempSensor.probe_uuid;
+                                sensorList.push(JSON.stringify(tempSensor))
+                                // add the id_sensor to those wanted
+                                allNeededSensors[id_sensor] = true;
+                            }
+                        }
+
+                        // we check if we already have data for what is asked
+
+                        var neededSensors = [];
+
+                        for (var id_sensor in allNeededSensors) {
+                            // var sensor_type =
+
+                                isCacheEnough = false;
+                                neededSensors.push(id_sensor);
+
+                                // neededSensorsType.push(sensor_type);
+                                // neededSensorsDevice.push(device_id);
+
+                        }
+                        displayChart();
+                    } else{
+                        var utc2datetime = function(utc, separator) {
+                            if (typeof separator === 'undefined') {
+                                separator = ' ';
+                            }
+
+                            var date = new Date(utc);
+
+                            var datetime = date.getFullYear() + '-';
+                            datetime += (date.getMonth() < 10 ? '0' : '') + (date.getMonth()+1) + '-';
+                            datetime += (date.getDate() < 10 ? '0' : '') + date.getDate();
+                            datetime += separator;
+                            datetime += (date.getHours() < 10 ? '0' : '') + date.getHours() + ':';
+                            datetime += (date.getMinutes() < 10 ? '0' : '') + date.getMinutes() + ':';
+                            datetime += (date.getSeconds() < 10 ? '0' : '') + date.getSeconds();
+
+                            return datetime;
+                        };
+
+                        // get all the charts in the page
+                        var chartTags = document.getElementsByClassName('row-chart');
+
+                        var allNeededSensors = {};
+                        var sensorList = [];
+
+                        for (var i=0; i < chartTags.length; i++) {
+                            var sensor_ids = chartTags[i].getAttribute('data-sensor_ids')
+                            var sensor_device_ids = chartTags[i].getAttribute('data-device_ids')
+                            var sensor_types = chartTags[i].getAttribute('data-types')
+                            var chartNeededSensors = sensor_ids.split(',');
+
+                            for (var j=0; j < chartNeededSensors.length; j++) {
+                                var id_sensor = chartNeededSensors[j];
+                                var tempSensor = {};
+
+                                 tempSensor = JSON.parse(JSON.stringify(setup.getSensor(id_sensor)));
+
+                                delete tempSensor.class;
+                                delete tempSensor.sensor_mode;
+                                delete tempSensor.id_zone;
+                                delete tempSensor.label;
+                                delete tempSensor.last_time;
+                                delete tempSensor.last_value;
+                                delete tempSensor.probe_name;
+                                delete tempSensor.sort_order;
+                                delete tempSensor.style;
+                                delete tempSensor.probe_uuid;
+                                sensorList.push(JSON.stringify(tempSensor))
+                                // add the id_sensor to those wanted
+                                allNeededSensors[id_sensor] = true;
+                            }
+                        }
+
+                        // we check if we already have data for what is asked
+
+                        var neededSensors = [];
+
+                        for (var id_sensor in allNeededSensors) {
+                            // var sensor_type =
+
+                                isCacheEnough = false;
+                                neededSensors.push(id_sensor);
+
+                                // neededSensorsType.push(sensor_type);
+                                // neededSensorsDevice.push(device_id);
+
+                        }
+
+                        var displayChart = function() {
+
+                            charts = [];
+
+
+
+                            for (var i=0; i < chartTags.length; i++) {
+                                // TODO highcharts from cache
+                                var sensor_ids = chartTags[i].getAttribute('data-sensor_ids');
+                                var chartSensors = sensor_ids.split(',');
+
+                                var series = [];
+                                var yAxis = [];
+                                var yAxisIndex = {};
+
+                                for (var j=0; j < chartSensors.length && j < 4; j++) {
+
+
+                                    var optiIndex = 0
+
+                                    var sensor = setup.getSensor(chartSensors[j]);
                                     chartsId[sensor.type] = j;
-									// var sensor = setup.getSensorCharty(chartSensors[j]);
-									// create a new axis if needed
-									var yAxisId;
+                                    // var sensor = setup.getSensorCharty(chartSensors[j]);
+                                    // create a new axis if needed
+                                    var yAxisId;
 
-									if (typeof yAxisIndex[sensor.type] === 'undefined') {
-										yAxisId = yAxis.length;
-										yAxis.push({
-											//labels : { format : '{value}°C', style : { color : 'red' }},
-											showEmpty : false,
-											title : {
-												text : sensor.type
-												//style : { color : 'red' }
-											}
-										});
-										yAxisIndex[sensor.type] = yAxisId;
-									}
-									else {
-										yAxisId = yAxisIndex[sensor.type];
-									}
-										series.push({
-											type : 'spline',
-											name : sensor.type,
-											data : ChartDataX[sensor.id_sensor],
-											yAxis : yAxisId
-										});
+                                    if (typeof yAxisIndex[sensor.type] === 'undefined') {
+                                        yAxisId = yAxis.length;
+                                        yAxis.push({
+                                            //labels : { format : '{value}°C', style : { color : 'red' }},
+                                            showEmpty : false,
+                                            title : {
+                                                text : sensor.type
+                                                //style : { color : 'red' }
+                                            }
+                                        });
+                                        yAxisIndex[sensor.type] = yAxisId;
+                                    }
+                                    else {
+                                        yAxisId = yAxisIndex[sensor.type];
+                                    }
+                                        series.push({
+                                            type : 'spline',
+                                            name : sensor.type,
+                                            data : ChartDataX[sensor.id_sensor],
+                                            yAxis : yAxisId
+                                        });
 
-								}
+                                }
 
-								charts.push(Highcharts.chart(chartTags[i], {
+                                charts.push(Highcharts.chart(chartTags[i], {
                                     boost: {
                                         useGPUTranslations: true
                                     },
-									chart : {
-										zoomType : 'x'
-									},
-									title : {
-										text : ''
-									},
-									xAxis : {
-										type : 'datetime'
-									},
-									yAxis : yAxis,
-									legend : {
-										enabled : true
-									},
-									series : series
-								}));
-							}
-						};
-
-
-							//console.debug('GETTING NEW DATA');
-							var url = '/get-list-reading'
-							url += '?date_format=microtime';
-							url += '&sensors=' + neededSensors.join(',');
-							url += '&sensorsList=' + sensorListCyril.join(',');
-							url += '&from=' + (chartStart - chartPeriod);
-							url += '&to=' + ((chartStart + chartPeriod) + chartPeriod);
-							url += '&format=jsonp';
-							url += '&callback=?';
-
-							$.getJSON(url, function(data) {
-
-								ChartDataX = data
-								ChartDataX = JSON.parse(JSON.stringify(data))
-								data = JSON.parse(JSON.stringify(data))
-								ChartDataXCSV = ChartDataX
-								displayChart();
-							}, 'json');
-
-					}
-
-				};
-
-
-		/***************/
-		/* URL MANAGER */
-		/***************/
-		var urlChangeHandler = function() {
-			//unselectAll();
-
-			var hash = window.location.hash;
-			hash = hash.replace("#", "");
-			if (hash === '') {
-				hash = 'zone-0';
-			}
-
-			// Unselect previous selection
-			setup.unselectZone(templateContent.zones[0].id_zone);
-			setup.unselectProbe();
-			setup.unselectDashboard();
-			templateContent.zone = templateContent.zones[0];
-			templateContent.probe = {};
-			templateContent.probes = setup.getListProbeByZone(templateContent.zones[0].id_zone);
-			templateContent.sensors = [];
-			templateContent.dashboard = {};
-
-			var hashPieces = hash.split('-');
-			var uiType = hashPieces[0];
-			switch (hashPieces[0]) {
-				// DEPRACATED ?
-				case 'zone':
-					// Update selections
-					var id_zone = hashPieces[1];
-					setup.selectZone(id_zone);
-
-					// Update content
-					templateContent.zone = setup.getSelectedZone();
-					templateContent.probes = setup.getListProbeByZone(id_zone);
-					//templateContent.sensors = setup.getListSensorByZone(id_zone);
-
-					// Change title
-					changeTitle(setup.getSelectedZone().name);
-				break;
-
-				case 'probe':
-					// Update selections
-					var id_probe = hashPieces[1];
-					var uuid = hashPieces[2];
-
-					var probe = setup.getProbe(id_probe);
-					var zone = setup.getZone(probe.id_zone);
-
-					// Update selections
-					setup.selectProbe(id_probe);
-					setup.selectZone(probe.id_zone)
-
-					templateContent.zone = setup.getZone(probe.id_zone);
-					templateContent.probe = probe;
-					templateContent.probes = setup.getListProbeByZone(probe.id_zone);
-					templateContent.sensors = setup.getListSensorByProbe(probe.id_probe);
-					//templateContent.dashboard = {};
-
-					changeTitle(probe.name + ' - ' + zone.name);
-				break;
+                                    chart : {
+                                        zoomType : 'x'
+                                    },
+                                    title : {
+                                        text : ''
+                                    },
+                                    xAxis : {
+                                        type : 'datetime'
+                                    },
+                                    yAxis : yAxis,
+                                    legend : {
+                                        enabled : true
+                                    },
+                                    series : series
+                                }));
+                            }
+                        };
+
+
+                            //console.debug('GETTING NEW DATA');
+                            var url = '/get-list-reading'
+                            url += '?date_format=microtime';
+                            url += '&sensors=' + neededSensors.join(',');
+                            url += '&sensorsList=' + sensorList.join(',');
+                            url += '&from=' + (chartStart - chartPeriod);
+                            url += '&to=' + ((chartStart + chartPeriod) + chartPeriod);
+                            url += '&format=jsonp';
+                            url += '&callback=?';
+
+                            $.getJSON(url, function(data) {
+
+                                ChartDataX = data
+                                ChartDataX = JSON.parse(JSON.stringify(data))
+                                data = JSON.parse(JSON.stringify(data))
+                                ChartDataXCSV = ChartDataX
+                                displayChart();
+                            }, 'json');
+
+                    }
+
+                };
+
+
+        /***************/
+        /* URL MANAGER */
+        /***************/
+        var urlChangeHandler = function() {
+            //unselectAll();
+
+            var hash = window.location.hash;
+            hash = hash.replace("#", "");
+            if (hash === '') {
+                hash = 'zone-0';
+            }
+
+            // Unselect previous selection
+            setup.unselectZone(templateContent.zones[0].id_zone);
+            setup.unselectProbe();
+            setup.unselectDashboard();
+            templateContent.zone = templateContent.zones[0];
+            templateContent.probe = {};
+            templateContent.probes = setup.getListProbeByZone(templateContent.zones[0].id_zone);
+            templateContent.sensors = [];
+            templateContent.dashboard = {};
+
+            var hashPieces = hash.split('-');
+            var uiType = hashPieces[0];
+            switch (hashPieces[0]) {
+                // DEPRACATED ?
+                case 'zone':
+                    // Update selections
+                    var id_zone = hashPieces[1];
+                    setup.selectZone(id_zone);
+
+                    // Update content
+                    templateContent.zone = setup.getSelectedZone();
+                    templateContent.probes = setup.getListProbeByZone(id_zone);
+                    //templateContent.sensors = setup.getListSensorByZone(id_zone);
+
+                    // Change title
+                    changeTitle(setup.getSelectedZone().name);
+                break;
+
+                case 'probe':
+                    // Update selections
+                    var id_probe = hashPieces[1];
+                    var uuid = hashPieces[2];
+
+                    var probe = setup.getProbe(id_probe);
+                    var zone = setup.getZone(probe.id_zone);
+
+                    // Update selections
+                    setup.selectProbe(id_probe);
+                    setup.selectZone(probe.id_zone)
+
+                    templateContent.zone = setup.getZone(probe.id_zone);
+                    templateContent.probe = probe;
+                    templateContent.probes = setup.getListProbeByZone(probe.id_zone);
+                    templateContent.sensors = setup.getListSensorByProbe(probe.id_probe);
+                    //templateContent.dashboard = {};
+
+                    changeTitle(probe.name + ' - ' + zone.name);
+                break;
 
-				case 'dashboard':
-					var id_zone = hashPieces[1];
-					var index_dashboard = hashPieces[2];
+                case 'dashboard':
+                    var id_zone = hashPieces[1];
+                    var index_dashboard = hashPieces[2];
 
-					var dashboard = setup.getDashboard(id_zone, index_dashboard);
-					if (!dashboard) {
-						uiType = 'not_found';
-						break;
-					}
-					var zone = setup.getZone(id_zone);
+                    var dashboard = setup.getDashboard(id_zone, index_dashboard);
+                    if (!dashboard) {
+                        uiType = 'not_found';
+                        break;
+                    }
+                    var zone = setup.getZone(id_zone);
 
-					setup.selectZone(id_zone);
-					setup.selectDashboard(id_zone, index_dashboard);
-
-					templateContent.zone = setup.getZone(id_zone);
-					templateContent.probes = setup.getListProbeByZone(id_zone);
-					templateContent.dashboard = dashboard;
-
-					changeTitle(dashboard.name + ' - ' + zone.name);
-
-					if (dashboard.blocks.length == 0) {
-						uiType = 'dashboard_empty';
-					}
-				break;
-
-				default:
-					uiType = 'not_found';
-				break;
-			};
-
-			renderUI(uiType);
-		};
+                    setup.selectZone(id_zone);
+                    setup.selectDashboard(id_zone, index_dashboard);
+
+                    templateContent.zone = setup.getZone(id_zone);
+                    templateContent.probes = setup.getListProbeByZone(id_zone);
+                    templateContent.dashboard = dashboard;
+
+                    changeTitle(dashboard.name + ' - ' + zone.name);
+
+                    if (dashboard.blocks.length == 0) {
+                        uiType = 'dashboard_empty';
+                    }
+                break;
+
+                default:
+                    uiType = 'not_found';
+                break;
+            };
+
+            renderUI(uiType);
+        };
 
-		var changeTitle = function(title) {
-			document.title = title + " - Predictable Farm"
-		};
+        var changeTitle = function(title) {
+            document.title = title + " - Predictable Farm"
+        };
 
-		window.addEventListener("hashchange", urlChangeHandler);
-		urlChangeHandler();
+        window.addEventListener("hashchange", urlChangeHandler);
+        urlChangeHandler();
 
-		var openDropDown = function(block_index) {
-			var x = document.getElementById('arrow-down-' + block_index);
+        var openDropDown = function(block_index) {
+            var x = document.getElementById('arrow-down-' + block_index);
 
-	    if (x.style.display === 'none'){
-				document.getElementById('shadow-dropdown').style.display = 'block';
-				document.getElementById('dropdown-menu-' + block_index).style.display = 'block';
-				  x.style.display = 'block';
-	    } else {
-				document.getElementById('shadow-dropdown').style.display = 'none';
-				document.getElementById('dropdown-menu-' + block_index).style.display = 'none';
-	        x.style.display = 'none';
-	    }
-		}
-			jQuery.fn.highlight = function (str, className) {
-	    var regex = new RegExp(str, "gi");
+        if (x.style.display === 'none'){
+                document.getElementById('shadow-dropdown').style.display = 'block';
+                document.getElementById('dropdown-menu-' + block_index).style.display = 'block';
+                  x.style.display = 'block';
+        } else {
+                document.getElementById('shadow-dropdown').style.display = 'none';
+                document.getElementById('dropdown-menu-' + block_index).style.display = 'none';
+            x.style.display = 'none';
+        }
+        }
+            jQuery.fn.highlight = function (str, className) {
+        var regex = new RegExp(str, "gi");
 
-	    return this.each(function () {
-	        this.innerHTML = this.innerHTML.replace(regex, function(matched) {return "<span class=\"" + className + "\">" + matched + "</span>";});
-			    });
-			};
+        return this.each(function () {
+            this.innerHTML = this.innerHTML.replace(regex, function(matched) {return "<span class=\"" + className + "\">" + matched + "</span>";});
+                });
+            };
 
-			document.getElementById("period_selector_day").click();
+            document.getElementById("period_selector_day").click();
 
-			$(document).ready(function(){
-			    $(".glyphicon-chevron-left").hover(function(){
+            $(document).ready(function(){
+                $(".glyphicon-chevron-left").hover(function(){
 
-						var leftPos = $('.innerWrapper').scrollLeft();
-						$(".innerWrapper").animate({scrollLeft: leftPos - 200}, 800);
+                        var leftPos = $('.innerWrapper').scrollLeft();
+                        $(".innerWrapper").animate({scrollLeft: leftPos - 200}, 800);
 
-			    });
-					$(".glyphicon-chevron-right").hover(function(){
+                });
+                    $(".glyphicon-chevron-right").hover(function(){
 
-						var rightPos = $('.innerWrapper').scrollLeft();
-						$(".innerWrapper").animate({scrollLeft: rightPos + 200}, 800);
+                        var rightPos = $('.innerWrapper').scrollLeft();
+                        $(".innerWrapper").animate({scrollLeft: rightPos + 200}, 800);
 
-			    });
-			});
-			$(".container-chart").animate({scrollLeft:  180}, 800);
+                });
+            });
+            $(".container-chart").animate({scrollLeft:  180}, 800);
 
 
-			document.querySelectorAll('.switch input').forEach( (checkbox) =>{
-				if (checkbox.getAttribute('data-live-label-value') == 1){
-					checkbox.setAttribute("checked", "checked");
-					checkbox.checked = true;
-				}
-			} );
+            document.querySelectorAll('.switch input').forEach( (checkbox) =>{
+                if (checkbox.getAttribute('data-live-label-value') == 1){
+                    checkbox.setAttribute("checked", "checked");
+                    checkbox.checked = true;
+                }
+            } );
 
-			var newLoad = function(){
+            var newLoad = function(){
 
 
-				document.querySelectorAll('.switch input').forEach( (checkbox) =>{
+                document.querySelectorAll('.switch input').forEach( (checkbox) =>{
 
-					if (checkbox.getAttribute('data-live-label-value') == 1){
-						checkbox.setAttribute("checked", "checked");
-						checkbox.checked = true;
-					}
-				} );
+                    if (checkbox.getAttribute('data-live-label-value') == 1){
+                        checkbox.setAttribute("checked", "checked");
+                        checkbox.checked = true;
+                    }
+                } );
 
-				document.querySelectorAll('.sensor-block').forEach( (sensor) =>{
-					var last_time = sensor.getAttribute('data-time_sensor');
-					var date = new Date(new Date().getTime() - 24 * 60 * 60 * 1000);
-					var last_date = new Date(last_time)
-					last_date.setHours(last_date.getHours() + 48)
+                document.querySelectorAll('.sensor-block').forEach( (sensor) =>{
+                    var last_time = sensor.getAttribute('data-time_sensor');
+                    var date = new Date(new Date().getTime() - 24 * 60 * 60 * 1000);
+                    var last_date = new Date(last_time)
+                    last_date.setHours(last_date.getHours() + 48)
 
-					if (last_date < date){
-						sensor.classList.add('hidden');
-					}
-
-				} )
-				var tempTab = $(location).attr('hash');
-				localStorage.setItem("tempTab", tempTab);
-				newScrooll = localStorage.getItem("tempScrollLeft");
-				$(".innerWrapper").animate({scrollLeft: newScrooll}, 100);
-
-			}
-			var newLoadWait = function(){
-				var tempScrollLeft = $('.innerWrapper').scrollLeft();
-				localStorage.setItem("tempScrollLeft", tempScrollLeft);
-			setTimeout(newLoad, 1000);
-			}
-			function newLoadWait(){
-				var tempScrollLeft = $('.innerWrapper').scrollLeft();
-				localStorage.setItem("tempScrollLeft", tempScrollLeft);
-			setTimeout(newLoad, 1000);
-			}
+                    if (last_date < date){
+                        sensor.classList.add('hidden');
+                    }
+
+                } )
+                var tempTab = $(location).attr('hash');
+                localStorage.setItem("tempTab", tempTab);
+                newScrooll = localStorage.getItem("tempScrollLeft");
+                $(".innerWrapper").animate({scrollLeft: newScrooll}, 100);
+
+            }
+            var newLoadWait = function(){
+                var tempScrollLeft = $('.innerWrapper').scrollLeft();
+                localStorage.setItem("tempScrollLeft", tempScrollLeft);
+            setTimeout(newLoad, 1000);
+            }
+            function newLoadWait(){
+                var tempScrollLeft = $('.innerWrapper').scrollLeft();
+                localStorage.setItem("tempScrollLeft", tempScrollLeft);
+            setTimeout(newLoad, 1000);
+            }
 
-			$(".probe-tab.glyphicon-remove").click(function(){
+            $(".probe-tab.glyphicon-remove").click(function(){
 
 
-			});
+            });
 
 
 
 
-			function checkAlertRelay(checkboxElem) {
-				switchRelay(checkboxElem);
-			}
-			function checkModeRelay(checkboxElem) {
-				clickToAutomationMode(checkboxElem);
-			}
-			var clickToAutomationMode = function(e) {
+            function checkAlertRelay(checkboxElem) {
+                switchRelay(checkboxElem);
+            }
+            function checkModeRelay(checkboxElem) {
+                clickToAutomationMode(checkboxElem);
+            }
+            var clickToAutomationMode = function(e) {
 
 
-				var currentValue = e.previousElementSibling.previousElementSibling.getAttribute('data-live-label-value');
-				var sensor_id = e.getAttribute('data-id_sensor')
-				var zone = setup.getZone(0);
-				var device_id = e.getAttribute('data-device_id')
+                var currentValue = e.previousElementSibling.previousElementSibling.getAttribute('data-live-label-value');
+                var sensor_id = e.getAttribute('data-id_sensor')
+                var zone = setup.getZone(0);
+                var device_id = e.getAttribute('data-device_id')
 
-			 var sensor_type = e.getAttribute('data-sensor_type')
+             var sensor_type = e.getAttribute('data-sensor_type')
 
-			//	UPDATE sensor SET last_value: sensor_value WHERE device_id = :device_id;
+            //  UPDATE sensor SET last_value: sensor_value WHERE device_id = :device_id;
 
-				var url = '/change-relay';
-				url += '?device_id=' + device_id;
-				url += '&sensor_type=' + e.getAttribute('data-sensor_type');
-				url += '&sensor_value=' + (currentValue == 0 ? '0' : '1');
-				url += '&id_sensor=' + e.getAttribute('data-id_sensor');
-				url += '&sensor_mode=' + "0"
+                var url = '/change-relay';
+                url += '?device_id=' + device_id;
+                url += '&sensor_type=' + e.getAttribute('data-sensor_type');
+                url += '&sensor_value=' + (currentValue == 0 ? '0' : '1');
+                url += '&id_sensor=' + e.getAttribute('data-id_sensor');
+                url += '&sensor_mode=' + "0"
 
 
-				$.get(url);
+                $.get(url);
 
 
-					e.setAttribute('data-live-label-mode', '0');
-			}
-			var switchRelay = function(e) {
-				var sensor_id = e.getAttribute('data-id_sensor');
-				document.getElementById('patience-filter-' + sensor_id ).style.display = 'block';
-					var currentValue = e.getAttribute('data-live-label-value');
-					var sensor_id = e.getAttribute('data-id_sensor')
-					var zone = setup.getZone(0);
-					var device_id = e.getAttribute('data-device_id')
-					document.querySelectorAll('.automation-btn-' + sensor_id ).forEach( (automationBtn) =>{
-						automationBtn.className += " automation-btn-show";
-
-					} )
-				 var sensor_type = e.getAttribute('data-sensor_type')
-
-				//	UPDATE sensor SET last_value: sensor_value WHERE device_id = :device_id;
-
-					var url = '/change-relay';
-					url += '?device_id=' + device_id;
-					url += '&sensor_type=' + e.getAttribute('data-sensor_type');
-					url += '&sensor_value=' + (currentValue == 1 ? '0' : '1');
-					url += '&id_sensor=' + e.getAttribute('data-id_sensor');
-					url += '&sensor_mode=' + "1"
-
-					document.getElementById("checkbox-" + e.getAttribute('data-device_id')).setAttribute("data-live-label-value", "1");
-					document.getElementById("valueMedium-" + e.getAttribute('data-device_id')).setAttribute("data-live-label-value", "1");
-					$.get(url , function(){
-						switchRelayCloseFilter(sensor_id);
-					});
-
-					e.setAttribute('data-live-label-value', (currentValue == 1 ? '0' : '1'));
-					e.parentNode.nextElementSibling.setAttribute('data-live-label-mode', '1');
-					//show automation-btn
-					// document.getElementById('patience-filter-' + sensor_id ).style.display = 'none';
-
-				};
-				var switchRelayCloseFilter = function(sensor_id) {
-					wait(5000);
-					document.getElementById('patience-filter-' + sensor_id ).style.display = 'none';
-				}
-				function wait(ms){
-				   var start = new Date().getTime();
-				   var end = start;
-				   while(end < start + ms) {
-				     end = new Date().getTime();
-				  }
-				}
-				newScrooll = localStorage.getItem("tempScrollLeft");
-				$(".innerWrapper").animate({scrollLeft: newScrooll}, 100);
-
-
-				var downloadCSV = function(){
-					var csvContent = "data:text/csv;charset=utf-8,";
-					var data = ChartDataXCSV;
-
-					var encodedUri = csvContent + JSON.stringify(data);
-					encodedUri = encodeURI(encodedUri)
-
-					window.open(encodedUri);
-				}
-
-
-				window.setInterval(function(){
-
-					document.querySelectorAll('.switch input').forEach( (checkbox) =>{
-
-						if (checkbox.getAttribute('data-live-label-value') == 1){
-
-							checkbox.setAttribute("checked", "checked");
-							checkbox.checked = true;
-						} else {
-							checkbox.setAttribute("checked", "false");
-							checkbox.checked =false;
-						}
-
-					} );
-					document.querySelectorAll('.automation-btn').forEach( (automationBtn) =>{
-
-						if (automationBtn.getAttribute('data-live-label-mode') == '1'){
-
-							automationBtn.className += " automation-btn-show";
-						}else{
-
-							automationBtn.className = "automation-btn automation-btn-" + automationBtn.getAttribute('data-id_sensor')
-						}
-					} )
-				}, 3000);
-
-				var deleteSensor = function(id_sensor, id_probe){
-					var url = '/delete-sensor';
-					url += '?probe_id=' + id_probe;
-					url += '&sensor_id=' + id_sensor;
-
-					$.get(url, function() {
-					});
-					setup.deleteSensor(0, id_probe, id_sensor)
-				};
-				var relaodChart = function () {
-				  // Do stuff
-
-					if (ChartDataX){
-						loadChart();
-					}
-				   setTimeout(relaodChart, 30000);
-				};
-		</script>
-	</body>
+                    e.setAttribute('data-live-label-mode', '0');
+            }
+            var switchRelay = function(e) {
+                var sensor_id = e.getAttribute('data-id_sensor');
+                document.getElementById('patience-filter-' + sensor_id ).style.display = 'block';
+                    var currentValue = e.getAttribute('data-live-label-value');
+                    var sensor_id = e.getAttribute('data-id_sensor')
+                    var zone = setup.getZone(0);
+                    var device_id = e.getAttribute('data-device_id')
+                    document.querySelectorAll('.automation-btn-' + sensor_id ).forEach( (automationBtn) =>{
+                        automationBtn.className += " automation-btn-show";
+
+                    } )
+                 var sensor_type = e.getAttribute('data-sensor_type')
+
+                //  UPDATE sensor SET last_value: sensor_value WHERE device_id = :device_id;
+
+                    var url = '/change-relay';
+                    url += '?device_id=' + device_id;
+                    url += '&sensor_type=' + e.getAttribute('data-sensor_type');
+                    url += '&sensor_value=' + (currentValue == 1 ? '0' : '1');
+                    url += '&id_sensor=' + e.getAttribute('data-id_sensor');
+                    url += '&sensor_mode=' + "1"
+
+                    document.getElementById("checkbox-" + e.getAttribute('data-device_id')).setAttribute("data-live-label-value", "1");
+                    document.getElementById("valueMedium-" + e.getAttribute('data-device_id')).setAttribute("data-live-label-value", "1");
+                    $.get(url , function(){
+                        switchRelayCloseFilter(sensor_id);
+                    });
+
+                    e.setAttribute('data-live-label-value', (currentValue == 1 ? '0' : '1'));
+                    e.parentNode.nextElementSibling.setAttribute('data-live-label-mode', '1');
+                    //show automation-btn
+                    // document.getElementById('patience-filter-' + sensor_id ).style.display = 'none';
+
+                };
+                var switchRelayCloseFilter = function(sensor_id) {
+                    wait(5000);
+                    document.getElementById('patience-filter-' + sensor_id ).style.display = 'none';
+                }
+                function wait(ms){
+                   var start = new Date().getTime();
+                   var end = start;
+                   while(end < start + ms) {
+                     end = new Date().getTime();
+                  }
+                }
+                newScrooll = localStorage.getItem("tempScrollLeft");
+                $(".innerWrapper").animate({scrollLeft: newScrooll}, 100);
+
+
+                var downloadCSV = function(){
+                    var csvContent = "data:text/csv;charset=utf-8,";
+                    var data = ChartDataXCSV;
+
+                    var encodedUri = csvContent + JSON.stringify(data);
+                    encodedUri = encodeURI(encodedUri)
+
+                    window.open(encodedUri);
+                }
+
+
+                window.setInterval(function(){
+
+                    document.querySelectorAll('.switch input').forEach( (checkbox) =>{
+
+                        if (checkbox.getAttribute('data-live-label-value') == 1){
+
+                            checkbox.setAttribute("checked", "checked");
+                            checkbox.checked = true;
+                        } else {
+                            checkbox.setAttribute("checked", "false");
+                            checkbox.checked =false;
+                        }
+
+                    } );
+                    document.querySelectorAll('.automation-btn').forEach( (automationBtn) =>{
+
+                        if (automationBtn.getAttribute('data-live-label-mode') == '1'){
+
+                            automationBtn.className += " automation-btn-show";
+                        }else{
+
+                            automationBtn.className = "automation-btn automation-btn-" + automationBtn.getAttribute('data-id_sensor')
+                        }
+                    } )
+                }, 3000);
+
+                var deleteSensor = function(id_sensor, id_probe){
+                    var url = '/delete-sensor';
+                    url += '?probe_id=' + id_probe;
+                    url += '&sensor_id=' + id_sensor;
+
+                    $.get(url, function() {
+                    });
+                    setup.deleteSensor(0, id_probe, id_sensor)
+                };
+                var relaodChart = function () {
+                  // Do stuff
+
+                    if (ChartDataX){
+                        loadChart();
+                    }
+                   setTimeout(relaodChart, 30000);
+                };
+        </script>
+    </body>
 
 </html>
